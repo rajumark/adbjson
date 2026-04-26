@@ -1,11 +1,11 @@
-# permissions
+# shell pm list permissions
 
 ## Description
 Lists all permissions on the connected Android device.
 
 ## Command
 ```bash
-adbjson permissions
+adbjson shell pm list permissions
 ```
 
 ## Equivalent ADB Command
@@ -30,7 +30,7 @@ adb shell pm list permissions
 
 ## Sample YAML Output
 ```bash
-adbjson permissions --format yaml
+adbjson shell pm list permissions --format yaml
 ```
 ```yaml
 permissions:

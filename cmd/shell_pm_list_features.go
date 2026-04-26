@@ -14,18 +14,18 @@ import (
 // featuresCmd represents the features command
 var featuresCmd = &cobra.Command{
 	Use:   "features",
-	Short: "List device features in JSON format",
+	Short: "List device features",
 	Long:  `Executes "adb shell pm list features" and outputs the result as structured JSON.`,
 	RunE:  runFeatures,
 }
 
 func init() {
-	rootCmd.AddCommand(featuresCmd)
+	listCmd.AddCommand(featuresCmd)
 }
 
 func runFeatures(cmd *cobra.Command, args []string) error {
 	log := logger.Get()
-	log.Info("Starting features command", nil)
+	log.Info("Starting shell pm list features command", nil)
 
 	// Create executor
 	executor := adb.NewExecutor()
@@ -64,7 +64,7 @@ func runFeatures(cmd *cobra.Command, args []string) error {
 	
 	// Print to stdout
 	fmt.Println(formattedOutput)
-	log.Info("Features command completed successfully", nil)
+	log.Info("Shell pm list features command completed successfully", nil)
 	
 	return nil
 }

@@ -14,18 +14,18 @@ import (
 // permissionsCmd represents the permissions command
 var permissionsCmd = &cobra.Command{
 	Use:   "permissions",
-	Short: "List permissions in JSON format",
+	Short: "List permissions",
 	Long:  `Executes "adb shell pm list permissions" and outputs the result as structured JSON.`,
 	RunE:  runPermissions,
 }
 
 func init() {
-	rootCmd.AddCommand(permissionsCmd)
+	listCmd.AddCommand(permissionsCmd)
 }
 
 func runPermissions(cmd *cobra.Command, args []string) error {
 	log := logger.Get()
-	log.Info("Starting permissions command", nil)
+	log.Info("Starting shell pm list permissions command", nil)
 
 	// Create executor
 	executor := adb.NewExecutor()
@@ -64,7 +64,7 @@ func runPermissions(cmd *cobra.Command, args []string) error {
 	
 	// Print to stdout
 	fmt.Println(formattedOutput)
-	log.Info("Permissions command completed successfully", nil)
+	log.Info("Shell pm list permissions command completed successfully", nil)
 	
 	return nil
 }

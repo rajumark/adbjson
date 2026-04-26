@@ -1,11 +1,11 @@
-# packages
+# shell pm list packages
 
 ## Description
 Lists all installed packages on the connected Android device.
 
 ## Command
 ```bash
-adbjson packages
+adbjson shell pm list packages
 ```
 
 ## Equivalent ADB Command
@@ -30,7 +30,7 @@ adb shell pm list packages
 
 ## Sample YAML Output
 ```bash
-adbjson packages --format yaml
+adbjson shell pm list packages --format yaml
 ```
 ```yaml
 packages:

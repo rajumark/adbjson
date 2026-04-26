@@ -1,11 +1,11 @@
-# instrumentation
+# shell pm list instrumentation
 
 ## Description
 Lists all instrumentation tests on the connected Android device.
 
 ## Command
 ```bash
-adbjson instrumentation
+adbjson shell pm list instrumentation
 ```
 
 ## Equivalent ADB Command
@@ -27,7 +27,7 @@ adb shell pm list instrumentation
 
 ## Sample YAML Output
 ```bash
-adbjson instrumentation --format yaml
+adbjson shell pm list instrumentation --format yaml
 ```
 ```yaml
 instrumentations:

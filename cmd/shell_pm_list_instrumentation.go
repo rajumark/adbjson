@@ -14,18 +14,18 @@ import (
 // instrumentationCmd represents the instrumentation command
 var instrumentationCmd = &cobra.Command{
 	Use:   "instrumentation",
-	Short: "List instrumentation in JSON format",
+	Short: "List instrumentation",
 	Long:  `Executes "adb shell pm list instrumentation" and outputs the result as structured JSON.`,
 	RunE:  runInstrumentation,
 }
 
 func init() {
-	rootCmd.AddCommand(instrumentationCmd)
+	listCmd.AddCommand(instrumentationCmd)
 }
 
 func runInstrumentation(cmd *cobra.Command, args []string) error {
 	log := logger.Get()
-	log.Info("Starting instrumentation command", nil)
+	log.Info("Starting shell pm list instrumentation command", nil)
 
 	// Create executor
 	executor := adb.NewExecutor()
@@ -64,7 +64,7 @@ func runInstrumentation(cmd *cobra.Command, args []string) error {
 	
 	// Print to stdout
 	fmt.Println(formattedOutput)
-	log.Info("Instrumentation command completed successfully", nil)
+	log.Info("Shell pm list instrumentation command completed successfully", nil)
 	
 	return nil
 }

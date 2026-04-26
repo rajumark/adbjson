@@ -1,22 +1,22 @@
-# libraries
+# shell pm list features
 
 ## Description
-Lists all device libraries on the connected Android device.
+Lists all device features on the connected Android device.
 
 ## Command
 ```bash
-adbjson libraries
+adbjson shell pm list features
 ```
 
 ## Equivalent ADB Command
 ```bash
-adb shell pm list libraries
+adb shell pm list features
 ```
 
 ## Sample JSON Output
 ```json
 {
-  "libraries": [
+  "features": [
     {
       "name": "android.hardware.camera"
     },
@@ -30,10 +30,10 @@ adb shell pm list libraries
 
 ## Sample YAML Output
 ```bash
-adbjson libraries --format yaml
+adbjson shell pm list features --format yaml
 ```
 ```yaml
-libraries:
+features:
 - name: android.hardware.camera
 - name: android.hardware.wifi
 count: 2
@@ -47,5 +47,5 @@ count: 2
 
 ## Notes
 - Requires a connected device or emulator
-- Lists all shared libraries
-- Output is limited to first 5 libraries in documentation (full list in actual output)
+- Lists all hardware and software features
+- Output is limited to first 5 features in documentation (full list in actual output)

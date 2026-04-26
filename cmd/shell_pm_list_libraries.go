@@ -14,18 +14,18 @@ import (
 // librariesCmd represents the libraries command
 var librariesCmd = &cobra.Command{
 	Use:   "libraries",
-	Short: "List device libraries in JSON format",
+	Short: "List device libraries",
 	Long:  `Executes "adb shell pm list libraries" and outputs the result as structured JSON.`,
 	RunE:  runLibraries,
 }
 
 func init() {
-	rootCmd.AddCommand(librariesCmd)
+	listCmd.AddCommand(librariesCmd)
 }
 
 func runLibraries(cmd *cobra.Command, args []string) error {
 	log := logger.Get()
-	log.Info("Starting libraries command", nil)
+	log.Info("Starting shell pm list libraries command", nil)
 
 	// Create executor
 	executor := adb.NewExecutor()
@@ -64,7 +64,7 @@ func runLibraries(cmd *cobra.Command, args []string) error {
 	
 	// Print to stdout
 	fmt.Println(formattedOutput)
-	log.Info("Libraries command completed successfully", nil)
+	log.Info("Shell pm list libraries command completed successfully", nil)
 	
 	return nil
 }

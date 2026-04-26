@@ -14,18 +14,18 @@ import (
 // packagesCmd represents the packages command
 var packagesCmd = &cobra.Command{
 	Use:   "packages",
-	Short: "List installed packages in JSON format",
+	Short: "List all packages",
 	Long:  `Executes "adb shell pm list packages" and outputs the result as structured JSON.`,
 	RunE:  runPackages,
 }
 
 func init() {
-	rootCmd.AddCommand(packagesCmd)
+	listCmd.AddCommand(packagesCmd)
 }
 
 func runPackages(cmd *cobra.Command, args []string) error {
 	log := logger.Get()
-	log.Info("Starting packages command", nil)
+	log.Info("Starting shell pm list packages command", nil)
 
 	// Create executor
 	executor := adb.NewExecutor()
@@ -64,7 +64,7 @@ func runPackages(cmd *cobra.Command, args []string) error {
 	
 	// Print to stdout
 	fmt.Println(formattedOutput)
-	log.Info("Packages command completed successfully", nil)
+	log.Info("Shell pm list packages command completed successfully", nil)
 	
 	return nil
 }
