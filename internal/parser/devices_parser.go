@@ -6,11 +6,15 @@ import (
 )
 
 // DevicesParser parses adb devices output
-type DevicesParser struct{}
+type DevicesParser struct {
+	*BaseParser
+}
 
 // NewDevicesParser creates a new devices parser
 func NewDevicesParser() *DevicesParser {
-	return &DevicesParser{}
+	return &DevicesParser{
+		BaseParser: NewBaseParser("devices", "1.0.0"),
+	}
 }
 
 // Parse parses the raw output from "adb devices" command
@@ -50,4 +54,10 @@ func (p *DevicesParser) Parse(output string) (*model.DevicesResponse, error) {
 	return &model.DevicesResponse{
 		Devices: devices,
 	}, nil
+}
+
+// Validate checks if the parsed result is valid
+func (p *DevicesParser) Validate(result *model.DevicesResponse) error {
+	// Devices response is always valid even with empty list
+	return nil
 }
