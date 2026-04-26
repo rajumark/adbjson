@@ -66,4 +66,5 @@ Download from [Releases](https://github.com/rajumark/adbjson/releases) and extra
 
 ## Documentation
 
-For detailed project documentation, see [PROJECT.md](PROJECT.md).
+- [Supported ADB Commands](supported_adb_commands.md) - List of all supported commands
+- [PROJECT.md](PROJECT.md) - Detailed project documentation
