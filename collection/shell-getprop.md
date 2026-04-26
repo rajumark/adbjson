@@ -53,3 +53,8 @@ count: 2
 - Requires a connected device or emulator
 - Lists all system properties
 - Output is limited to first 5 properties in documentation (full list in actual output)
+
+## Related Commands
+- `adbjson shell settings list` - List Android system settings
+- `adbjson shell dumpsys` - Get system service information
+- `adbjson shell getprop <property>` - Get specific property value
