@@ -4,7 +4,7 @@ A cross-platform CLI tool that wraps Android Debug Bridge (ADB) commands and out
 
 ## Quick Start
 
-### Installation
+### Installation 
 
 #### Option 1: Build from Source
 
