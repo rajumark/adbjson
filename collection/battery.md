@@ -1,17 +1,14 @@
-# battery Command
+# shell dumpsys battery
 
-## Description
-Get detailed battery information from the device.
+Get battery information from the device.
 
 ## Command
 ```bash
-adbjson battery
+adbjson shell dumpsys battery
 ```
 
-## Equivalent ADB Command
-```bash
-adb shell dumpsys battery
-```
+## Description
+Executes `adb shell dumpsys battery` and outputs the result as structured JSON.
 
 ## Sample Output
 ```json
