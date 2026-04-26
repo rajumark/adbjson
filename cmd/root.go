@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"adbjson/internal/logger"
+	"adbjson/internal/version"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -12,7 +13,6 @@ var (
 	compactOutput  bool
 	debugMode      bool
 	outputFormat   string
-	version        = "1.0.0"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -21,7 +21,7 @@ var rootCmd = &cobra.Command{
 	Short: "A CLI tool that wraps ADB commands and outputs structured JSON",
 	Long: `adbjson is a cross-platform CLI tool that wraps Android Debug Bridge (ADB) commands
 and outputs structured JSON for easy parsing and integration with other tools.`,
-	Version: version,
+	Version: version.GetVersion(),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		if debugMode {
 			logger.Get().SetLevel(logger.DEBUG)
