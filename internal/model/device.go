@@ -460,6 +460,16 @@ type ScreencapResponse struct {
 	Filename string `json:"filename,omitempty"`
 }
 
+// InputTapResponse wraps the input tap operation response
+type InputTapResponse struct {
+	X         string `json:"x"`
+	Y         string `json:"y"`
+	Source    string `json:"source"`
+	DisplayID int    `json:"display_id"`
+	Success   bool   `json:"success"`
+	Message   string `json:"message"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`

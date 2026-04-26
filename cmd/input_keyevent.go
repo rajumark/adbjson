@@ -21,13 +21,6 @@ var inputKeyeventCmd = &cobra.Command{
 }
 
 func init() {
-	// Create a parent input command
-	inputCmd := &cobra.Command{
-		Use:   "input",
-		Short: "Input commands",
-		Long:  `Input related commands.`,
-	}
-	shellCmd.AddCommand(inputCmd)
 	inputCmd.AddCommand(inputKeyeventCmd)
 }
 
