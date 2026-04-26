@@ -80,7 +80,13 @@ jobs:
       run: go mod verify
     
     - name: Build
-      run: go build -v -o adbjson${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+      run: |
+        if [ "$RUNNER_OS" == "macOS" ]; then
+          GOARCH=amd64 go build -v -o adbjson
+        else
+          go build -v -o adbjson${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+        fi
+      shell: bash
     
     - name: Test (if Go is available)
       run: go test -v ./... || echo "No tests yet"
