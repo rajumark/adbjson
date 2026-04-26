@@ -21,3 +21,14 @@ type SELinuxStatus struct {
 type SELinuxStatusResponse struct {
 	SELinuxStatus SELinuxStatus `json:"selinux_status"`
 }
+
+// UserInfo represents user information
+type UserInfo struct {
+	UserID  string `json:"user_id"`
+	GroupID string `json:"group_id"`
+}
+
+// UserInfoResponse represents the response for id command
+type UserInfoResponse struct {
+	UserInfo UserInfo `json:"user_info"`
+}
