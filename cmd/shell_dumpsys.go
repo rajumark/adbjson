@@ -75,6 +75,15 @@ func init() {
 		RunE:  runDumpsysTelephonyRegistry,
 	}
 	dumpsysCmd.AddCommand(telephonyRegistryCmd)
+	
+	// Add window command as subcommand of dumpsys
+	windowCmd := &cobra.Command{
+		Use:   "window",
+		Short: "Show window manager dump in JSON format",
+		Long:  `Executes "adb shell dumpsys window" and outputs the result as structured JSON.`,
+		RunE:  runDumpsysWindow,
+	}
+	dumpsysCmd.AddCommand(windowCmd)
 }
 
 func runDumpsysBattery(cmd *cobra.Command, args []string) error {
@@ -315,6 +324,52 @@ func runDumpsysTelephonyRegistry(cmd *cobra.Command, cmdArgs []string) error {
 	// Print to stdout
 	fmt.Println(formattedOutput)
 	log.Info("Shell dumpsys telephony.registry command completed successfully", nil)
+	
+	return nil
+}
+
+func runDumpsysWindow(cmd *cobra.Command, cmdArgs []string) error {
+	log := logger.Get()
+	log.Info("Starting shell dumpsys window command", nil)
+
+	// Create executor
+	executor := adb.NewExecutor()
+	log.Debug("Created ADB executor", nil)
+	
+	// Run adb shell dumpsys window
+	output, err := executor.Execute("shell", "dumpsys", "window")
+	if err != nil {
+		log.Error("Failed to execute adb shell dumpsys window", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewADBExecutionError("shell dumpsys window", err)
+	}
+	log.Debug("ADB shell dumpsys window command executed successfully", map[string]interface{}{"output_length": len(output)})
+	
+	// Parse output
+	dumpsysWindowParser := parser.NewDumpsysWindowParser()
+	response, err := dumpsysWindowParser.Parse(output)
+	if err != nil {
+		log.Error("Failed to parse dumpsys window output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewParseError("dumpsys window", err)
+	}
+	log.Info("Parsed dumpsys window output", map[string]interface{}{"section_count": len(response.Sections)})
+	
+	// Validate result
+	if err := dumpsysWindowParser.Validate(response); err != nil {
+		log.Error("Failed to validate dumpsys window output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewValidationError("dumpsys window", err.Error())
+	}
+	
+	// Format output
+	format := formatter.ParseFormat(outputFormat)
+	formattedOutput, err := formatter.FormatOutputString(response, format, compactOutput)
+	if err != nil {
+		log.Error("Failed to format output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewMarshalError(err)
+	}
+	
+	// Print to stdout
+	fmt.Println(formattedOutput)
+	log.Info("Shell dumpsys window command completed successfully", nil)
 	
 	return nil
 }
