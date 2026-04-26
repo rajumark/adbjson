@@ -37,3 +37,6 @@ build/
 # Temporary files
 tmp/
 temp/
+
+# Platform-tools (downloaded by CI/CD)
+platform-tools/
