@@ -5,7 +5,12 @@ Get the serial number of the connected device.
 
 ## Command
 ```bash
-./adbjson get-serialno
+adbjson get-serialno
+```
+
+## Equivalent ADB Command
+```bash
+adb get-serialno
 ```
 
 ## Sample Output

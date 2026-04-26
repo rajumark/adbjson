@@ -5,7 +5,12 @@ Kill the ADB server.
 
 ## Command
 ```bash
-./adbjson kill-server
+adbjson kill-server
+```
+
+## Equivalent ADB Command
+```bash
+adb kill-server
 ```
 
 ## Sample Output

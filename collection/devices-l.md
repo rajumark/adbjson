@@ -5,7 +5,12 @@ List connected devices with detailed information.
 
 ## Command
 ```bash
-./adbjson devices-l
+adbjson devices-l
+```
+
+## Equivalent ADB Command
+```bash
+adb devices -l
 ```
 
 ## Sample Output

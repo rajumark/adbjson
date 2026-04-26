@@ -5,7 +5,12 @@ Get detailed battery information from the device.
 
 ## Command
 ```bash
-./adbjson battery
+adbjson battery
+```
+
+## Equivalent ADB Command
+```bash
+adb shell dumpsys battery
 ```
 
 ## Sample Output

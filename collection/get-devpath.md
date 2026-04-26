@@ -5,7 +5,12 @@ Get the device path of the connected device.
 
 ## Command
 ```bash
-./adbjson get-devpath
+adbjson get-devpath
+```
+
+## Equivalent ADB Command
+```bash
+adb get-devpath
 ```
 
 ## Sample Output

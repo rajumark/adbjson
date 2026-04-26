@@ -5,7 +5,12 @@ Start the ADB server.
 
 ## Command
 ```bash
-./adbjson start-server
+adbjson start-server
+```
+
+## Equivalent ADB Command
+```bash
+adb start-server
 ```
 
 ## Sample Output

@@ -5,7 +5,12 @@ Get the screen density of the device.
 
 ## Command
 ```bash
-./adbjson wm-density
+adbjson wm-density
+```
+
+## Equivalent ADB Command
+```bash
+adb shell wm density
 ```
 
 ## Sample Output
