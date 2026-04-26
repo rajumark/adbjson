@@ -7,6 +7,7 @@ import (
 	"adbjson/internal/formatter"
 	"adbjson/internal/logger"
 	"adbjson/internal/parser"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -36,9 +37,17 @@ func init() {
 		Use:   "activity",
 		Short: "Show activity manager dump in JSON format",
 		Long:  `Executes "adb shell dumpsys activity" and outputs the result as structured JSON.`,
-		RunE:  runDumpsysActivity,
 	}
 	dumpsysCmd.AddCommand(activityCmd)
+	
+	// Add activities command as subcommand of activity
+	activitiesCmd := &cobra.Command{
+		Use:   "activities",
+		Short: "Show activity manager activities dump in JSON format",
+		Long:  `Executes "adb shell dumpsys activity activities" and outputs the result as structured JSON.`,
+		RunE:  runDumpsysActivity,
+	}
+	activityCmd.AddCommand(activitiesCmd)
 }
 
 func runDumpsysBattery(cmd *cobra.Command, args []string) error {
@@ -81,21 +90,39 @@ func runDumpsysBattery(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func runDumpsysActivity(cmd *cobra.Command, args []string) error {
+func runDumpsysActivity(cmd *cobra.Command, cmdArgs []string) error {
 	log := logger.Get()
-	log.Info("Starting shell dumpsys activity command", nil)
+	
+	// Determine if this is the activities subcommand
+	commandPath := cmd.CommandPath()
+	var dumpsysCommand string
+	var logMessage string
+	
+	if strings.HasSuffix(commandPath, "dumpsys activity activities") {
+		dumpsysCommand = "dumpsys activity activities"
+		logMessage = "Starting shell dumpsys activity activities command"
+	} else {
+		dumpsysCommand = "dumpsys activity"
+		logMessage = "Starting shell dumpsys activity command"
+	}
+	
+	log.Info(logMessage, nil)
 
 	// Create executor
 	executor := adb.NewExecutor()
 	log.Debug("Created ADB executor", nil)
 	
-	// Run adb shell dumpsys activity
-	output, err := executor.Execute("shell", "dumpsys", "activity")
+	// Run adb shell dumpsys command
+	parts := strings.Split(dumpsysCommand, " ")
+	var args []string
+	args = append(args, "shell")
+	args = append(args, parts...)
+	output, err := executor.Execute(args...)
 	if err != nil {
-		log.Error("Failed to execute adb shell dumpsys activity", map[string]interface{}{"error": err.Error()})
-		return apperrors.NewADBExecutionError("shell dumpsys activity", err)
+		log.Error("Failed to execute adb shell "+dumpsysCommand, map[string]interface{}{"error": err.Error()})
+		return apperrors.NewADBExecutionError("shell "+dumpsysCommand, err)
 	}
-	log.Debug("ADB shell dumpsys activity command executed successfully", map[string]interface{}{"output_length": len(output)})
+	log.Debug("ADB shell "+dumpsysCommand+" command executed successfully", map[string]interface{}{"output_length": len(output)})
 	
 	// Parse output
 	dumpsysActivityParser := parser.NewDumpsysActivityParser()
@@ -122,7 +149,7 @@ func runDumpsysActivity(cmd *cobra.Command, args []string) error {
 	
 	// Print to stdout
 	fmt.Println(formattedOutput)
-	log.Info("Shell dumpsys activity command completed successfully", nil)
+	log.Info("Shell "+dumpsysCommand+" command completed successfully", nil)
 	
 	return nil
 }
