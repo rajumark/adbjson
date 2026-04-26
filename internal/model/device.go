@@ -428,6 +428,18 @@ type DumpsysMeminfoSection struct {
 	Content string `json:"content"`
 }
 
+// DumpsysCpuinfoResponse wraps the dumpsys cpuinfo operation response
+type DumpsysCpuinfoResponse struct {
+	Sections []DumpsysCpuinfoSection `json:"sections"`
+	Count    int                  `json:"count"`
+}
+
+// DumpsysCpuinfoSection represents a section in dumpsys cpuinfo output
+type DumpsysCpuinfoSection struct {
+	Name    string `json:"name"`
+	Content string `json:"content"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`

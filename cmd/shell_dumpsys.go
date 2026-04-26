@@ -120,6 +120,15 @@ func init() {
 		RunE:  runDumpsysMeminfo,
 	}
 	dumpsysCmd.AddCommand(meminfoCmd)
+	
+	// Add cpuinfo command as subcommand of dumpsys
+	cpuinfoCmd := &cobra.Command{
+		Use:   "cpuinfo",
+		Short: "Show CPU information dump in JSON format",
+		Long:  `Executes "adb shell dumpsys cpuinfo" and outputs the result as structured JSON.`,
+		RunE:  runDumpsysCpuinfo,
+	}
+	dumpsysCmd.AddCommand(cpuinfoCmd)
 }
 
 func runDumpsysBattery(cmd *cobra.Command, args []string) error {
@@ -590,6 +599,52 @@ func runDumpsysMeminfo(cmd *cobra.Command, cmdArgs []string) error {
 	// Print to stdout
 	fmt.Println(formattedOutput)
 	log.Info("Shell dumpsys meminfo command completed successfully", nil)
+	
+	return nil
+}
+
+func runDumpsysCpuinfo(cmd *cobra.Command, cmdArgs []string) error {
+	log := logger.Get()
+	log.Info("Starting shell dumpsys cpuinfo command", nil)
+
+	// Create executor
+	executor := adb.NewExecutor()
+	log.Debug("Created ADB executor", nil)
+	
+	// Run adb shell dumpsys cpuinfo
+	output, err := executor.Execute("shell", "dumpsys", "cpuinfo")
+	if err != nil {
+		log.Error("Failed to execute adb shell dumpsys cpuinfo", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewADBExecutionError("shell dumpsys cpuinfo", err)
+	}
+	log.Debug("ADB shell dumpsys cpuinfo command executed successfully", map[string]interface{}{"output_length": len(output)})
+	
+	// Parse output
+	dumpsysCpuinfoParser := parser.NewDumpsysCpuinfoParser()
+	response, err := dumpsysCpuinfoParser.Parse(output)
+	if err != nil {
+		log.Error("Failed to parse dumpsys cpuinfo output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewParseError("dumpsys cpuinfo", err)
+	}
+	log.Info("Parsed dumpsys cpuinfo output", map[string]interface{}{"section_count": len(response.Sections)})
+	
+	// Validate result
+	if err := dumpsysCpuinfoParser.Validate(response); err != nil {
+		log.Error("Failed to validate dumpsys cpuinfo output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewValidationError("dumpsys cpuinfo", err.Error())
+	}
+	
+	// Format output
+	format := formatter.ParseFormat(outputFormat)
+	formattedOutput, err := formatter.FormatOutputString(response, format, compactOutput)
+	if err != nil {
+		log.Error("Failed to format output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewMarshalError(err)
+	}
+	
+	// Print to stdout
+	fmt.Println(formattedOutput)
+	log.Info("Shell dumpsys cpuinfo command completed successfully", nil)
 	
 	return nil
 }
