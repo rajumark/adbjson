@@ -181,7 +181,7 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb shell reboot recovery` - Reboot to recovery
 - [ ] `adb shell reboot bootloader` - Reboot to bootloader
 - [ ] `adb shell shutdown` - Shutdown device
-- [ ] `adb shell getprop` - Get all system properties
+- [x] `adb shell getprop` - Get all system properties
 - [ ] `adb shell getprop ro.build.id` - Get build ID
 - [ ] `adb shell getprop ro.build.display.id` - Get display ID
 - [ ] `adb shell getprop ro.build.version.release` - Get Android version
