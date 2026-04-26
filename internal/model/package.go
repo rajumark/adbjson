@@ -87,3 +87,14 @@ type UninstallResult struct {
 type UninstallResponse struct {
 	UninstallResult UninstallResult `json:"uninstall_result"`
 }
+
+// ClearResult represents clear data result
+type ClearResult struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+// ClearResponse represents the response for pm clear command
+type ClearResponse struct {
+	ClearResult ClearResult `json:"clear_result"`
+}
