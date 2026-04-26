@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"adbjson/internal/adb"
+	apperrors "adbjson/internal/errors"
 	"adbjson/internal/logger"
 	"adbjson/internal/parser"
 
@@ -34,18 +35,24 @@ func runDevices(cmd *cobra.Command, args []string) error {
 	output, err := executor.Execute("devices")
 	if err != nil {
 		log.Error("Failed to execute adb devices", map[string]interface{}{"error": err.Error()})
-		return fmt.Errorf("failed to execute adb devices: %w", err)
+		return apperrors.NewADBExecutionError("devices", err)
 	}
 	log.Debug("ADB devices command executed successfully", map[string]interface{}{"output_length": len(output)})
 	
 	// Parse output
-	parser := parser.NewDevicesParser()
-	response, err := parser.Parse(output)
+	devicesParser := parser.NewDevicesParser()
+	response, err := devicesParser.Parse(output)
 	if err != nil {
 		log.Error("Failed to parse devices output", map[string]interface{}{"error": err.Error()})
-		return fmt.Errorf("failed to parse devices output: %w", err)
+		return apperrors.NewParseError(devicesParser.Name(), err)
 	}
 	log.Info("Parsed devices output", map[string]interface{}{"device_count": len(response.Devices)})
+	
+	// Validate result
+	if err := devicesParser.Validate(response); err != nil {
+		log.Error("Failed to validate devices output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewValidationError("devices", err.Error())
+	}
 	
 	// Determine output format
 	var jsonBytes []byte
@@ -57,7 +64,7 @@ func runDevices(cmd *cobra.Command, args []string) error {
 	
 	if err != nil {
 		log.Error("Failed to marshal JSON", map[string]interface{}{"error": err.Error()})
-		return fmt.Errorf("failed to marshal JSON: %w", err)
+		return apperrors.NewMarshalError(err)
 	}
 	
 	// Print to stdout
