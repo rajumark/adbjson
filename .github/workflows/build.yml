@@ -3,10 +3,7 @@ name: Build and Release
 on:
   push:
     branches: [ main1, develop ]
-  pull_request:
-    branches: [ main1 ]
-  release:
-    types: [ created ]
+  
 
 permissions:
   contents: write
