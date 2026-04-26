@@ -128,4 +128,4 @@ jobs:
           artifacts/*.zip
           artifacts/*.tar.gz
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_GO }}
+        GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT_GO }}
