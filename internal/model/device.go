@@ -303,6 +303,11 @@ type VmstatCPU struct {
 	Wait   string `json:"wait"`
 }
 
+// DateResponse wraps the date operation response
+type DateResponse struct {
+	DateTime string `json:"datetime"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
