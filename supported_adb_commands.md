@@ -4,7 +4,7 @@ This document lists all ADB commands currently supported by adbjson.
 
 ## Available Commands
 
-### devices
+### devices ✅
 List all connected ADB devices.
 
 **Usage:**
@@ -30,7 +30,7 @@ List all connected ADB devices.
 
 ---
 
-### adb-version
+### adb-version ✅
 Get ADB version information.
 
 **Usage:**
