@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"adbjson/internal/adb"
 	apperrors "adbjson/internal/errors"
+	"adbjson/internal/formatter"
 	"adbjson/internal/logger"
 	"adbjson/internal/parser"
 
@@ -54,21 +54,16 @@ func runDevices(cmd *cobra.Command, args []string) error {
 		return apperrors.NewValidationError("devices", err.Error())
 	}
 	
-	// Determine output format
-	var jsonBytes []byte
-	if compactOutput {
-		jsonBytes, err = json.Marshal(response)
-	} else {
-		jsonBytes, err = json.MarshalIndent(response, "", "  ")
-	}
-	
+	// Format output
+	format := formatter.ParseFormat(outputFormat)
+	formattedOutput, err := formatter.FormatOutputString(response, format, compactOutput)
 	if err != nil {
-		log.Error("Failed to marshal JSON", map[string]interface{}{"error": err.Error()})
+		log.Error("Failed to format output", map[string]interface{}{"error": err.Error()})
 		return apperrors.NewMarshalError(err)
 	}
 	
 	// Print to stdout
-	fmt.Println(string(jsonBytes))
+	fmt.Println(formattedOutput)
 	log.Info("Devices command completed successfully", nil)
 	
 	return nil

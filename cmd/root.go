@@ -11,6 +11,7 @@ var (
 	prettyOutput   bool
 	compactOutput  bool
 	debugMode      bool
+	outputFormat   string
 	version        = "1.0.0"
 )
 
@@ -40,4 +41,5 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&prettyOutput, "pretty", true, "Pretty print JSON output (default: true)")
 	rootCmd.PersistentFlags().BoolVar(&compactOutput, "compact", false, "Compact JSON output (overrides --pretty)")
 	rootCmd.PersistentFlags().BoolVar(&debugMode, "debug", false, "Enable debug logging")
+	rootCmd.PersistentFlags().StringVar(&outputFormat, "format", "json", "Output format: json, yaml (default: json)")
 }
