@@ -11,6 +11,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var showAPKPath bool
+var thirdPartyOnly bool
+var systemOnly bool
+var disabledOnly bool
+var enabledOnly bool
+var showInstaller bool
+var includeUninstalled bool
+var filter string
+
 // packagesCmd represents the packages command
 var packagesCmd = &cobra.Command{
 	Use:   "packages",
@@ -21,6 +30,15 @@ var packagesCmd = &cobra.Command{
 
 func init() {
 	listCmd.AddCommand(packagesCmd)
+	
+	packagesCmd.Flags().BoolVarP(&showAPKPath, "show-apk-path", "f", false, "Show APK path")
+	packagesCmd.Flags().BoolVarP(&thirdPartyOnly, "third-party", "3", false, "List third-party packages only")
+	packagesCmd.Flags().BoolVarP(&systemOnly, "system", "s", false, "List system packages only")
+	packagesCmd.Flags().BoolVarP(&disabledOnly, "disabled", "d", false, "List disabled packages only")
+	packagesCmd.Flags().BoolVarP(&enabledOnly, "enabled", "e", false, "List enabled packages only")
+	packagesCmd.Flags().BoolVarP(&showInstaller, "installer", "i", false, "Show package installer")
+	packagesCmd.Flags().BoolVarP(&includeUninstalled, "uninstalled", "u", false, "Include uninstalled packages")
+	packagesCmd.Flags().StringVarP(&filter, "filter", "", "", "Filter by package name")
 }
 
 func runPackages(cmd *cobra.Command, args []string) error {
@@ -31,11 +49,38 @@ func runPackages(cmd *cobra.Command, args []string) error {
 	executor := adb.NewExecutor()
 	log.Debug("Created ADB executor", nil)
 	
-	// Run adb shell pm list packages
-	output, err := executor.Execute("shell pm list packages")
+	// Build command with flags
+	cmdStr := "shell pm list packages"
+	if showAPKPath {
+		cmdStr += " -f"
+	}
+	if thirdPartyOnly {
+		cmdStr += " -3"
+	}
+	if systemOnly {
+		cmdStr += " -s"
+	}
+	if disabledOnly {
+		cmdStr += " -d"
+	}
+	if enabledOnly {
+		cmdStr += " -e"
+	}
+	if showInstaller {
+		cmdStr += " -i"
+	}
+	if includeUninstalled {
+		cmdStr += " -u"
+	}
+	if filter != "" {
+		cmdStr += " " + filter
+	}
+	
+	// Run adb shell pm list packages with flags
+	output, err := executor.Execute(cmdStr)
 	if err != nil {
 		log.Error("Failed to execute adb shell pm list packages", map[string]interface{}{"error": err.Error()})
-		return apperrors.NewADBExecutionError("shell pm list packages", err)
+		return apperrors.NewADBExecutionError(cmdStr, err)
 	}
 	log.Debug("ADB shell pm list packages command executed successfully", map[string]interface{}{"output_length": len(output)})
 	

@@ -42,14 +42,14 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 ## Package Management
 
 - [x] `adb shell pm list packages` - List all packages
-- [ ] `adb shell pm list packages -f` - List packages with APK path
-- [ ] `adb shell pm list packages -3` - List third-party packages
-- [ ] `adb shell pm list packages -s` - List system packages
-- [ ] `adb shell pm list packages -d` - List disabled packages
-- [ ] `adb shell pm list packages -e` - List enabled packages
-- [ ] `adb shell pm list packages -i` - Show package installer
-- [ ] `adb shell pm list packages -u` - Include uninstalled packages
-- [ ] `adb shell pm list packages <FILTER>` - Filter by package name
+- [x] `adb shell pm list packages -f` - List packages with APK path
+- [x] `adb shell pm list packages -3` - List third-party packages
+- [x] `adb shell pm list packages -s` - List system packages
+- [x] `adb shell pm list packages -d` - List disabled packages
+- [x] `adb shell pm list packages -e` - List enabled packages
+- [x] `adb shell pm list packages -i` - Show package installer
+- [x] `adb shell pm list packages -u` - Include uninstalled packages
+- [x] `adb shell pm list packages <FILTER>` - Filter by package name
 - [x] `adb shell pm list features` - List features
 - [ ] `adb shell pm list libraries` - List libraries
 - [ ] `adb shell pm path <package>` - Get package path
