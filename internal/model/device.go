@@ -2,8 +2,13 @@ package model
 
 // Device represents an ADB device
 type Device struct {
-	ID     string `json:"id"`
-	Status string `json:"status"`
+	ID           string `json:"id"`
+	Status       string `json:"status"`
+	USB          string `json:"usb,omitempty"`
+	Product      string `json:"product,omitempty"`
+	Model        string `json:"model,omitempty"`
+	Device       string `json:"device,omitempty"`
+	TransportID  string `json:"transport_id,omitempty"`
 }
 
 // DevicesResponse wraps the list of devices

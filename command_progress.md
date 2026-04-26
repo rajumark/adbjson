@@ -5,7 +5,7 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 ## Device Management
 
 - [x] `adb devices` - List connected devices ✅
-- [ ] `adb devices -l` - List devices with detailed info
+- [x] `adb devices -l` - List devices with detailed info
 - [ ] `adb connect <host:port>` - Connect to device via TCP/IP
 - [ ] `adb disconnect <host:port>` - Disconnect from device
 - [ ] `adb kill-server` - Kill ADB server
