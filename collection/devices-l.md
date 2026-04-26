@@ -1,17 +1,14 @@
-# devices-l Command
+# devices -l
 
-## Description
 List connected devices with detailed information.
 
 ## Command
 ```bash
-adbjson devices-l
+adbjson devices -l
 ```
 
-## Equivalent ADB Command
-```bash
-adb devices -l
-```
+## Description
+Executes `adb devices -l` and outputs the result as structured JSON.
 
 ## Sample Output
 ```json
