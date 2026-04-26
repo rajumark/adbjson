@@ -136,6 +136,52 @@ Executes `adb shell content query` and outputs the result as structured JSON. Qu
 }
 ```
 
+### Query global settings
+```bash
+./adbjson shell content query --uri content://settings/global/
+```
+
+**Output:**
+```json
+{
+  "uri": "content://settings/global/",
+  "count": 247,
+  "rows": [
+    {
+      "id": "306",
+      "name": "auto_time",
+      "value": "1",
+      "is_preserved_in_restore": "true"
+    },
+    {
+      "id": "307",
+      "name": "auto_time_zone",
+      "value": "1",
+      "is_preserved_in_restore": "true"
+    },
+    {
+      "id": "75",
+      "name": "auto_wifi",
+      "value": "1",
+      "is_preserved_in_restore": "false"
+    },
+    {
+      "id": "295",
+      "name": "quick_start_source_manufacturer",
+      "value": "Samsung",
+      "is_preserved_in_restore": "false"
+    },
+    {
+      "id": "2641",
+      "name": "boot_count",
+      "value": "5",
+      "is_preserved_in_restore": "true"
+    }
+  ],
+  "fields": ["_id", "name", "value", "is_preserved_in_restore"]
+}
+```
+
 ## Response Fields
 
 - **uri** (string): The content provider URI that was queried
