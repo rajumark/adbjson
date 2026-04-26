@@ -392,6 +392,18 @@ type DumpsysInputSection struct {
 	Content string `json:"content"`
 }
 
+// DumpsysPowerResponse wraps the dumpsys power operation response
+type DumpsysPowerResponse struct {
+	Sections []DumpsysPowerSection `json:"sections"`
+	Count    int                  `json:"count"`
+}
+
+// DumpsysPowerSection represents a section in dumpsys power output
+type DumpsysPowerSection struct {
+	Name    string `json:"name"`
+	Content string `json:"content"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`

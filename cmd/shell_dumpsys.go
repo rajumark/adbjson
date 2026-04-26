@@ -93,6 +93,15 @@ func init() {
 		RunE:  runDumpsysInput,
 	}
 	dumpsysCmd.AddCommand(inputCmd)
+	
+	// Add power command as subcommand of dumpsys
+	powerCmd := &cobra.Command{
+		Use:   "power",
+		Short: "Show power manager dump in JSON format",
+		Long:  `Executes "adb shell dumpsys power" and outputs the result as structured JSON.`,
+		RunE:  runDumpsysPower,
+	}
+	dumpsysCmd.AddCommand(powerCmd)
 }
 
 func runDumpsysBattery(cmd *cobra.Command, args []string) error {
@@ -425,6 +434,52 @@ func runDumpsysInput(cmd *cobra.Command, cmdArgs []string) error {
 	// Print to stdout
 	fmt.Println(formattedOutput)
 	log.Info("Shell dumpsys input command completed successfully", nil)
+	
+	return nil
+}
+
+func runDumpsysPower(cmd *cobra.Command, cmdArgs []string) error {
+	log := logger.Get()
+	log.Info("Starting shell dumpsys power command", nil)
+
+	// Create executor
+	executor := adb.NewExecutor()
+	log.Debug("Created ADB executor", nil)
+	
+	// Run adb shell dumpsys power
+	output, err := executor.Execute("shell", "dumpsys", "power")
+	if err != nil {
+		log.Error("Failed to execute adb shell dumpsys power", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewADBExecutionError("shell dumpsys power", err)
+	}
+	log.Debug("ADB shell dumpsys power command executed successfully", map[string]interface{}{"output_length": len(output)})
+	
+	// Parse output
+	dumpsysPowerParser := parser.NewDumpsysPowerParser()
+	response, err := dumpsysPowerParser.Parse(output)
+	if err != nil {
+		log.Error("Failed to parse dumpsys power output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewParseError("dumpsys power", err)
+	}
+	log.Info("Parsed dumpsys power output", map[string]interface{}{"section_count": len(response.Sections)})
+	
+	// Validate result
+	if err := dumpsysPowerParser.Validate(response); err != nil {
+		log.Error("Failed to validate dumpsys power output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewValidationError("dumpsys power", err.Error())
+	}
+	
+	// Format output
+	format := formatter.ParseFormat(outputFormat)
+	formattedOutput, err := formatter.FormatOutputString(response, format, compactOutput)
+	if err != nil {
+		log.Error("Failed to format output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewMarshalError(err)
+	}
+	
+	// Print to stdout
+	fmt.Println(formattedOutput)
+	log.Info("Shell dumpsys power command completed successfully", nil)
 	
 	return nil
 }
