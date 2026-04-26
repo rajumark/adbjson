@@ -40,7 +40,7 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb shell pm list packages -f` - List packages with APK path
 - [ ] `adb shell pm list packages -3` - List third-party packages
 - [ ] `adb shell pm list packages -s` - List system packages
-- [ ] `adb shell pm list features` - List features
+- [x] `adb shell pm list features` - List features
 - [ ] `adb shell pm list libraries` - List libraries
 - [ ] `adb shell pm path <package>` - Get package path
 - [ ] `adb shell pm path android` - Get android package path
