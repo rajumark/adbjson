@@ -41,3 +41,31 @@ type ScreenSizeResponse struct {
 type ScreenDensityResponse struct {
 	PhysicalDensity string `json:"physical_density"`
 }
+
+// BatteryInfoResponse wraps battery information
+type BatteryInfoResponse struct {
+	ACPowered        bool    `json:"ac_powered"`
+	USBPowered       bool    `json:"usb_powered"`
+	WirelessPowered  bool    `json:"wireless_powered"`
+	DockPowered      bool    `json:"dock_powered"`
+	MaxChargingCurrent int   `json:"max_charging_current"`
+	ChargeCounter    int     `json:"charge_counter"`
+	Status           int     `json:"status"`
+	Health           int     `json:"health"`
+	Present          bool    `json:"present"`
+	Level            int     `json:"level"`
+	Scale            int     `json:"scale"`
+	Voltage          int     `json:"voltage"`
+	Temperature      int     `json:"temperature"`
+	Technology       string  `json:"technology"`
+	ChargingState    int     `json:"charging_state"`
+	ChargingPolicy   int     `json:"charging_policy"`
+	CapacityLevel    int     `json:"capacity_level"`
+	VBusState        bool    `json:"vbus_state"`
+	ChargeWatt       int     `json:"charge_watt"`
+	ChargeWattDesign int     `json:"charge_watt_design"`
+	ChargeType       int     `json:"charge_type"`
+	CycleCount       int     `json:"cycle_count"`
+	FullCapacity     int     `json:"full_capacity"`
+	FullDesignCapacity int `json:"full_design_capacity"`
+}

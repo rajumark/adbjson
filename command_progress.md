@@ -125,6 +125,6 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 
 ## Battery & Power
 
-- [ ] `adb shell dumpsys battery` - Battery info
+- [x] `adb shell dumpsys battery` - Battery info
 - [ ] `adb shell dumpsys batterystats` - Battery statistics
 - [ ] `adb shell settings put global airplane_mode_on 1` - Enable airplane mode
