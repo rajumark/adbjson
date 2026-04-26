@@ -440,6 +440,18 @@ type DumpsysCpuinfoSection struct {
 	Content string `json:"content"`
 }
 
+// AcpiResponse wraps the acpi operation response
+type AcpiResponse struct {
+	Sections []AcpiSection `json:"sections"`
+	Count    int          `json:"count"`
+}
+
+// AcpiSection represents a section in acpi output
+type AcpiSection struct {
+	Name    string `json:"name"`
+	Content string `json:"content"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
