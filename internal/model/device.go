@@ -470,6 +470,15 @@ type InputTapResponse struct {
 	Message   string `json:"message"`
 }
 
+// InputTextResponse wraps the input text operation response
+type InputTextResponse struct {
+	Text      string `json:"text"`
+	Source    string `json:"source"`
+	DisplayID int    `json:"display_id"`
+	Success   bool   `json:"success"`
+	Message   string `json:"message"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
