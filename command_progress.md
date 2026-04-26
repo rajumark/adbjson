@@ -20,7 +20,7 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [x] `adb root` - Run adbd as root ✅
 - [x] `adb unroot` - Restore adbd non-root privileges ✅
 - [ ] `adb -P <port> start-server` - Designated adb server network port
-- [ ] `adb tcpip 5555` - Allow device to listen on TCP/IP port
+- [x] `adb tcpip 5555` - Allow device to listen on TCP/IP port ✅
 - [ ] `adb pair ipaddr:port` - Pair device with pairing code (Android 11+)
 
 ## File Management
@@ -107,23 +107,23 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb shell input swipe <x1> <y1> <x2> <y2>` - Swipe screen
 - [ ] `adb shell input swipe <x1> <y1> <x2> <y2> [duration]` - Swipe with duration
 - [ ] `adb shell input text <text>` - Type text
-- [ ] `adb shell input keyevent <code>` - Send key event
-- [ ] `adb shell input keyevent 3` - HOME button
-- [ ] `adb shell input keyevent 4` - Return key
-- [ ] `adb shell input keyevent 26` - Power button
-- [ ] `adb shell input keyevent 82` - Menu button
-- [ ] `adb shell input keyevent 24` - Volume up
-- [ ] `adb shell input keyevent 25` - Volume down
-- [ ] `adb shell input keyevent 164` - Mute
-- [ ] `adb shell input keyevent 85` - Play/Pause
-- [ ] `adb shell input keyevent 224` - Light up screen
-- [ ] `adb shell input keyevent 223` - Turn off screen
+- [x] `adb shell input keyevent <code>` - Send key event ✅
+- [x] `adb shell input keyevent 3` - HOME button ✅
+- [x] `adb shell input keyevent 4` - Return key ✅
+- [x] `adb shell input keyevent 26` - Power button ✅
+- [x] `adb shell input keyevent 82` - Menu button ✅
+- [x] `adb shell input keyevent 24` - Volume up ✅
+- [x] `adb shell input keyevent 25` - Volume down ✅
+- [x] `adb shell input keyevent 164` - Mute ✅
+- [x] `adb shell input keyevent 85` - Play/Pause ✅
+- [x] `adb shell input keyevent 224` - Light up screen ✅
+- [x] `adb shell input keyevent 223` - Turn off screen ✅
 - [x] `adb shell wm size` - Get screen size
 - [ ] `adb shell wm size <WxH>` - Set screen resolution
-- [ ] `adb shell wm size reset` - Reset screen resolution
+- [x] `adb shell wm size reset` - Reset screen resolution ✅
 - [x] `adb shell wm density` - Get screen density
 - [ ] `adb shell wm density <dpi>` - Set screen density
-- [ ] `adb shell wm density reset` - Reset screen density
+- [x] `adb shell wm density reset` - Reset screen density ✅
 - [ ] `adb shell wm overscan <left,top,right,bottom>` - Set overscan
 - [ ] `adb shell wm overscan reset` - Reset overscan
 
@@ -223,9 +223,9 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb shell mount -o remount,rw` - Remount as writable (requires root)
 - [ ] `adb shell service list` - List services
 - [ ] `adb shell grep` - Filter output
-- [ ] `adb shell settings list system` - List system settings
-- [ ] `adb shell settings list secure` - List secure settings
-- [ ] `adb shell settings list global` - List global settings
+- [x] `adb shell settings list system` - List system settings ✅
+- [x] `adb shell settings list secure` - List secure settings ✅
+- [x] `adb shell settings list global` - List global settings ✅
 - [ ] `adb shell settings get secure android_id` - Get android_id
 - [ ] `adb shell settings put global adb_enabled 0` - Turn off Android Debug
 - [ ] `adb shell settings put global hidden_api_policy_pre_p_apps 1` - Allow non SDK API

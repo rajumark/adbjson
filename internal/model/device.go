@@ -114,6 +114,45 @@ type SetenforceResponse struct {
 	Message string `json:"message"`
 }
 
+// TcpipResponse wraps the tcpip operation response
+type TcpipResponse struct {
+	Success bool   `json:"success"`
+	Port    string `json:"port"`
+	Message string `json:"message"`
+}
+
+// KeyeventResponse wraps the keyevent operation response
+type KeyeventResponse struct {
+	Success  bool   `json:"success"`
+	Keycode  string `json:"keycode"`
+	Message  string `json:"message"`
+}
+
+// WmSizeResetResponse wraps the wm size reset operation response
+type WmSizeResetResponse struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+// WmDensityResetResponse wraps the wm density reset operation response
+type WmDensityResetResponse struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+// Setting represents a key-value setting pair
+type Setting struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
+// SettingsListResponse wraps the settings list operation response
+type SettingsListResponse struct {
+	Namespace string    `json:"namespace"`
+	Settings  []Setting `json:"settings"`
+	Count     int       `json:"count"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
