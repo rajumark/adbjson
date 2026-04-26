@@ -8,7 +8,7 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [x] `adb devices -l` - List devices with detailed info
 - [ ] `adb connect <host:port>` - Connect to device via TCP/IP
 - [ ] `adb disconnect <host:port>` - Disconnect from device
-- [ ] `adb kill-server` - Kill ADB server
+- [x] `adb kill-server` - Kill ADB server
 - [ ] `adb start-server` - Start ADB server
 - [x] `adb version` - Show ADB version ✅
 - [x] `adb get-state` - Get device state

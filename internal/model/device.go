@@ -74,3 +74,9 @@ type BatteryInfoResponse struct {
 	FullCapacity     int     `json:"full_capacity"`
 	FullDesignCapacity int `json:"full_design_capacity"`
 }
+
+// ServerResponse wraps server operation response
+type ServerResponse struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
