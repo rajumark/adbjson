@@ -48,6 +48,15 @@ func init() {
 		RunE:  runDumpsysActivity,
 	}
 	activityCmd.AddCommand(activitiesCmd)
+	
+	// Add wifi command as subcommand of dumpsys
+	wifiCmd := &cobra.Command{
+		Use:   "wifi",
+		Short: "Show WiFi service dump in JSON format",
+		Long:  `Executes "adb shell dumpsys wifi" and outputs the result as structured JSON.`,
+		RunE:  runDumpsysWifi,
+	}
+	dumpsysCmd.AddCommand(wifiCmd)
 }
 
 func runDumpsysBattery(cmd *cobra.Command, args []string) error {
@@ -150,6 +159,52 @@ func runDumpsysActivity(cmd *cobra.Command, cmdArgs []string) error {
 	// Print to stdout
 	fmt.Println(formattedOutput)
 	log.Info("Shell "+dumpsysCommand+" command completed successfully", nil)
+	
+	return nil
+}
+
+func runDumpsysWifi(cmd *cobra.Command, cmdArgs []string) error {
+	log := logger.Get()
+	log.Info("Starting shell dumpsys wifi command", nil)
+
+	// Create executor
+	executor := adb.NewExecutor()
+	log.Debug("Created ADB executor", nil)
+	
+	// Run adb shell dumpsys wifi
+	output, err := executor.Execute("shell", "dumpsys", "wifi")
+	if err != nil {
+		log.Error("Failed to execute adb shell dumpsys wifi", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewADBExecutionError("shell dumpsys wifi", err)
+	}
+	log.Debug("ADB shell dumpsys wifi command executed successfully", map[string]interface{}{"output_length": len(output)})
+	
+	// Parse output
+	dumpsysWifiParser := parser.NewDumpsysWifiParser()
+	response, err := dumpsysWifiParser.Parse(output)
+	if err != nil {
+		log.Error("Failed to parse dumpsys wifi output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewParseError("dumpsys wifi", err)
+	}
+	log.Info("Parsed dumpsys wifi output", map[string]interface{}{"section_count": len(response.Sections)})
+	
+	// Validate result
+	if err := dumpsysWifiParser.Validate(response); err != nil {
+		log.Error("Failed to validate dumpsys wifi output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewValidationError("dumpsys wifi", err.Error())
+	}
+	
+	// Format output
+	format := formatter.ParseFormat(outputFormat)
+	formattedOutput, err := formatter.FormatOutputString(response, format, compactOutput)
+	if err != nil {
+		log.Error("Failed to format output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewMarshalError(err)
+	}
+	
+	// Print to stdout
+	fmt.Println(formattedOutput)
+	log.Info("Shell dumpsys wifi command completed successfully", nil)
 	
 	return nil
 }

@@ -332,6 +332,18 @@ type DumpsysActivitySection struct {
 	Content string `json:"content"`
 }
 
+// DumpsysWifiResponse wraps the dumpsys wifi operation response
+type DumpsysWifiResponse struct {
+	Sections []DumpsysWifiSection `json:"sections"`
+	Count    int                  `json:"count"`
+}
+
+// DumpsysWifiSection represents a section in dumpsys wifi output
+type DumpsysWifiSection struct {
+	Name    string `json:"name"`
+	Content string `json:"content"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
