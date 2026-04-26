@@ -84,6 +84,15 @@ func init() {
 		RunE:  runDumpsysWindow,
 	}
 	dumpsysCmd.AddCommand(windowCmd)
+	
+	// Add input command as subcommand of dumpsys
+	inputCmd := &cobra.Command{
+		Use:   "input",
+		Short: "Show input system dump in JSON format",
+		Long:  `Executes "adb shell dumpsys input" and outputs the result as structured JSON.`,
+		RunE:  runDumpsysInput,
+	}
+	dumpsysCmd.AddCommand(inputCmd)
 }
 
 func runDumpsysBattery(cmd *cobra.Command, args []string) error {
@@ -370,6 +379,52 @@ func runDumpsysWindow(cmd *cobra.Command, cmdArgs []string) error {
 	// Print to stdout
 	fmt.Println(formattedOutput)
 	log.Info("Shell dumpsys window command completed successfully", nil)
+	
+	return nil
+}
+
+func runDumpsysInput(cmd *cobra.Command, cmdArgs []string) error {
+	log := logger.Get()
+	log.Info("Starting shell dumpsys input command", nil)
+
+	// Create executor
+	executor := adb.NewExecutor()
+	log.Debug("Created ADB executor", nil)
+	
+	// Run adb shell dumpsys input
+	output, err := executor.Execute("shell", "dumpsys", "input")
+	if err != nil {
+		log.Error("Failed to execute adb shell dumpsys input", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewADBExecutionError("shell dumpsys input", err)
+	}
+	log.Debug("ADB shell dumpsys input command executed successfully", map[string]interface{}{"output_length": len(output)})
+	
+	// Parse output
+	dumpsysInputParser := parser.NewDumpsysInputParser()
+	response, err := dumpsysInputParser.Parse(output)
+	if err != nil {
+		log.Error("Failed to parse dumpsys input output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewParseError("dumpsys input", err)
+	}
+	log.Info("Parsed dumpsys input output", map[string]interface{}{"section_count": len(response.Sections)})
+	
+	// Validate result
+	if err := dumpsysInputParser.Validate(response); err != nil {
+		log.Error("Failed to validate dumpsys input output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewValidationError("dumpsys input", err.Error())
+	}
+	
+	// Format output
+	format := formatter.ParseFormat(outputFormat)
+	formattedOutput, err := formatter.FormatOutputString(response, format, compactOutput)
+	if err != nil {
+		log.Error("Failed to format output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewMarshalError(err)
+	}
+	
+	// Print to stdout
+	fmt.Println(formattedOutput)
+	log.Info("Shell dumpsys input command completed successfully", nil)
 	
 	return nil
 }

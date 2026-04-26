@@ -380,6 +380,18 @@ type DumpsysWindowSection struct {
 	Content string `json:"content"`
 }
 
+// DumpsysInputResponse wraps the dumpsys input operation response
+type DumpsysInputResponse struct {
+	Sections []DumpsysInputSection `json:"sections"`
+	Count    int                  `json:"count"`
+}
+
+// DumpsysInputSection represents a section in dumpsys input output
+type DumpsysInputSection struct {
+	Name    string `json:"name"`
+	Content string `json:"content"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
