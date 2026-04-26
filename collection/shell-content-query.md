@@ -99,12 +99,36 @@ Executes `adb shell content query` and outputs the result as structured JSON. Qu
 ```json
 {
   "uri": "content://settings/secure/",
-  "count": 45,
+  "count": 149,
   "rows": [
     {
       "id": "1",
       "name": "android_id",
       "value": "9774d56d682e549c",
+      "is_preserved_in_restore": "false"
+    },
+    {
+      "id": "43",
+      "name": "skip_gesture",
+      "value": "0",
+      "is_preserved_in_restore": "false"
+    },
+    {
+      "id": "130",
+      "name": "bluetooth_address",
+      "value": "24:D5:3B:CA:92:4B",
+      "is_preserved_in_restore": "false"
+    },
+    {
+      "id": "29",
+      "name": "multi_press_timeout",
+      "value": "300",
+      "is_preserved_in_restore": "false"
+    },
+    {
+      "id": "99",
+      "name": "clock_seconds",
+      "value": "NULL",
       "is_preserved_in_restore": "false"
     }
   ],
