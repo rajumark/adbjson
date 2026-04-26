@@ -416,6 +416,18 @@ type DumpsysLocationSection struct {
 	Content string `json:"content"`
 }
 
+// DumpsysMeminfoResponse wraps the dumpsys meminfo operation response
+type DumpsysMeminfoResponse struct {
+	Sections []DumpsysMeminfoSection `json:"sections"`
+	Count    int                   `json:"count"`
+}
+
+// DumpsysMeminfoSection represents a section in dumpsys meminfo output
+type DumpsysMeminfoSection struct {
+	Name    string `json:"name"`
+	Content string `json:"content"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`

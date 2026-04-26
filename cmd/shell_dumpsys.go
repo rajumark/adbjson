@@ -111,6 +111,15 @@ func init() {
 		RunE:  runDumpsysLocation,
 	}
 	dumpsysCmd.AddCommand(locationCmd)
+	
+	// Add meminfo command as subcommand of dumpsys
+	meminfoCmd := &cobra.Command{
+		Use:   "meminfo",
+		Short: "Show memory information dump in JSON format",
+		Long:  `Executes "adb shell dumpsys meminfo" and outputs the result as structured JSON.`,
+		RunE:  runDumpsysMeminfo,
+	}
+	dumpsysCmd.AddCommand(meminfoCmd)
 }
 
 func runDumpsysBattery(cmd *cobra.Command, args []string) error {
@@ -535,6 +544,52 @@ func runDumpsysLocation(cmd *cobra.Command, cmdArgs []string) error {
 	// Print to stdout
 	fmt.Println(formattedOutput)
 	log.Info("Shell dumpsys location command completed successfully", nil)
+	
+	return nil
+}
+
+func runDumpsysMeminfo(cmd *cobra.Command, cmdArgs []string) error {
+	log := logger.Get()
+	log.Info("Starting shell dumpsys meminfo command", nil)
+
+	// Create executor
+	executor := adb.NewExecutor()
+	log.Debug("Created ADB executor", nil)
+	
+	// Run adb shell dumpsys meminfo
+	output, err := executor.Execute("shell", "dumpsys", "meminfo")
+	if err != nil {
+		log.Error("Failed to execute adb shell dumpsys meminfo", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewADBExecutionError("shell dumpsys meminfo", err)
+	}
+	log.Debug("ADB shell dumpsys meminfo command executed successfully", map[string]interface{}{"output_length": len(output)})
+	
+	// Parse output
+	dumpsysMeminfoParser := parser.NewDumpsysMeminfoParser()
+	response, err := dumpsysMeminfoParser.Parse(output)
+	if err != nil {
+		log.Error("Failed to parse dumpsys meminfo output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewParseError("dumpsys meminfo", err)
+	}
+	log.Info("Parsed dumpsys meminfo output", map[string]interface{}{"section_count": len(response.Sections)})
+	
+	// Validate result
+	if err := dumpsysMeminfoParser.Validate(response); err != nil {
+		log.Error("Failed to validate dumpsys meminfo output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewValidationError("dumpsys meminfo", err.Error())
+	}
+	
+	// Format output
+	format := formatter.ParseFormat(outputFormat)
+	formattedOutput, err := formatter.FormatOutputString(response, format, compactOutput)
+	if err != nil {
+		log.Error("Failed to format output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewMarshalError(err)
+	}
+	
+	// Print to stdout
+	fmt.Println(formattedOutput)
+	log.Info("Shell dumpsys meminfo command completed successfully", nil)
 	
 	return nil
 }
