@@ -17,6 +17,11 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb reconnect` - Reconnect device
 - [ ] `adb reconnect device` - Reconnect device
 - [ ] `adb reconnect offline` - Reconnect offline device
+- [ ] `adb root` - Run adbd as root
+- [ ] `adb unroot` - Restore adbd non-root privileges
+- [ ] `adb -P <port> start-server` - Designated adb server network port
+- [ ] `adb tcpip 5555` - Allow device to listen on TCP/IP port
+- [ ] `adb pair ipaddr:port` - Pair device with pairing code (Android 11+)
 
 ## File Management
 
@@ -40,20 +45,33 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb shell pm list packages -f` - List packages with APK path
 - [ ] `adb shell pm list packages -3` - List third-party packages
 - [ ] `adb shell pm list packages -s` - List system packages
+- [ ] `adb shell pm list packages -d` - List disabled packages
+- [ ] `adb shell pm list packages -e` - List enabled packages
+- [ ] `adb shell pm list packages -i` - Show package installer
+- [ ] `adb shell pm list packages -u` - Include uninstalled packages
+- [ ] `adb shell pm list packages <FILTER>` - Filter by package name
 - [x] `adb shell pm list features` - List features
-- [x] `adb shell pm list libraries` - List libraries
+- [ ] `adb shell pm list libraries` - List libraries
 - [ ] `adb shell pm path <package>` - Get package path
 - [ ] `adb shell pm path android` - Get android package path
-- [ ] `adb shell pm list instrumentation` - List instrumentation
+- [x] `adb shell pm list instrumentation` - List instrumentation
 - [ ] `adb shell pm list permissions` - List permissions
 - [ ] `adb shell pm install <apk>` - Install package
 - [ ] `adb install <apk>` - Install APK
 - [ ] `adb install -r <apk>` - Reinstall package
+- [ ] `adb install -l <apk>` - Protect installation directory
+- [ ] `adb install -t <apk>` - Install test-only apps
+- [ ] `adb install -s <apk>` - Install to sdcard
+- [ ] `adb install -d <apk>` - Allow downgrade
+- [ ] `adb install -g <apk>` - Grant all runtime permissions
+- [ ] `adb install --abi <abi> <apk>` - Force specific ABI
 - [ ] `adb uninstall <package>` - Uninstall package
+- [ ] `adb uninstall -k <package>` - Uninstall but keep data
 - [ ] `adb shell pm uninstall <package>` - Uninstall package
 - [ ] `adb shell pm clear <package>` - Clear package data
 - [ ] `adb shell pm enable <package>` - Enable package
 - [ ] `adb shell pm disable <package>` - Disable package
+- [ ] `adb shell pm disable-user <package>` - Disable package (user)
 - [ ] `adb shell pm dump <package>` - Dump package info
 - [ ] `adb shell pm grant <package> <permission>` - Grant permission
 - [ ] `adb shell pm revoke <package> <permission>` - Revoke permission

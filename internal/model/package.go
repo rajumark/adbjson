@@ -32,3 +32,14 @@ type LibrariesResponse struct {
 	Libraries []Library `json:"libraries"`
 	Count     int       `json:"count"`
 }
+
+// Instrumentation represents an Android instrumentation
+type Instrumentation struct {
+	Name string `json:"name"`
+}
+
+// InstrumentationResponse represents the response for instrumentation list command
+type InstrumentationResponse struct {
+	Instrumentations []Instrumentation `json:"instrumentations"`
+	Count            int               `json:"count"`
+}
