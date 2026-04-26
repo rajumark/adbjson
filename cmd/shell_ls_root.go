@@ -13,7 +13,7 @@ import (
 
 // lsRootCmd represents the ls / command
 var lsRootCmd = &cobra.Command{
-	Use:   "ls /",
+	Use:   "ls-root",
 	Short: "List root directory contents in JSON format",
 	Long:  `Executes "adb shell ls /" and outputs the result as structured JSON.`,
 	RunE:  runLsRoot,
