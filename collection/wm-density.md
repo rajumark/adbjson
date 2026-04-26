@@ -1,17 +1,14 @@
-# wm-density Command
+# shell wm density
 
-## Description
 Get the screen density of the device.
 
 ## Command
 ```bash
-adbjson wm-density
+adbjson shell wm density
 ```
 
-## Equivalent ADB Command
-```bash
-adb shell wm density
-```
+## Description
+Executes `adb shell wm density` and outputs the result as structured JSON.
 
 ## Sample Output
 ```json

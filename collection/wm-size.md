@@ -1,17 +1,14 @@
-# wm-size Command
+# shell wm size
 
-## Description
 Get the physical screen size of the device.
 
 ## Command
 ```bash
-adbjson wm-size
+adbjson shell wm size
 ```
 
-## Equivalent ADB Command
-```bash
-adb shell wm size
-```
+## Description
+Executes `adb shell wm size` and outputs the result as structured JSON.
 
 ## Sample Output
 ```json
