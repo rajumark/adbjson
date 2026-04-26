@@ -42,3 +42,20 @@ type CurrentUser struct {
 type CurrentUserResponse struct {
 	CurrentUser CurrentUser `json:"current_user"`
 }
+
+// SystemInfo represents system information
+type SystemInfo struct {
+	KernelName    string `json:"kernel_name"`
+	NodeName      string `json:"node_name"`
+	KernelRelease string `json:"kernel_release"`
+	KernelVersion string `json:"kernel_version"`
+	Machine       string `json:"machine"`
+	Processor     string `json:"processor"`
+	Hardware      string `json:"hardware"`
+	OS            string `json:"os"`
+}
+
+// SystemInfoResponse represents the response for uname command
+type SystemInfoResponse struct {
+	SystemInfo SystemInfo `json:"system_info"`
+}

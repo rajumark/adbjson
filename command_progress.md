@@ -237,7 +237,7 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb shell setenforce 0` - Disable SELinux (requires root)
 - [x] `adb shell id` - User ID
 - [x] `adb shell whoami` - Current user
-- [ ] `adb shell uname -a` - System information
+- [x] `adb shell uname -a` - System information
 - [ ] `adb shell echo $PATH` - PATH environment
 - [ ] `adb shell printenv` - Environment variables
 - [ ] `adb shell cat /proc/<pid>/status` - Get process status
