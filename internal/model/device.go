@@ -320,6 +320,18 @@ type LsRootResponse struct {
 	Count int      `json:"count"`
 }
 
+// DumpsysActivityResponse wraps the dumpsys activity operation response
+type DumpsysActivityResponse struct {
+	Sections []DumpsysActivitySection `json:"sections"`
+	Count    int                      `json:"count"`
+}
+
+// DumpsysActivitySection represents a section in dumpsys activity output
+type DumpsysActivitySection struct {
+	Name    string `json:"name"`
+	Content string `json:"content"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
