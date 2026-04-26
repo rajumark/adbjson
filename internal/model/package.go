@@ -98,3 +98,14 @@ type ClearResult struct {
 type ClearResponse struct {
 	ClearResult ClearResult `json:"clear_result"`
 }
+
+// EnableResult represents enable result
+type EnableResult struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+// EnableResponse represents the response for pm enable command
+type EnableResponse struct {
+	EnableResult EnableResult `json:"enable_result"`
+}

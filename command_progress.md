@@ -69,7 +69,7 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [x] `adb uninstall -k <package>` - Uninstall but keep data
 - [x] `adb shell pm uninstall <package>` - Uninstall package
 - [x] `adb shell pm clear <package>` - Clear package data
-- [ ] `adb shell pm enable <package>` - Enable package
+- [x] `adb shell pm enable <package>` - Enable package
 - [ ] `adb shell pm disable <package>` - Disable package
 - [ ] `adb shell pm disable-user <package>` - Disable package (user)
 - [ ] `adb shell pm dump <package>` - Dump package info
