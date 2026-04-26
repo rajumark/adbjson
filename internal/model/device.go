@@ -479,6 +479,22 @@ type InputTextResponse struct {
 	Message   string `json:"message"`
 }
 
+// ContentQueryResponse wraps the content query operation response
+type ContentQueryResponse struct {
+	URI    string                    `json:"uri"`
+	Count  int                       `json:"count"`
+	Rows   []ContentQueryRow         `json:"rows"`
+	Fields []string                  `json:"fields"`
+}
+
+// ContentQueryRow represents a single row from content query
+type ContentQueryRow struct {
+	ID                   string `json:"id"`
+	Name                 string `json:"name"`
+	Value                string `json:"value"`
+	IsPreservedInRestore string `json:"is_preserved_in_restore"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
