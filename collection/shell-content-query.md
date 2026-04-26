@@ -46,21 +46,21 @@ Executes `adb shell content query` and outputs the result as structured JSON. Qu
 }
 ```
 
-### Query specific setting with WHERE clause
+### Query specific setting by URI
 ```bash
-./adbjson shell content query --uri content://settings/system/ --where "name='screen_brightness'"
+./adbjson shell content query --uri content://settings/system/screen_brightness
 ```
 
 **Output:**
 ```json
 {
-  "uri": "content://settings/system/",
+  "uri": "content://settings/system/screen_brightness",
   "count": 1,
   "rows": [
     {
       "id": "6151",
       "name": "screen_brightness",
-      "value": "52",
+      "value": "45",
       "is_preserved_in_restore": "true"
     }
   ],
@@ -68,21 +68,43 @@ Executes `adb shell content query` and outputs the result as structured JSON. Qu
 }
 ```
 
-### Query with specific columns
+### Query volume settings
 ```bash
-./adbjson shell content query --uri content://settings/system/ --selection "name,value"
+./adbjson shell content query --uri content://settings/system/volume_ring_earpiece
 ```
 
 **Output:**
 ```json
 {
-  "uri": "content://settings/system/",
-  "count": 82,
+  "uri": "content://settings/system/volume_ring_earpiece",
+  "count": 1,
   "rows": [
     {
-      "id": "43",
-      "name": "tap_app_quick_single",
-      "value": "0",
+      "id": "1523",
+      "name": "volume_ring_earpiece",
+      "value": "7",
+      "is_preserved_in_restore": "false"
+    }
+  ],
+  "fields": ["_id", "name", "value", "is_preserved_in_restore"]
+}
+```
+
+### Query secure setting by URI
+```bash
+./adbjson shell content query --uri content://settings/secure/bluetooth_address
+```
+
+**Output:**
+```json
+{
+  "uri": "content://settings/secure/bluetooth_address",
+  "count": 1,
+  "rows": [
+    {
+      "id": "130",
+      "name": "bluetooth_address",
+      "value": "24:D5:3B:CA:92:4B",
       "is_preserved_in_restore": "false"
     }
   ],
@@ -199,7 +221,6 @@ Executes `adb shell content query` and outputs the result as structured JSON. Qu
 ## Flags
 
 - `--uri`: Content provider URI (required)
-- `--where`: WHERE clause for filtering results
 - `--bind`: BIND clause for parameter binding
 - `--selection`: Selection columns to return
 - `--compact`: Compact JSON output
@@ -244,9 +265,10 @@ Executes `adb shell content query` and outputs the result as structured JSON. Qu
 - Content provider access is subject to Android permissions
 - Some URIs may be restricted or require special permissions
 - Large result sets may be truncated for performance
-- WHERE clause syntax follows standard SQL format
+- Use URI-based queries for specific settings: `content://settings/system/setting_name`
 - BIND clause allows safe parameter substitution
 - Selection can limit returned columns for better performance
+- WHERE clauses are not supported by Android content providers - use URI-based queries instead
 
 ## Privacy Considerations
 
@@ -267,5 +289,6 @@ Executes `adb shell content query` and outputs the result as structured JSON. Qu
 
 - **Permission Denied**: Check if you have access to the content provider
 - **URI Not Found**: Verify the content provider URI is correct
-- **Invalid WHERE Clause**: Check SQL syntax in WHERE clause
-- **Empty Results**: Query may return no rows if no matching data
+- **Setting Not Found**: Use correct URI format: `content://settings/system/setting_name`
+- **Empty Results**: Query may return no rows if setting doesn't exist
+- **Invalid URI Format**: Use proper content provider URI syntax
