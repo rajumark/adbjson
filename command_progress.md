@@ -232,7 +232,7 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb shell settings delete global hidden_api_policy_pre_p_apps` - Forbid non SDK API
 - [ ] `adb shell settings delete global hidden_api_policy_p_apps` - Forbid non SDK API
 - [ ] `adb shell settings put global policy_control <key-values>` - Show/hide status bar or navigation bar
-- [ ] `adb shell getenforce` - SELinux status
+- [x] `adb shell getenforce` - SELinux status
 - [ ] `adb shell setenforce 1` - Enable SELinux (requires root)
 - [ ] `adb shell setenforce 0` - Disable SELinux (requires root)
 - [ ] `adb shell id` - User ID

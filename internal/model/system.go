@@ -11,3 +11,13 @@ type PropertiesResponse struct {
 	Properties []Property `json:"properties"`
 	Count      int         `json:"count"`
 }
+
+// SELinuxStatus represents SELinux status
+type SELinuxStatus struct {
+	Status string `json:"status"`
+}
+
+// SELinuxStatusResponse represents the response for getenforce command
+type SELinuxStatusResponse struct {
+	SELinuxStatus SELinuxStatus `json:"selinux_status"`
+}
