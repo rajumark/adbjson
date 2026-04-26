@@ -239,6 +239,20 @@ type UptimeResponse struct {
 	LoadAverage string `json:"load_average"`
 }
 
+// MountPoint represents a mount point from mount output
+type MountPoint struct {
+	Device     string `json:"device"`
+	MountPoint string `json:"mount_point"`
+	Type       string `json:"type"`
+	Options    string `json:"options"`
+}
+
+// MountResponse wraps the mount operation response
+type MountResponse struct {
+	MountPoints []MountPoint `json:"mount_points"`
+	Count       int           `json:"count"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
