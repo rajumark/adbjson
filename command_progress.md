@@ -13,7 +13,7 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [x] `adb version` - Show ADB version ✅
 - [x] `adb get-state` - Get device state
 - [x] `adb get-serialno` - Get serial number
-- [ ] `adb get-devpath` - Get device path
+- [x] `adb get-devpath` - Get device path
 
 ## File Management
 

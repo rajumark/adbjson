@@ -94,6 +94,27 @@ Get device serial number.
 
 ---
 
+### get-devpath ✅
+Get device path.
+
+**Usage:**
+```bash
+./adbjson get-devpath
+```
+
+**Output:**
+```json
+{
+  "dev_path": "usb:20-1"
+}
+```
+
+**Flags:**
+- `--pretty` - Pretty print JSON (default: true)
+- `--compact` - Compact JSON output
+
+---
+
 ## Planned Commands
 
 The following commands are planned for future releases:

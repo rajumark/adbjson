@@ -26,3 +26,8 @@ type StateResponse struct {
 type SerialNoResponse struct {
 	SerialNo string `json:"serial_no"`
 }
+
+// DevPathResponse wraps the device path
+type DevPathResponse struct {
+	DevPath string `json:"dev_path"`
+}
