@@ -404,6 +404,18 @@ type DumpsysPowerSection struct {
 	Content string `json:"content"`
 }
 
+// DumpsysLocationResponse wraps the dumpsys location operation response
+type DumpsysLocationResponse struct {
+	Sections []DumpsysLocationSection `json:"sections"`
+	Count    int                    `json:"count"`
+}
+
+// DumpsysLocationSection represents a section in dumpsys location output
+type DumpsysLocationSection struct {
+	Name    string `json:"name"`
+	Content string `json:"content"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
