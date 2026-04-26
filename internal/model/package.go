@@ -49,8 +49,19 @@ type Permission struct {
 	Name string `json:"name"`
 }
 
-// PermissionsResponse represents the response for permission list command
+// PermissionsResponse represents the response for permissions command
 type PermissionsResponse struct {
 	Permissions []Permission `json:"permissions"`
 	Count       int           `json:"count"`
+}
+
+// PackagePath represents package path information
+type PackagePath struct {
+	Package string `json:"package"`
+	Path    string `json:"path"`
+}
+
+// PackagePathResponse represents the response for pm path command
+type PackagePathResponse struct {
+	PackagePath PackagePath `json:"package_path"`
 }

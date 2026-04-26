@@ -51,9 +51,9 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [x] `adb shell pm list packages -u` - Include uninstalled packages
 - [x] `adb shell pm list packages <FILTER>` - Filter by package name
 - [x] `adb shell pm list features` - List features
-- [ ] `adb shell pm list libraries` - List libraries
-- [ ] `adb shell pm path <package>` - Get package path
-- [ ] `adb shell pm path android` - Get android package path
+- [x] `adb shell pm list libraries` - List libraries
+- [x] `adb shell pm path <package>` - Get package path
+- [x] `adb shell pm path android` - Get android package path
 - [x] `adb shell pm list instrumentation` - List instrumentation
 - [x] `adb shell pm list permissions` - List permissions
 - [ ] `adb shell pm install <apk>` - Install package
