@@ -115,6 +115,27 @@ Get device path.
 
 ---
 
+### wm-size ✅
+Get screen size.
+
+**Usage:**
+```bash
+./adbjson wm-size
+```
+
+**Output:**
+```json
+{
+  "physical_size": "1080x2400"
+}
+```
+
+**Flags:**
+- `--pretty` - Pretty print JSON (default: true)
+- `--compact` - Compact JSON output
+
+---
+
 ## Planned Commands
 
 The following commands are planned for future releases:

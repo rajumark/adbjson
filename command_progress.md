@@ -70,7 +70,7 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb shell input swipe <x1> <y1> <x2> <y2>` - Swipe screen
 - [ ] `adb shell input text <text>` - Type text
 - [ ] `adb shell input keyevent <code>` - Send key event
-- [ ] `adb shell wm size` - Get screen size
+- [x] `adb shell wm size` - Get screen size
 - [ ] `adb shell wm density` - Get screen density
 - [ ] `adb shell wm density <dpi>` - Set screen density
 - [ ] `adb shell wm overscan <left,top,right,bottom>` - Set overscan

@@ -31,3 +31,8 @@ type SerialNoResponse struct {
 type DevPathResponse struct {
 	DevPath string `json:"dev_path"`
 }
+
+// ScreenSizeResponse wraps the screen size
+type ScreenSizeResponse struct {
+	PhysicalSize string `json:"physical_size"`
+}
