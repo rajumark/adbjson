@@ -57,6 +57,15 @@ func init() {
 		RunE:  runDumpsysWifi,
 	}
 	dumpsysCmd.AddCommand(wifiCmd)
+	
+	// Add connectivity command as subcommand of dumpsys
+	connectivityCmd := &cobra.Command{
+		Use:   "connectivity",
+		Short: "Show connectivity service dump in JSON format",
+		Long:  `Executes "adb shell dumpsys connectivity" and outputs the result as structured JSON.`,
+		RunE:  runDumpsysConnectivity,
+	}
+	dumpsysCmd.AddCommand(connectivityCmd)
 }
 
 func runDumpsysBattery(cmd *cobra.Command, args []string) error {
@@ -205,6 +214,52 @@ func runDumpsysWifi(cmd *cobra.Command, cmdArgs []string) error {
 	// Print to stdout
 	fmt.Println(formattedOutput)
 	log.Info("Shell dumpsys wifi command completed successfully", nil)
+	
+	return nil
+}
+
+func runDumpsysConnectivity(cmd *cobra.Command, cmdArgs []string) error {
+	log := logger.Get()
+	log.Info("Starting shell dumpsys connectivity command", nil)
+
+	// Create executor
+	executor := adb.NewExecutor()
+	log.Debug("Created ADB executor", nil)
+	
+	// Run adb shell dumpsys connectivity
+	output, err := executor.Execute("shell", "dumpsys", "connectivity")
+	if err != nil {
+		log.Error("Failed to execute adb shell dumpsys connectivity", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewADBExecutionError("shell dumpsys connectivity", err)
+	}
+	log.Debug("ADB shell dumpsys connectivity command executed successfully", map[string]interface{}{"output_length": len(output)})
+	
+	// Parse output
+	dumpsysConnectivityParser := parser.NewDumpsysConnectivityParser()
+	response, err := dumpsysConnectivityParser.Parse(output)
+	if err != nil {
+		log.Error("Failed to parse dumpsys connectivity output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewParseError("dumpsys connectivity", err)
+	}
+	log.Info("Parsed dumpsys connectivity output", map[string]interface{}{"section_count": len(response.Sections)})
+	
+	// Validate result
+	if err := dumpsysConnectivityParser.Validate(response); err != nil {
+		log.Error("Failed to validate dumpsys connectivity output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewValidationError("dumpsys connectivity", err.Error())
+	}
+	
+	// Format output
+	format := formatter.ParseFormat(outputFormat)
+	formattedOutput, err := formatter.FormatOutputString(response, format, compactOutput)
+	if err != nil {
+		log.Error("Failed to format output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewMarshalError(err)
+	}
+	
+	// Print to stdout
+	fmt.Println(formattedOutput)
+	log.Info("Shell dumpsys connectivity command completed successfully", nil)
 	
 	return nil
 }
