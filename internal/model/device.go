@@ -21,3 +21,8 @@ type VersionResponse struct {
 type StateResponse struct {
 	State string `json:"state"`
 }
+
+// SerialNoResponse wraps the device serial number
+type SerialNoResponse struct {
+	SerialNo string `json:"serial_no"`
+}

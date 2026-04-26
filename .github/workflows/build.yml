@@ -116,9 +116,9 @@ jobs:
         for dir in adbjson-*; do
           cd "$dir"
           if [ -f "adbjson.exe" ]; then
-            zip -r "../../${dir}.zip" adbjson.exe platform-tools/
+            zip -r "../${dir}.zip" adbjson.exe platform-tools/
           else
-            tar -czf "../../${dir}.tar.gz" adbjson platform-tools/
+            tar -czf "../${dir}.tar.gz" adbjson platform-tools/
           fi
           cd ..
         done

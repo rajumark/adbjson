@@ -73,6 +73,27 @@ Get device state.
 
 ---
 
+### get-serialno ✅
+Get device serial number.
+
+**Usage:**
+```bash
+./adbjson get-serialno
+```
+
+**Output:**
+```json
+{
+  "serial_no": "ZD222XW5RL"
+}
+```
+
+**Flags:**
+- `--pretty` - Pretty print JSON (default: true)
+- `--compact` - Compact JSON output
+
+---
+
 ## Planned Commands
 
 The following commands are planned for future releases:
