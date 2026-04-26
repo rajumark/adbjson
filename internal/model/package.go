@@ -65,3 +65,14 @@ type PackagePath struct {
 type PackagePathResponse struct {
 	PackagePath PackagePath `json:"package_path"`
 }
+
+// InstallResult represents installation result
+type InstallResult struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+// InstallResponse represents the response for install command
+type InstallResponse struct {
+	InstallResult InstallResult `json:"install_result"`
+}

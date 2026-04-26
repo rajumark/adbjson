@@ -56,15 +56,15 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [x] `adb shell pm path android` - Get android package path
 - [x] `adb shell pm list instrumentation` - List instrumentation
 - [x] `adb shell pm list permissions` - List permissions
-- [ ] `adb shell pm install <apk>` - Install package
-- [ ] `adb install <apk>` - Install APK
-- [ ] `adb install -r <apk>` - Reinstall package
-- [ ] `adb install -l <apk>` - Protect installation directory
-- [ ] `adb install -t <apk>` - Install test-only apps
-- [ ] `adb install -s <apk>` - Install to sdcard
-- [ ] `adb install -d <apk>` - Allow downgrade
-- [ ] `adb install -g <apk>` - Grant all runtime permissions
-- [ ] `adb install --abi <abi> <apk>` - Force specific ABI
+- [x] `adb shell pm install <apk>` - Install package
+- [x] `adb install <apk>` - Install APK
+- [x] `adb install -r <apk>` - Reinstall package
+- [x] `adb install -l <apk>` - Protect installation directory
+- [x] `adb install -t <apk>` - Install test-only apps
+- [x] `adb install -s <apk>` - Install to sdcard
+- [x] `adb install -d <apk>` - Allow downgrade
+- [x] `adb install -g <apk>` - Grant all runtime permissions
+- [x] `adb install --abi <abi> <apk>` - Force specific ABI
 - [ ] `adb uninstall <package>` - Uninstall package
 - [ ] `adb uninstall -k <package>` - Uninstall but keep data
 - [ ] `adb shell pm uninstall <package>` - Uninstall package
