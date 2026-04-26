@@ -59,6 +59,19 @@ Output:
 }
 ```
 
+### Get ADB Version
+
+```bash
+./adbjson adb-version
+```
+
+Output:
+```json
+{
+  "version": "1.0.41"
+}
+```
+
 ### Flags
 
 - `--pretty` - Pretty print JSON (default: true)
@@ -106,6 +119,7 @@ adbjson/
 ## Supported Commands
 
 - `devices` - List connected ADB devices
+- `adb-version` - Get ADB version information
 
 ## Future Extensibility
 

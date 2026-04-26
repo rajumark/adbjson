@@ -10,3 +10,9 @@ type Device struct {
 type DevicesResponse struct {
 	Devices []Device `json:"devices"`
 }
+
+// VersionResponse wraps the ADB version information
+type VersionResponse struct {
+	Version  string `json:"version"`
+	Revision string `json:"revision,omitempty"`
+}
