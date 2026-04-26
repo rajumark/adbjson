@@ -522,47 +522,50 @@
         /* Use Cases */
         .use-cases-section {
             background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .use-cases-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
         }
 
         .use-case-card {
             background: var(--bg-primary);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: all 0.3s ease;
+            border-radius: 4px;
+            padding: 1.5rem;
+            transition: all 0.15s ease;
         }
 
         .use-case-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
+            border-color: var(--text-primary);
         }
 
         .use-case-card h3 {
-            font-size: 1.125rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
         }
 
         .use-case-card p {
             color: var(--text-secondary);
-            font-size: 0.9375rem;
+            font-size: 0.875rem;
             margin-bottom: 1rem;
+            line-height: 1.5;
         }
 
         .use-case-tag {
             display: inline-block;
             padding: 0.25rem 0.75rem;
-            background: var(--accent-light);
-            color: var(--accent-secondary);
-            border-radius: 20px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border-radius: 4px;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         /* Philosophy */
@@ -1265,31 +1268,7 @@ brew install adbjson</code></pre>
             </div>
         </section>
 
-        <section id="philosophy">
-            <div class="container">
-                <div class="philosophy-content">
-                    <h3>CLI-First Philosophy</h3>
-                    <p>We believe command-line tools are the foundation of powerful automation. They're simple, scriptable, and scale from local development to production infrastructure.</p>
-                    <p>adbjson embraces this philosophy: zero configuration, composable design, and output that works seamlessly with the Unix ecosystem. No GUI required, no complex setup—just tools that do one thing well.</p>
-                    
-                    <div class="philosophy-quotes">
-                        <div class="quote-card">
-                            <p>"Simple tools that do one thing well, and work together."</p>
-                            <span>Unix Philosophy</span>
-                        </div>
-                        <div class="quote-card">
-                            <p>"Structure over chaos. Predictable output over fragile parsing."</p>
-                            <span>adbjson Design</span>
-                        </div>
-                        <div class="quote-card">
-                            <p>"Automation first. Manual tasks should be the exception, not the rule."</p>
-                            <span>Engineering Mindset</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+        
         <section id="documentation-viewer">
             <div class="container">
                 <div class="section-header">
