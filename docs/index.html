@@ -7,42 +7,163 @@
     <meta name="description" content="Convert raw adb command outputs into structured JSON for scripts, tools, automation, and debugging. Zero config, fast execution, cross-platform.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #fafafa;
-            --bg-tertiary: #f5f5f5;
-            --text-primary: #000000;
-            --text-secondary: #666666;
-            --text-tertiary: #999999;
-            --border-color: #e0e0e0;
-            --accent-primary: #000000;
-            --accent-secondary: #000000;
-            --accent-light: #f5f5f5;
-            --code-bg: #f5f5f5;
-            --code-text: #000000;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px 0 rgb(0 0 0 / 0.06);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+            /* Google Material Design 3 Color System */
+            --md-sys-color-primary: #1976d2;
+            --md-sys-color-on-primary: #ffffff;
+            --md-sys-color-primary-container: #e3f2fd;
+            --md-sys-color-on-primary-container: #0d47a1;
+            --md-sys-color-secondary: #03a9f4;
+            --md-sys-color-on-secondary: #ffffff;
+            --md-sys-color-secondary-container: #e1f5fe;
+            --md-sys-color-on-secondary-container: #01579b;
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-variant: #f5f5f5;
+            --md-sys-color-on-surface: #1c1b1f;
+            --md-sys-color-on-surface-variant: #49454f;
+            --md-sys-color-outline: #79747e;
+            --md-sys-color-outline-variant: #cac4d0;
+            --md-sys-color-background: #fefbff;
+            --md-sys-color-on-background: #1c1b1f;
+            --md-sys-color-error: #ba1a1a;
+            --md-sys-color-on-error: #ffffff;
+            --md-sys-color-success: #1e8e3e;
+            --md-sys-color-on-success: #ffffff;
+            
+            /* Semantic tokens */
+            --bg-primary: var(--md-sys-color-background);
+            --bg-secondary: var(--md-sys-color-surface);
+            --bg-tertiary: var(--md-sys-color-surface-variant);
+            --text-primary: var(--md-sys-color-on-background);
+            --text-secondary: var(--md-sys-color-on-surface-variant);
+            --text-tertiary: var(--md-sys-color-outline);
+            --border-color: var(--md-sys-color-outline-variant);
+            --accent-primary: var(--md-sys-color-primary);
+            --accent-secondary: var(--md-sys-color-secondary);
+            --accent-light: var(--md-sys-color-primary-container);
+            --code-bg: var(--md-sys-color-surface-variant);
+            --code-text: var(--md-sys-color-on-surface);
+            
+            /* Google Design Tokens */
+            --md-sys-elevation-level1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+            --md-sys-elevation-level2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+            --md-sys-elevation-level3: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+            --md-sys-elevation-level4: 0px 6px 10px 4px rgba(0, 0, 0, 0.15), 0px 2px 3px 0px rgba(0, 0, 0, 0.3);
+            --md-sys-elevation-level5: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
+            
+            --shadow-sm: var(--md-sys-elevation-level1);
+            --shadow-md: var(--md-sys-elevation-level2);
+            --shadow-lg: var(--md-sys-elevation-level3);
+            
+            /* Typography Scale - Google Fonts */
+            --md-sys-typescale-headline-large-font-family: 'Roboto', 'Inter', sans-serif;
+            --md-sys-typescale-headline-large-font-weight: 400;
+            --md-sys-typescale-headline-large-font-size: 2rem;
+            --md-sys-typescale-headline-large-line-height: 2.5rem;
+            --md-sys-typescale-headline-large-letter-spacing: 0;
+            
+            --md-sys-typescale-headline-medium-font-family: 'Roboto', 'Inter', sans-serif;
+            --md-sys-typescale-headline-medium-font-weight: 400;
+            --md-sys-typescale-headline-medium-font-size: 1.75rem;
+            --md-sys-typescale-headline-medium-line-height: 2.25rem;
+            --md-sys-typescale-headline-medium-letter-spacing: 0;
+            
+            --md-sys-typescale-headline-small-font-family: 'Roboto', 'Inter', sans-serif;
+            --md-sys-typescale-headline-small-font-weight: 400;
+            --md-sys-typescale-headline-small-font-size: 1.5rem;
+            --md-sys-typescale-headline-small-line-height: 2rem;
+            --md-sys-typescale-headline-small-letter-spacing: 0;
+            
+            --md-sys-typescale-title-large-font-family: 'Roboto', 'Inter', sans-serif;
+            --md-sys-typescale-title-large-font-weight: 500;
+            --md-sys-typescale-title-large-font-size: 1.375rem;
+            --md-sys-typescale-title-large-line-height: 1.75rem;
+            --md-sys-typescale-title-large-letter-spacing: 0;
+            
+            --md-sys-typescale-title-medium-font-family: 'Roboto', 'Inter', sans-serif;
+            --md-sys-typescale-title-medium-font-weight: 500;
+            --md-sys-typescale-title-medium-font-size: 1rem;
+            --md-sys-typescale-title-medium-line-height: 1.5rem;
+            --md-sys-typescale-title-medium-letter-spacing: 0;
+            
+            --md-sys-typescale-body-large-font-family: 'Roboto', 'Inter', sans-serif;
+            --md-sys-typescale-body-large-font-weight: 400;
+            --md-sys-typescale-body-large-font-size: 1rem;
+            --md-sys-typescale-body-large-line-height: 1.5rem;
+            --md-sys-typescale-body-large-letter-spacing: 0;
+            
+            --md-sys-typescale-body-medium-font-family: 'Roboto', 'Inter', sans-serif;
+            --md-sys-typescale-body-medium-font-weight: 400;
+            --md-sys-typescale-body-medium-font-size: 0.875rem;
+            --md-sys-typescale-body-medium-line-height: 1.25rem;
+            --md-sys-typescale-body-medium-letter-spacing: 0;
+            
+            /* Spacing System - 8dp grid */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            
+            /* Border Radius */
+            --shape-corner-extra-small: 4px;
+            --shape-corner-small: 8px;
+            --shape-corner-medium: 12px;
+            --shape-corner-large: 16px;
+            --shape-corner-extra-large: 28px;
         }
 
         [data-theme="dark"] {
-            --bg-primary: #000000;
-            --bg-secondary: #1a1a1a;
-            --bg-tertiary: #2a2a2a;
-            --text-primary: #ffffff;
-            --text-secondary: #cccccc;
-            --text-tertiary: #999999;
-            --border-color: #333333;
-            --accent-primary: #ffffff;
-            --accent-secondary: #ffffff;
-            --accent-light: #1a1a1a;
-            --code-bg: #1a1a1a;
-            --code-text: #ffffff;
-            --shadow-sm: 0 1px 2px 0 rgb(255 255 255 / 0.05);
-            --shadow-md: 0 1px 3px 0 rgb(255 255 255 / 0.1), 0 1px 2px 0 rgb(255 255 255 / 0.06);
-            --shadow-lg: 0 10px 15px -3px rgb(255 255 255 / 0.1), 0 4px 6px -2px rgb(255 255 255 / 0.05);
+            /* Google Material Design 3 Dark Theme */
+            --md-sys-color-primary: #a8c7fa;
+            --md-sys-color-on-primary: #00325c;
+            --md-sys-color-primary-container: #00497d;
+            --md-sys-color-on-primary-container: #d1e4ff;
+            --md-sys-color-secondary: #63d3ff;
+            --md-sys-color-on-secondary: #003547;
+            --md-sys-color-secondary-container: #004d63;
+            --md-sys-color-on-secondary-container: #c5e7ff;
+            --md-sys-color-surface: #10131a;
+            --md-sys-color-surface-variant: #1d1f27;
+            --md-sys-color-on-surface: #e6e0e9;
+            --md-sys-color-on-surface-variant: #cac4d0;
+            --md-sys-color-outline: #938f99;
+            --md-sys-color-outline-variant: #49454f;
+            --md-sys-color-background: #10131a;
+            --md-sys-color-on-background: #e6e0e9;
+            --md-sys-color-error: #ffb4ab;
+            --md-sys-color-on-error: #690005;
+            --md-sys-color-success: #4fda70;
+            --md-sys-color-on-success: #00390f;
+            
+            /* Update semantic tokens for dark theme */
+            --bg-primary: var(--md-sys-color-background);
+            --bg-secondary: var(--md-sys-color-surface);
+            --bg-tertiary: var(--md-sys-color-surface-variant);
+            --text-primary: var(--md-sys-color-on-background);
+            --text-secondary: var(--md-sys-color-on-surface-variant);
+            --text-tertiary: var(--md-sys-color-outline);
+            --border-color: var(--md-sys-color-outline-variant);
+            --accent-primary: var(--md-sys-color-primary);
+            --accent-secondary: var(--md-sys-color-secondary);
+            --accent-light: var(--md-sys-color-primary-container);
+            --code-bg: var(--md-sys-color-surface-variant);
+            --code-text: var(--md-sys-color-on-surface);
+            
+            /* Dark theme shadows */
+            --md-sys-elevation-level1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+            --md-sys-elevation-level2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+            --md-sys-elevation-level3: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+            --md-sys-elevation-level4: 0px 6px 10px 4px rgba(0, 0, 0, 0.15), 0px 2px 3px 0px rgba(0, 0, 0, 0.3);
+            --md-sys-elevation-level5: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
+            
+            --shadow-sm: var(--md-sys-elevation-level1);
+            --shadow-md: var(--md-sys-elevation-level2);
+            --shadow-lg: var(--md-sys-elevation-level3);
         }
 
         * {
@@ -56,17 +177,19 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.6;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.5;
+            transition: background-color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 var(--space-md);
         }
 
         /* Navigation */
@@ -75,11 +198,16 @@
             top: 0;
             left: 0;
             right: 0;
-            background: var(--bg-primary);
+            background: rgba(254, 251, 255, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-bottom: 1px solid var(--border-color);
             z-index: 1000;
-            backdrop-filter: blur(10px);
-            background: rgba(var(--bg-primary), 0.9);
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        [data-theme="dark"] nav {
+            background: rgba(16, 19, 26, 0.8);
         }
 
         nav .container {
@@ -90,157 +218,228 @@
         }
 
         .logo {
-            font-weight: 700;
-            font-size: 1.25rem;
+            font-family: 'Google Sans', 'Roboto', sans-serif;
+            font-weight: 400;
+            font-size: var(--md-sys-typescale-title-large-font-size);
             color: var(--text-primary);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: var(--space-sm);
+            transition: opacity 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .logo:hover {
+            opacity: 0.8;
         }
 
         .logo span {
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--accent-primary);
+            font-weight: 500;
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: var(--space-xl);
             align-items: center;
         }
 
         .nav-links a {
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.875rem;
+            font-size: var(--md-sys-typescale-body-medium-font-size);
             font-weight: 500;
-            transition: color 0.2s ease;
+            transition: color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            position: relative;
         }
-
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-primary);
+            transition: width 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
         .nav-links a:hover {
             color: var(--text-primary);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .theme-toggle {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 0.5rem;
+            border-radius: var(--shape-corner-small);
+            padding: var(--space-sm);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
             color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
         }
 
         .theme-toggle:hover {
             background: var(--bg-tertiary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+        
+        .theme-toggle:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
         }
 
         .theme-toggle svg {
             width: 20px;
             height: 20px;
+            transition: opacity 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
         /* Hero Section */
         .hero {
-            padding: 4rem 0 2rem;
+            padding: var(--space-3xl) 0 var(--space-2xl);
             text-align: left;
             max-width: 800px;
             margin: 0 auto;
         }
 
         .hero h1 {
-            font-size: 2rem;
+            font-family: 'Google Sans', 'Roboto', sans-serif;
+            font-size: var(--md-sys-typescale-headline-large-font-size);
             font-weight: 400;
-            line-height: 1.4;
-            margin-bottom: 1rem;
-            letter-spacing: 0;
+            line-height: var(--md-sys-typescale-headline-large-line-height);
+            margin-bottom: var(--space-lg);
+            letter-spacing: -0.02em;
             color: var(--text-primary);
         }
 
         .hero h1 span {
-            font-weight: 600;
-            color: var(--text-primary);
+            font-weight: 500;
+            color: var(--accent-primary);
         }
 
         .hero p {
-            font-size: 1rem;
+            font-size: var(--md-sys-typescale-body-large-font-size);
+            font-weight: 400;
             color: var(--text-secondary);
             max-width: 100%;
-            margin: 0 0 2rem 0;
-            line-height: 1.6;
+            margin: 0 0 var(--space-xl) 0;
+            line-height: var(--md-sys-typescale-body-large-line-height);
         }
 
         .hero-sub {
-            font-size: 0.875rem;
+            font-size: var(--md-sys-typescale-body-medium-font-size);
             color: var(--text-tertiary);
             max-width: 100%;
-            margin: 0 0 2rem 0;
-            line-height: 1.5;
+            margin: 0 0 var(--space-xl) 0;
+            line-height: var(--md-sys-typescale-body-medium-line-height);
         }
 
         .cta-group {
             display: flex;
-            gap: 1rem;
+            gap: var(--space-md);
             justify-content: flex-start;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--shape-corner-small);
             font-weight: 500;
-            font-size: 0.875rem;
+            font-size: var(--md-sys-typescale-body-medium-font-size);
             text-decoration: none;
-            transition: all 0.15s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
             cursor: pointer;
-            border: 1px solid var(--border-color);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            line-height: 1;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .btn:hover::before {
+            transform: translateX(0);
         }
 
         .btn-primary {
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            border-color: var(--text-primary);
+            background: var(--accent-primary);
+            color: var(--md-sys-color-on-primary);
+            box-shadow: var(--shadow-md);
         }
 
         .btn-primary:hover {
-            opacity: 0.8;
+            background: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-secondary {
-            background: var(--bg-primary);
+            background: var(--bg-secondary);
             color: var(--text-primary);
             border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-secondary:hover {
             background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
         }
 
         /* Section Styles */
         section {
-            padding: 3rem 0;
+            padding: var(--space-3xl) 0;
         }
 
         .section-header {
             text-align: left;
-            margin-bottom: 2rem;
+            margin-bottom: var(--space-2xl);
             max-width: 800px;
         }
 
         .section-header h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            letter-spacing: 0;
+            font-family: 'Google Sans', 'Roboto', sans-serif;
+            font-size: var(--md-sys-typescale-headline-medium-font-size);
+            font-weight: 400;
+            margin-bottom: var(--space-md);
+            letter-spacing: -0.01em;
             color: var(--text-primary);
         }
 
@@ -248,8 +447,8 @@
             color: var(--text-secondary);
             max-width: 100%;
             margin: 0;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            font-size: var(--md-sys-typescale-body-large-font-size);
+            line-height: var(--md-sys-typescale-body-large-line-height);
         }
 
         /* Problem Section */
@@ -262,44 +461,45 @@
         .problem-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            gap: var(--space-2xl);
             align-items: start;
         }
 
         .problem-content h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
+            font-size: var(--md-sys-typescale-title-large-font-size);
+            font-weight: 500;
+            margin-bottom: var(--space-lg);
             color: var(--text-primary);
         }
 
         .problem-content p {
             color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            margin-bottom: var(--space-xl);
+            font-size: var(--md-sys-typescale-body-large-font-size);
+            line-height: var(--md-sys-typescale-body-large-line-height);
         }
 
         .problem-list {
             list-style: none;
-            margin-bottom: 2rem;
+            margin-bottom: var(--space-2xl);
         }
 
         .problem-list li {
             display: flex;
             align-items: flex-start;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
             color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.5;
+            font-size: var(--md-sys-typescale-body-medium-font-size);
+            line-height: var(--md-sys-typescale-body-medium-line-height);
         }
 
         .problem-list li::before {
             content: "•";
             color: var(--text-tertiary);
-            font-weight: bold;
+            font-weight: 500;
             margin-top: 2px;
+            font-size: 1.2em;
         }
 
         .solution-list {
@@ -309,44 +509,52 @@
         .solution-list li {
             display: flex;
             align-items: flex-start;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
             color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.5;
+            font-size: var(--md-sys-typescale-body-medium-font-size);
+            line-height: var(--md-sys-typescale-body-medium-line-height);
         }
 
         .solution-list li::before {
             content: "✓";
-            color: var(--text-primary);
-            font-weight: bold;
+            color: var(--md-sys-color-success);
+            font-weight: 600;
             margin-top: 2px;
+            font-size: 1em;
         }
 
         .code-comparison {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: var(--space-xl);
         }
 
         .code-block {
             background: var(--code-bg);
             border: 1px solid var(--border-color);
-            border-radius: 4px;
+            border-radius: var(--shape-corner-medium);
             overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .code-block:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-primary);
         }
 
         .code-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem 1rem;
+            padding: var(--space-md) var(--space-lg);
             background: var(--bg-tertiary);
             border-bottom: 1px solid var(--border-color);
         }
 
         .code-label {
-            font-size: 0.75rem;
+            font-size: var(--md-sys-typescale-body-medium-font-size);
             font-weight: 500;
             color: var(--text-secondary);
             text-transform: uppercase;
@@ -358,35 +566,36 @@
             border: none;
             color: var(--text-tertiary);
             cursor: pointer;
-            padding: 0.25rem;
-            border-radius: 2px;
-            transition: all 0.15s ease;
+            padding: var(--space-xs);
+            border-radius: var(--shape-corner-extra-small);
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 0.25rem;
-            font-size: 0.75rem;
+            gap: var(--space-xs);
+            font-size: var(--md-sys-typescale-body-medium-font-size);
         }
 
         .copy-btn:hover {
-            color: var(--text-primary);
+            color: var(--accent-primary);
             background: var(--bg-secondary);
         }
 
         .copy-btn.copied {
-            color: var(--text-primary);
+            color: var(--md-sys-color-success);
         }
 
         .code-content {
-            padding: 1rem;
+            padding: var(--space-lg);
             overflow-x: auto;
         }
 
         .code-content pre {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            line-height: 1.5;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
             color: var(--code-text);
             margin: 0;
+            -webkit-font-smoothing: auto;
         }
 
         .code-content pre code {
@@ -396,33 +605,54 @@
         /* Features Section */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
         }
 
         .feature-card {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 1.5rem;
-            transition: all 0.15s ease;
+            border-radius: var(--shape-corner-medium);
+            padding: var(--space-xl);
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
         }
-
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transform: translateY(-100%);
+            transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
         .feature-card:hover {
-            border-color: var(--text-primary);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        
+        .feature-card:hover::before {
+            transform: translateY(0);
         }
 
         .feature-card h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+            font-size: var(--md-sys-typescale-title-medium-font-size);
+            font-weight: 500;
+            margin-bottom: var(--space-md);
             color: var(--text-primary);
         }
 
         .feature-card p {
             color: var(--text-secondary);
-            font-size: 0.875rem;
-            line-height: 1.5;
+            font-size: var(--md-sys-typescale-body-medium-font-size);
+            line-height: var(--md-sys-typescale-body-medium-line-height);
         }
 
         /* How It Works */
@@ -434,89 +664,118 @@
 
         .steps-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
         }
 
         .step-card {
-            padding: 1.5rem;
+            padding: var(--space-xl);
             border: 1px solid var(--border-color);
-            border-radius: 4px;
+            border-radius: var(--shape-corner-medium);
             background: var(--bg-primary);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            position: relative;
+        }
+        
+        .step-card::before {
+            content: attr(data-step);
+            position: absolute;
+            top: var(--space-lg);
+            right: var(--space-lg);
+            width: 32px;
+            height: 32px;
+            background: var(--accent-primary);
+            color: var(--md-sys-color-on-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+        
+        .step-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
         }
 
         .step-card h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+            font-size: var(--md-sys-typescale-title-medium-font-size);
+            font-weight: 500;
+            margin-bottom: var(--space-md);
             color: var(--text-primary);
+            padding-right: var(--space-2xl);
         }
 
         .step-card p {
             color: var(--text-secondary);
-            font-size: 0.875rem;
-            line-height: 1.5;
+            font-size: var(--md-sys-typescale-body-medium-font-size);
+            line-height: var(--md-sys-typescale-body-medium-line-height);
         }
 
         /* Installation */
         .install-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            gap: var(--space-2xl);
             align-items: start;
         }
 
         .install-content h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
+            font-size: var(--md-sys-typescale-title-large-font-size);
+            font-weight: 500;
+            margin-bottom: var(--space-lg);
             color: var(--text-primary);
         }
 
         .install-content p {
             color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            margin-bottom: var(--space-xl);
+            font-size: var(--md-sys-typescale-body-large-font-size);
+            line-height: var(--md-sys-typescale-body-large-line-height);
         }
 
         .install-method {
-            margin-bottom: 1.5rem;
+            margin-bottom: var(--space-xl);
         }
 
         .install-method h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
+            font-size: var(--md-sys-typescale-title-medium-font-size);
+            font-weight: 500;
+            margin-bottom: var(--space-md);
             color: var(--text-primary);
         }
 
         .install-tabs {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-md);
         }
 
         .install-tab {
-            padding: 0.5rem 1rem;
+            padding: var(--space-sm) var(--space-md);
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 0.875rem;
+            border-radius: var(--shape-corner-small);
+            font-size: var(--md-sys-typescale-body-medium-font-size);
             font-weight: 500;
             color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
         .install-tab:hover {
             background: var(--bg-tertiary);
+            color: var(--text-primary);
         }
 
         .install-tab.active {
-            background: var(--text-primary);
-            border-color: var(--text-primary);
-            color: var(--bg-primary);
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: var(--md-sys-color-on-primary);
+            box-shadow: var(--shadow-sm);
         }
 
         /* Use Cases */
@@ -528,44 +787,66 @@
 
         .use-cases-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-lg);
         }
 
         .use-case-card {
             background: var(--bg-primary);
             border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 1.5rem;
-            transition: all 0.15s ease;
+            border-radius: var(--shape-corner-medium);
+            padding: var(--space-xl);
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
         }
-
+        
+        .use-case-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            transform: translateY(-100%);
+            transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
         .use-case-card:hover {
-            border-color: var(--text-primary);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        
+        .use-case-card:hover::before {
+            transform: translateY(0);
         }
 
         .use-case-card h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+            font-size: var(--md-sys-typescale-title-medium-font-size);
+            font-weight: 500;
+            margin-bottom: var(--space-md);
             color: var(--text-primary);
         }
 
         .use-case-card p {
             color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
-            line-height: 1.5;
+            font-size: var(--md-sys-typescale-body-medium-font-size);
+            margin-bottom: var(--space-lg);
+            line-height: var(--md-sys-typescale-body-medium-line-height);
         }
 
         .use-case-tag {
             display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: var(--bg-tertiary);
-            color: var(--text-secondary);
-            border-radius: 4px;
-            font-size: 0.75rem;
+            padding: var(--space-xs) var(--space-md);
+            background: var(--accent-light);
+            color: var(--accent-primary);
+            border-radius: var(--shape-corner-large);
+            font-size: var(--md-sys-typescale-body-medium-font-size);
             font-weight: 500;
+            border: 1px solid var(--accent-primary);
         }
 
         /* Philosophy */
@@ -669,27 +950,88 @@
             .nav-links {
                 display: none;
             }
+            
+            .container {
+                padding: 0 var(--space-sm);
+            }
 
+            .hero {
+                padding: var(--space-2xl) 0 var(--space-lg);
+                text-align: center;
+            }
+            
             .hero h1 {
-                font-size: 2.25rem;
+                font-size: var(--md-sys-typescale-headline-medium-font-size);
+                line-height: var(--md-sys-typescale-headline-medium-line-height);
             }
 
             .hero p {
-                font-size: 1.125rem;
+                font-size: var(--md-sys-typescale-body-medium-font-size);
+            }
+            
+            .cta-group {
+                justify-content: center;
             }
 
             .problem-grid,
             .install-grid {
                 grid-template-columns: 1fr;
+                gap: var(--space-xl);
             }
-
+            
+            .features-grid,
+            .steps-grid,
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-md);
+            }
+            
             .section-header h2 {
-                font-size: 1.75rem;
+                font-size: var(--md-sys-typescale-headline-small-font-size);
+                text-align: center;
+            }
+            
+            .section-header p {
+                text-align: center;
+                font-size: var(--md-sys-typescale-body-medium-font-size);
             }
 
             .footer-content {
                 flex-direction: column;
                 text-align: center;
+                gap: var(--space-lg);
+            }
+            
+            .docs-viewer {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            
+            .docs-sidebar {
+                max-height: 200px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            
+            .docs-content {
+                max-height: 400px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: var(--md-sys-typescale-title-large-font-size);
+            }
+            
+            .btn {
+                padding: var(--space-sm) var(--space-md);
+                font-size: 0.875rem;
+            }
+            
+            .feature-card,
+            .step-card,
+            .use-case-card {
+                padding: var(--space-lg);
             }
         }
 
@@ -952,9 +1294,9 @@
     <main id="main">
         <section class="hero">
             <div class="container">
-                <h1>adbjson - Transform ADB Output Into <span>Clean JSON</span></h1>
-                <p>Convert raw adb command outputs into structured JSON for scripts, tools, automation, and debugging workflows.</p>
-                <p class="hero-sub">For developers, automation engineers, QA teams, and Android developers who need reliable, parseable device data.</p>
+                <h1>adbjson - <span>Clean JSON</span> from Android Debug Bridge</h1>
+                <p>Transform raw ADB command output into structured, parseable JSON. Built for developers who need reliable device data in their automation workflows.</p>
+                <p class="hero-sub">Zero configuration, instant results, and perfect integration with modern development pipelines.</p>
                 <div class="cta-group">
                     <a href="#installation" class="btn btn-primary">
                         Get Started
@@ -969,24 +1311,24 @@
         <section class="problem-section">
             <div class="container">
                 <div class="section-header">
-                    <h2>The Problem ADB Output is Messy</h2>
-                    <p>Raw adb commands return inconsistent, hard-to-parse text that breaks scripts and wastes engineering time.</p>
+                    <h2>Stop Parsing Text, Start Using Data</h2>
+                    <p>Raw ADB output breaks scripts and wastes development time. adbjson delivers consistent JSON that just works.</p>
                 </div>
                 <div class="problem-grid">
                     <div class="problem-content">
-                        <h3>Why ADB Output is Painful</h3>
+                        <h3>The Challenge</h3>
                         <ul class="problem-list">
-                            <li>Inconsistent formatting across commands</li>
-                            <li>Requires fragile regex parsing</li>
-                            <li>Breaks when Android changes output format</li>
-                            <li>No structured data for automation</li>
+                            <li>Inconsistent formatting across Android versions</li>
+                            <li>Fragile regex parsing that breaks unexpectedly</li>
+                            <li>No structured data for modern pipelines</li>
+                            <li>Hours wasted on text processing instead of features</li>
                         </ul>
-                        <h3>How adbjson Solves It</h3>
+                        <h3>The Solution</h3>
                         <ul class="solution-list">
-                            <li>Consistent JSON structure every time</li>
-                            <li>Native parsing in any language</li>
-                            <li>Stable schema across versions</li>
-                            <li>Ready for pipelines and automation</li>
+                            <li>Consistent JSON structure, every single time</li>
+                            <li>Native parsing in any programming language</li>
+                            <li>Stable schema that survives Android updates</li>
+                            <li>Ready for production pipelines from day one</li>
                         </ul>
                     </div>
                     <div class="code-comparison">
@@ -1049,33 +1391,33 @@ Current Battery Service state:
         <section id="features">
             <div class="container">
                 <div class="section-header">
-                    <h2>Powerful Features</h2>
-                    <p>Everything you need to work with Android device data efficiently.</p>
+                    <h2>Built for Modern Development</h2>
+                    <p>Everything you need to integrate Android device data seamlessly into your workflow.</p>
                 </div>
                 <div class="features-grid">
                     <div class="feature-card">
                         <h3>Zero Configuration</h3>
-                        <p>Works out of the box. No config files, no setup required. Just run and get JSON.</p>
+                        <p>Download and run. No config files, no setup complexity, no dependencies. Works immediately.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>Fast Execution</h3>
-                        <p>Built in Go for speed. Minimal overhead, instant results even with complex commands.</p>
+                        <h3>Lightning Fast</h3>
+                        <p>Built in Go for maximum performance. Get results instantly, even with complex device queries.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>Structured Output</h3>
-                        <p>Predictable JSON schema for every command. Easy to parse, easy to validate.</p>
+                        <h3>Predictable Schema</h3>
+                        <p>Consistent JSON structure across all commands. Easy to validate and integrate with confidence.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>Extensible Design</h3>
-                        <p>Easy to add new parsers. Modular architecture supports custom commands.</p>
+                        <h3>Extensible Architecture</h3>
+                        <p>Modular design makes adding new commands simple. Contribute or customize for your needs.</p>
                     </div>
                     <div class="feature-card">
                         <h3>Cross-Platform</h3>
-                        <p>Runs on macOS, Linux, and Windows. Single binary, no dependencies.</p>
+                        <p>Single binary runs everywhere. macOS, Linux, Windows - same experience, no dependencies.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>Script Integration</h3>
-                        <p>Pipe output to jq, grep, or any tool. Perfect for shell scripts and CI/CD.</p>
+                        <h3>Pipeline Ready</h3>
+                        <p>Perfect for CI/CD, automation, and monitoring. Pipe to jq, store in databases, process at scale.</p>
                     </div>
                 </div>
             </div>
@@ -1084,21 +1426,21 @@ Current Battery Service state:
         <section id="how-it-works" class="how-section">
             <div class="container">
                 <div class="section-header">
-                    <h2>How It Works</h2>
-                    <p>Three simple steps to get structured Android device data.</p>
+                    <h2>Get Started in Three Steps</h2>
+                    <p>From installation to production-ready JSON in minutes.</p>
                 </div>
                 <div class="steps-grid">
-                    <div class="step-card">
-                        <h3>1. Install</h3>
-                        <p>Download the binary or use your package manager. Single file, no dependencies.</p>
+                    <div class="step-card" data-step="1">
+                        <h3>Install adbjson</h3>
+                        <p>Download the single binary or use your package manager. No runtime dependencies required.</p>
                     </div>
-                    <div class="step-card">
-                        <h3>2. Run Command</h3>
-                        <p>Execute adbjson with any supported adb command. It wraps adb automatically.</p>
+                    <div class="step-card" data-step="2">
+                        <h3>Run Commands</h3>
+                        <p>Execute adbjson instead of adb. It automatically wraps and transforms the output to JSON.</p>
                     </div>
-                    <div class="step-card">
-                        <h3>3. Get JSON</h3>
-                        <p>Receive clean, structured JSON output. Pipe to other tools or save to file.</p>
+                    <div class="step-card" data-step="3">
+                        <h3>Use JSON Data</h3>
+                        <p>Feed the structured output into your tools, scripts, and pipelines. Parse reliably every time.</p>
                     </div>
                 </div>
             </div>
@@ -1107,13 +1449,13 @@ Current Battery Service state:
         <section id="installation">
             <div class="container">
                 <div class="section-header">
-                    <h2>Installation</h2>
-                    <p>Get up and running in seconds.</p>
+                    <h2>Quick Installation</h2>
+                    <p>Get adbjson running on your system in under 30 seconds.</p>
                 </div>
                 <div class="install-grid">
                     <div class="install-content">
-                        <h3>Quick Install</h3>
-                        <p>Choose your platform and install method. adbjson is a single binary with no runtime dependencies.</p>
+                        <h3>Choose Your Platform</h3>
+                        <p>adbjson is a single binary with zero runtime dependencies. Pick your preferred installation method.</p>
                         
                         <div class="install-method">
                             <h4>macOS</h4>
@@ -1181,12 +1523,12 @@ brew install adbjson</code></pre>
                         </div>
                     </div>
                     <div class="install-content">
-                        <h3>Example Usage</h3>
-                        <p>Once installed, use adbjson just like adb but get JSON output.</p>
+                        <h3>Usage Examples</h3>
+                        <p>Start using adbjson immediately. It's a drop-in replacement for adb with JSON output.</p>
                         
                         <div class="code-block">
                             <div class="code-header">
-                                <span class="code-label">List devices</span>
+                                <span class="code-label">List connected devices</span>
                                 <button class="copy-btn" onclick="copyCode(this)">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                     Copy
@@ -1199,7 +1541,7 @@ brew install adbjson</code></pre>
 
                         <div class="code-block">
                             <div class="code-header">
-                                <span class="code-label">Get battery info</span>
+                                <span class="code-label">Get battery information</span>
                                 <button class="copy-btn" onclick="copyCode(this)">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                     Copy
@@ -1212,7 +1554,7 @@ brew install adbjson</code></pre>
 
                         <div class="code-block">
                             <div class="code-header">
-                                <span class="code-label">Pipe to jq</span>
+                                <span class="code-label">Pipe to jq for filtering</span>
                                 <button class="copy-btn" onclick="copyCode(this)">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                     Copy
@@ -1220,6 +1562,19 @@ brew install adbjson</code></pre>
                             </div>
                             <div class="code-content">
                                 <pre><code>adbjson devices | jq '.devices[].serial'</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Save to file</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    Copy
+                                </button>
+                            </div>
+                            <div class="code-content">
+                                <pre><code>adbjson shell dumpsys battery > battery.json</code></pre>
                             </div>
                         </div>
                     </div>
@@ -1230,39 +1585,39 @@ brew install adbjson</code></pre>
         <section id="use-cases" class="use-cases-section">
             <div class="container">
                 <div class="section-header">
-                    <h2>Real Use Cases</h2>
-                    <p>See how teams use adbjson in production.</p>
+                    <h2>Real-World Applications</h2>
+                    <p>See how development teams use adbjson in production environments.</p>
                 </div>
                 <div class="use-cases-grid">
                     <div class="use-case-card">
-                        <h3>Automation Pipelines</h3>
-                        <p>Extract device info before running tests. Automate device selection and setup in CI/CD pipelines.</p>
-                        <span class="use-case-tag">CI/CD</span>
+                        <h3>CI/CD Pipelines</h3>
+                        <p>Automate device selection and data extraction before running tests. Ensure consistent test environments across builds.</p>
+                        <span class="use-case-tag">Automation</span>
                     </div>
                     <div class="use-case-card">
-                        <h3>Debugging Workflows</h3>
-                        <p>Quickly get battery, network, and storage stats in JSON format for debugging tools and dashboards.</p>
-                        <span class="use-case-tag">Debugging</span>
-                    </div>
-                    <div class="use-case-card">
-                        <h3>Device Info Extraction</h3>
-                        <p>Build device inventories and monitoring systems. Parse device properties reliably at scale.</p>
+                        <h3>Device Monitoring</h3>
+                        <p>Build real-time dashboards for battery, storage, and network metrics. Parse device state reliably at scale.</p>
                         <span class="use-case-tag">Monitoring</span>
                     </div>
                     <div class="use-case-card">
-                        <h3>Testing Infrastructure</h3>
-                        <p>Integrate with test frameworks to capture device state before and after test runs.</p>
+                        <h3>Test Automation</h3>
+                        <p>Capture device conditions before and after test runs. Validate device state and debug failures with structured data.</p>
                         <span class="use-case-tag">Testing</span>
                     </div>
                     <div class="use-case-card">
-                        <h3>QA Automation</h3>
-                        <p>Validate device conditions before test execution. Ensure consistent test environments.</p>
+                        <h3>Quality Assurance</h3>
+                        <p>Standardize device setup across test environments. Ensure consistent testing conditions for reliable results.</p>
                         <span class="use-case-tag">QA</span>
                     </div>
                     <div class="use-case-card">
-                        <h3>Custom Tooling</h3>
-                        <p>Build custom dashboards and monitoring tools with predictable JSON data from Android devices.</p>
-                        <span class="use-case-tag">Tooling</span>
+                        <h3>Developer Tools</h3>
+                        <p>Build custom debugging utilities and development tools. Access device data through clean, predictable APIs.</p>
+                        <span class="use-case-tag">Development</span>
+                    </div>
+                    <div class="use-case-card">
+                        <h3>Enterprise Integration</h3>
+                        <p>Integrate Android device management into enterprise systems. Feed device inventory and health data to existing infrastructure.</p>
+                        <span class="use-case-tag">Enterprise</span>
                     </div>
                 </div>
             </div>
@@ -1272,8 +1627,8 @@ brew install adbjson</code></pre>
         <section id="documentation-viewer">
             <div class="container">
                 <div class="section-header">
-                    <h2>Command Documentation</h2>
-                    <p>Browse interactive documentation for all adbjson commands.</p>
+                    <h2>Interactive Documentation</h2>
+                    <p>Browse complete command reference with live examples and JSON output samples.</p>
                 </div>
                 <div class="docs-viewer">
                     <div class="docs-sidebar">
@@ -1286,8 +1641,8 @@ brew install adbjson</code></pre>
                         <div class="markdown-viewer" id="markdownViewer">
                             <div class="welcome-message">
                                 <h3>Welcome to adbjson Documentation</h3>
-                                <p>Select a command from the left sidebar to view its documentation.</p>
-                                <p>Each command includes detailed usage examples and JSON output samples.</p>
+                                <p>Select a command from the sidebar to explore detailed documentation.</p>
+                                <p>Each command includes usage examples, JSON output samples, and integration tips.</p>
                             </div>
                         </div>
                     </div>
