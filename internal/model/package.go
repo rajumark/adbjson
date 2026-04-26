@@ -76,3 +76,14 @@ type InstallResult struct {
 type InstallResponse struct {
 	InstallResult InstallResult `json:"install_result"`
 }
+
+// UninstallResult represents uninstallation result
+type UninstallResult struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+// UninstallResponse represents the response for uninstall command
+type UninstallResponse struct {
+	UninstallResult UninstallResult `json:"uninstall_result"`
+}
