@@ -303,52 +303,221 @@
             transition: opacity 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
-        /* Hero Section */
-        .hero {
-            padding: var(--space-3xl) 0 var(--space-2xl);
-            text-align: left;
-            max-width: 800px;
-            margin: 0 auto;
+        /* Bento Grid Layout */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: minmax(100px, auto);
+            gap: var(--space-md);
+            padding: var(--space-2xl) 0;
         }
-
-        .hero h1 {
-            font-family: 'Google Sans', 'Roboto', sans-serif;
-            font-size: var(--md-sys-typescale-headline-large-font-size);
-            font-weight: 400;
-            line-height: var(--md-sys-typescale-headline-large-line-height);
-            margin-bottom: var(--space-lg);
-            letter-spacing: -0.02em;
+        
+        .bento-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--shape-corner-medium);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transform: translateY(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .bento-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-primary);
+        }
+        
+        .bento-card:hover::before {
+            transform: translateY(0);
+        }
+        
+        /* Bento Card Sizes */
+        .bento-hero {
+            grid-column: span 8;
+            grid-row: span 2;
+        }
+        
+        .bento-feature {
+            grid-column: span 4;
+            grid-row: span 1;
+        }
+        
+        .bento-feature-large {
+            grid-column: span 6;
+            grid-row: span 2;
+        }
+        
+        .bento-code {
+            grid-column: span 4;
+            grid-row: span 2;
+        }
+        
+        .bento-install {
+            grid-column: span 6;
+            grid-row: span 2;
+        }
+        
+        .bento-use-case {
+            grid-column: span 4;
+            grid-row: span 1;
+        }
+        
+        .bento-docs {
+            grid-column: span 12;
+            grid-row: span 3;
+        }
+        
+        /* Bento Card Content */
+        .bento-card h3 {
+            font-size: var(--md-sys-typescale-title-medium-font-size);
+            font-weight: 500;
+            margin-bottom: var(--space-md);
             color: var(--text-primary);
         }
-
-        .hero h1 span {
+        
+        .bento-card h2 {
+            font-size: var(--md-sys-typescale-headline-medium-font-size);
+            font-weight: 400;
+            margin-bottom: var(--space-lg);
+            color: var(--text-primary);
+        }
+        
+        .bento-card p {
+            color: var(--text-secondary);
+            font-size: var(--md-sys-typescale-body-medium-font-size);
+            line-height: var(--md-sys-typescale-body-medium-line-height);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .bento-hero h1 {
+            font-size: var(--md-sys-typescale-headline-large-font-size);
+            font-weight: 400;
+            margin-bottom: var(--space-lg);
+            color: var(--text-primary);
+        }
+        
+        .bento-hero h1 span {
+            color: var(--accent-primary);
             font-weight: 500;
+        }
+        
+        .bento-card .bento-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: var(--space-md);
             color: var(--accent-primary);
         }
-
-        .hero p {
-            font-size: var(--md-sys-typescale-body-large-font-size);
-            font-weight: 400;
-            color: var(--text-secondary);
-            max-width: 100%;
-            margin: 0 0 var(--space-xl) 0;
-            line-height: var(--md-sys-typescale-body-large-line-height);
-        }
-
-        .hero-sub {
-            font-size: var(--md-sys-typescale-body-medium-font-size);
-            color: var(--text-tertiary);
-            max-width: 100%;
-            margin: 0 0 var(--space-xl) 0;
-            line-height: var(--md-sys-typescale-body-medium-line-height);
-        }
-
-        .cta-group {
+        
+        .bento-card .bento-number {
+            position: absolute;
+            top: var(--space-lg);
+            right: var(--space-lg);
+            width: 40px;
+            height: 40px;
+            background: var(--accent-primary);
+            color: var(--md-sys-color-on-primary);
+            border-radius: 50%;
             display: flex;
-            gap: var(--space-md);
-            justify-content: flex-start;
-            flex-wrap: wrap;
             align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 1.125rem;
+        }
+        
+        .bento-card .bento-tag {
+            display: inline-block;
+            padding: var(--space-xs) var(--space-md);
+            background: var(--accent-light);
+            color: var(--accent-primary);
+            border-radius: var(--shape-corner-large);
+            font-size: var(--md-sys-typescale-body-medium-font-size);
+            font-weight: 500;
+            border: 1px solid var(--accent-primary);
+        }
+        
+        /* Bento Grid Responsive */
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(8, 1fr);
+            }
+            
+            .bento-hero {
+                grid-column: span 6;
+                grid-row: span 2;
+            }
+            
+            .bento-feature {
+                grid-column: span 4;
+                grid-row: span 1;
+            }
+            
+            .bento-feature-large {
+                grid-column: span 4;
+                grid-row: span 2;
+            }
+            
+            .bento-code {
+                grid-column: span 4;
+                grid-row: span 2;
+            }
+            
+            .bento-install {
+                grid-column: span 4;
+                grid-row: span 2;
+            }
+            
+            .bento-use-case {
+                grid-column: span 4;
+                grid-row: span 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: var(--space-sm);
+                padding: var(--space-lg) 0;
+            }
+            
+            .bento-card {
+                padding: var(--space-lg);
+            }
+            
+            .bento-hero,
+            .bento-feature,
+            .bento-feature-large,
+            .bento-code,
+            .bento-install,
+            .bento-use-case,
+            .bento-docs {
+                grid-column: span 4;
+                grid-row: span auto;
+            }
+            
+            .bento-hero h1 {
+                font-size: var(--md-sys-typescale-headline-medium-font-size);
+            }
+            
+            .bento-card h2 {
+                font-size: var(--md-sys-typescale-title-large-font-size);
+            }
         }
 
         .btn {
@@ -1292,49 +1461,76 @@
     </nav>
 
     <main id="main">
-        <section class="hero">
-            <div class="container">
-                <h1>adbjson - <span>Clean JSON</span> from Android Debug Bridge</h1>
-                <p>Transform raw ADB command output into structured, parseable JSON. Built for developers who need reliable device data in their automation workflows.</p>
-                <p class="hero-sub">Zero configuration, instant results, and perfect integration with modern development pipelines.</p>
-                <div class="cta-group">
-                    <a href="#installation" class="btn btn-primary">
-                        Get Started
-                    </a>
-                    <a href="#documentation-viewer" class="btn btn-secondary">
-                        View Documentation
-                    </a>
+        <div class="container">
+            <div class="bento-grid">
+                <!-- Hero Card -->
+                <div class="bento-card bento-hero">
+                    <h1>adbjson - <span>Clean JSON</span> from Android Debug Bridge</h1>
+                    <p>Transform raw ADB command output into structured, parseable JSON. Built for developers who need reliable device data in their automation workflows.</p>
+                    <p>Zero configuration, instant results, and perfect integration with modern development pipelines.</p>
+                    <div class="cta-group">
+                        <a href="#installation" class="btn btn-primary">
+                            Get Started
+                        </a>
+                        <a href="#documentation-viewer" class="btn btn-secondary">
+                            View Documentation
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-        <section class="problem-section">
-            <div class="container">
-                <div class="section-header">
+                
+                <!-- Feature Cards -->
+                <div class="bento-card bento-feature">
+                    <svg class="bento-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    <h3>Lightning Fast</h3>
+                    <p>Built in Go for maximum performance. Get results instantly, even with complex device queries.</p>
+                </div>
+                
+                <div class="bento-card bento-feature">
+                    <svg class="bento-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                    <h3>Cross-Platform</h3>
+                    <p>Single binary runs everywhere. macOS, Linux, Windows - same experience, no dependencies.</p>
+                </div>
+                
+                <!-- Problem/Solution Card -->
+                <div class="bento-card bento-feature-large">
                     <h2>Stop Parsing Text, Start Using Data</h2>
                     <p>Raw ADB output breaks scripts and wastes development time. adbjson delivers consistent JSON that just works.</p>
-                </div>
-                <div class="problem-grid">
-                    <div class="problem-content">
-                        <h3>The Challenge</h3>
-                        <ul class="problem-list">
-                            <li>Inconsistent formatting across Android versions</li>
-                            <li>Fragile regex parsing that breaks unexpectedly</li>
-                            <li>No structured data for modern pipelines</li>
-                            <li>Hours wasted on text processing instead of features</li>
-                        </ul>
-                        <h3>The Solution</h3>
-                        <ul class="solution-list">
-                            <li>Consistent JSON structure, every single time</li>
-                            <li>Native parsing in any programming language</li>
-                            <li>Stable schema that survives Android updates</li>
-                            <li>Ready for production pipelines from day one</li>
-                        </ul>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); margin-top: var(--space-lg);">
+                        <div>
+                            <h3>The Challenge</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-bottom: var(--space-sm); color: var(--text-secondary); font-size: var(--md-sys-typescale-body-medium-font-size);">• Inconsistent formatting across Android versions</li>
+                                <li style="margin-bottom: var(--space-sm); color: var(--text-secondary); font-size: var(--md-sys-typescale-body-medium-font-size);">• Fragile regex parsing that breaks unexpectedly</li>
+                                <li style="margin-bottom: var(--space-sm); color: var(--text-secondary); font-size: var(--md-sys-typescale-body-medium-font-size);">• No structured data for modern pipelines</li>
+                                <li style="color: var(--text-secondary); font-size: var(--md-sys-typescale-body-medium-font-size);">• Hours wasted on text processing instead of features</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>The Solution</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-bottom: var(--space-sm); color: var(--text-secondary); font-size: var(--md-sys-typescale-body-medium-font-size);">✓ Consistent JSON structure, every single time</li>
+                                <li style="margin-bottom: var(--space-sm); color: var(--text-secondary); font-size: var(--md-sys-typescale-body-medium-font-size);">✓ Native parsing in any programming language</li>
+                                <li style="margin-bottom: var(--space-sm); color: var(--text-secondary); font-size: var(--md-sys-typescale-body-medium-font-size);">✓ Stable schema that survives Android updates</li>
+                                <li style="color: var(--text-secondary); font-size: var(--md-sys-typescale-body-medium-font-size);">✓ Ready for production pipelines from day one</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="code-comparison">
+                </div>
+                
+                <!-- Code Example Card -->
+                <div class="bento-card bento-code">
+                    <h3>Before & After</h3>
+                    <div class="code-comparison" style="display: flex; flex-direction: column; gap: var(--space-md);">
                         <div class="code-block">
                             <div class="code-header">
-                                <span class="code-label">Before: Raw ADB Output</span>
+                                <span class="code-label">Before: Raw ADB</span>
                                 <button class="copy-btn" onclick="copyCode(this)">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                     Copy
@@ -1343,15 +1539,7 @@
                             <div class="code-content">
                                 <pre><code>List of devices attached
 emulator-5554   device
-0123456789abcdef device
-
-$ adb shell dumpsys battery
-Current Battery Service state:
-  AC powered: false
-  USB powered: true
-  Wireless powered: false
-  Max charging current: 500000
-  ...</code></pre>
+0123456789abcdef device</code></pre>
                             </div>
                         </div>
                         <div class="code-block">
@@ -1365,170 +1553,81 @@ Current Battery Service state:
                             <div class="code-content">
                                 <pre><code>{
   "devices": [
-    {
-      "serial": "emulator-5554",
-      "status": "device"
-    },
-    {
-      "serial": "0123456789abcdef",
-      "status": "device"
-    }
-  ],
-  "battery": {
-    "acPowered": false,
-    "usbPowered": true,
-    "wirelessPowered": false,
-    "maxChargingCurrent": 500000
-  }
+    {"serial": "emulator-5554", "status": "device"},
+    {"serial": "0123456789abcdef", "status": "device"}
+  ]
 }</code></pre>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="features">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Built for Modern Development</h2>
-                    <p>Everything you need to integrate Android device data seamlessly into your workflow.</p>
-                </div>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <h3>Zero Configuration</h3>
-                        <p>Download and run. No config files, no setup complexity, no dependencies. Works immediately.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Lightning Fast</h3>
-                        <p>Built in Go for maximum performance. Get results instantly, even with complex device queries.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Predictable Schema</h3>
-                        <p>Consistent JSON structure across all commands. Easy to validate and integrate with confidence.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Extensible Architecture</h3>
-                        <p>Modular design makes adding new commands simple. Contribute or customize for your needs.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Cross-Platform</h3>
-                        <p>Single binary runs everywhere. macOS, Linux, Windows - same experience, no dependencies.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Pipeline Ready</h3>
-                        <p>Perfect for CI/CD, automation, and monitoring. Pipe to jq, store in databases, process at scale.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="how-it-works" class="how-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Get Started in Three Steps</h2>
-                    <p>From installation to production-ready JSON in minutes.</p>
-                </div>
-                <div class="steps-grid">
-                    <div class="step-card" data-step="1">
-                        <h3>Install adbjson</h3>
-                        <p>Download the single binary or use your package manager. No runtime dependencies required.</p>
-                    </div>
-                    <div class="step-card" data-step="2">
-                        <h3>Run Commands</h3>
-                        <p>Execute adbjson instead of adb. It automatically wraps and transforms the output to JSON.</p>
-                    </div>
-                    <div class="step-card" data-step="3">
-                        <h3>Use JSON Data</h3>
-                        <p>Feed the structured output into your tools, scripts, and pipelines. Parse reliably every time.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="installation">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Quick Installation</h2>
-                    <p>Get adbjson running on your system in under 30 seconds.</p>
-                </div>
-                <div class="install-grid">
-                    <div class="install-content">
-                        <h3>Choose Your Platform</h3>
-                        <p>adbjson is a single binary with zero runtime dependencies. Pick your preferred installation method.</p>
-                        
-                        <div class="install-method">
-                            <h4>macOS</h4>
-                            <div class="install-tabs">
-                                <button class="install-tab active" onclick="showInstall('mac-curl')">curl</button>
-                                <button class="install-tab" onclick="showInstall('mac-brew')">brew</button>
-                            </div>
-                            <div id="mac-curl" class="code-block">
-                                <div class="code-header">
-                                    <span class="code-label">Install with curl</span>
-                                    <button class="copy-btn" onclick="copyCode(this)">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                        Copy
-                                    </button>
-                                </div>
-                                <div class="code-content">
-                                    <pre><code>curl -sSL https://get.adbjson.dev | sh</code></pre>
-                                </div>
-                            </div>
-                            <div id="mac-brew" class="code-block" style="display: none;">
-                                <div class="code-header">
-                                    <span class="code-label">Install with brew</span>
-                                    <button class="copy-btn" onclick="copyCode(this)">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                        Copy
-                                    </button>
-                                </div>
-                                <div class="code-content">
-                                    <pre><code>brew tap adbjson/tap
-brew install adbjson</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="install-method">
-                            <h4>Linux</h4>
-                            <div class="code-block">
-                                <div class="code-header">
-                                    <span class="code-label">Install with curl</span>
-                                    <button class="copy-btn" onclick="copyCode(this)">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                        Copy
-                                    </button>
-                                </div>
-                                <div class="code-content">
-                                    <pre><code>curl -sSL https://get.adbjson.dev | sh</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="install-method">
-                            <h4>Windows</h4>
-                            <div class="code-block">
-                                <div class="code-header">
-                                    <span class="code-label">Install with PowerShell</span>
-                                    <button class="copy-btn" onclick="copyCode(this)">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                        Copy
-                                    </button>
-                                </div>
-                                <div class="code-content">
-                                    <pre><code>irm https://get.adbjson.dev/install.ps1 | iex</code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="install-content">
-                        <h3>Usage Examples</h3>
-                        <p>Start using adbjson immediately. It's a drop-in replacement for adb with JSON output.</p>
-                        
+                
+                <!-- Installation Card -->
+                <div class="bento-card bento-install">
+                    <h3>Quick Installation</h3>
+                    <p>Get adbjson running on your system in under 30 seconds. Single binary, zero dependencies.</p>
+                    
+                    <div class="install-method" style="margin-bottom: var(--space-lg);">
+                        <h4>macOS / Linux</h4>
                         <div class="code-block">
                             <div class="code-header">
-                                <span class="code-label">List connected devices</span>
+                                <span class="code-label">Install with curl</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    Copy
+                                </button>
+                            </div>
+                            <div class="code-content">
+                                <pre><code>curl -sSL https://get.adbjson.dev | sh</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="install-method">
+                        <h4>Windows</h4>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Install with PowerShell</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    Copy
+                                </button>
+                            </div>
+                            <div class="code-content">
+                                <pre><code>irm https://get.adbjson.dev/install.ps1 | iex</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- More Feature Cards -->
+                <div class="bento-card bento-feature">
+                    <svg class="bento-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 12l2 2 4-4"></path>
+                        <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
+                        <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"></path>
+                        <path d="M3 12c0 6 6 6 6 6s6 0 6-6-6-6-6-6-6 0-6 6"></path>
+                    </svg>
+                    <h3>Zero Configuration</h3>
+                    <p>Download and run. No config files, no setup complexity, no dependencies. Works immediately.</p>
+                </div>
+                
+                <div class="bento-card bento-feature">
+                    <svg class="bento-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                    </svg>
+                    <h3>Predictable Schema</h3>
+                    <p>Consistent JSON structure across all commands. Easy to validate and integrate with confidence.</p>
+                </div>
+                
+                <!-- Usage Examples Card -->
+                <div class="bento-card bento-code">
+                    <h3>Usage Examples</h3>
+                    <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">List devices</span>
                                 <button class="copy-btn" onclick="copyCode(this)">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                     Copy
@@ -1538,23 +1637,9 @@ brew install adbjson</code></pre>
                                 <pre><code>adbjson devices</code></pre>
                             </div>
                         </div>
-
                         <div class="code-block">
                             <div class="code-header">
-                                <span class="code-label">Get battery information</span>
-                                <button class="copy-btn" onclick="copyCode(this)">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                    Copy
-                                </button>
-                            </div>
-                            <div class="code-content">
-                                <pre><code>adbjson battery</code></pre>
-                            </div>
-                        </div>
-
-                        <div class="code-block">
-                            <div class="code-header">
-                                <span class="code-label">Pipe to jq for filtering</span>
+                                <span class="code-label">Pipe to jq</span>
                                 <button class="copy-btn" onclick="copyCode(this)">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                     Copy
@@ -1564,91 +1649,96 @@ brew install adbjson</code></pre>
                                 <pre><code>adbjson devices | jq '.devices[].serial'</code></pre>
                             </div>
                         </div>
-
-                        <div class="code-block">
-                            <div class="code-header">
-                                <span class="code-label">Save to file</span>
-                                <button class="copy-btn" onclick="copyCode(this)">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                    Copy
-                                </button>
-                            </div>
-                            <div class="code-content">
-                                <pre><code>adbjson shell dumpsys battery > battery.json</code></pre>
-                            </div>
+                    </div>
+                </div>
+                
+                <!-- Use Cases Cards -->
+                <div class="bento-card bento-use-case">
+                    <h3>CI/CD Pipelines</h3>
+                    <p>Automate device selection and data extraction before running tests. Ensure consistent test environments across builds.</p>
+                    <span class="bento-tag">Automation</span>
+                </div>
+                
+                <div class="bento-card bento-use-case">
+                    <h3>Device Monitoring</h3>
+                    <p>Build real-time dashboards for battery, storage, and network metrics. Parse device state reliably at scale.</p>
+                    <span class="bento-tag">Monitoring</span>
+                </div>
+                
+                <div class="bento-card bento-use-case">
+                    <h3>Test Automation</h3>
+                    <p>Capture device conditions before and after test runs. Validate device state and debug failures with structured data.</p>
+                    <span class="bento-tag">Testing</span>
+                </div>
+                
+                <!-- Steps Card -->
+                <div class="bento-card bento-feature-large">
+                    <h2>Get Started in Three Steps</h2>
+                    <p>From installation to production-ready JSON in minutes.</p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); margin-top: var(--space-lg);">
+                        <div style="position: relative;">
+                            <div class="bento-number">1</div>
+                            <h3>Install adbjson</h3>
+                            <p>Download the single binary or use your package manager. No runtime dependencies required.</p>
+                        </div>
+                        <div style="position: relative;">
+                            <div class="bento-number">2</div>
+                            <h3>Run Commands</h3>
+                            <p>Execute adbjson instead of adb. It automatically wraps and transforms the output to JSON.</p>
+                        </div>
+                        <div style="position: relative;">
+                            <div class="bento-number">3</div>
+                            <h3>Use JSON Data</h3>
+                            <p>Feed the structured output into your tools, scripts, and pipelines. Parse reliably every time.</p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="use-cases" class="use-cases-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Real-World Applications</h2>
-                    <p>See how development teams use adbjson in production environments.</p>
+                
+                <!-- More Use Cases -->
+                <div class="bento-card bento-use-case">
+                    <h3>Quality Assurance</h3>
+                    <p>Standardize device setup across test environments. Ensure consistent testing conditions for reliable results.</p>
+                    <span class="bento-tag">QA</span>
                 </div>
-                <div class="use-cases-grid">
-                    <div class="use-case-card">
-                        <h3>CI/CD Pipelines</h3>
-                        <p>Automate device selection and data extraction before running tests. Ensure consistent test environments across builds.</p>
-                        <span class="use-case-tag">Automation</span>
-                    </div>
-                    <div class="use-case-card">
-                        <h3>Device Monitoring</h3>
-                        <p>Build real-time dashboards for battery, storage, and network metrics. Parse device state reliably at scale.</p>
-                        <span class="use-case-tag">Monitoring</span>
-                    </div>
-                    <div class="use-case-card">
-                        <h3>Test Automation</h3>
-                        <p>Capture device conditions before and after test runs. Validate device state and debug failures with structured data.</p>
-                        <span class="use-case-tag">Testing</span>
-                    </div>
-                    <div class="use-case-card">
-                        <h3>Quality Assurance</h3>
-                        <p>Standardize device setup across test environments. Ensure consistent testing conditions for reliable results.</p>
-                        <span class="use-case-tag">QA</span>
-                    </div>
-                    <div class="use-case-card">
-                        <h3>Developer Tools</h3>
-                        <p>Build custom debugging utilities and development tools. Access device data through clean, predictable APIs.</p>
-                        <span class="use-case-tag">Development</span>
-                    </div>
-                    <div class="use-case-card">
-                        <h3>Enterprise Integration</h3>
-                        <p>Integrate Android device management into enterprise systems. Feed device inventory and health data to existing infrastructure.</p>
-                        <span class="use-case-tag">Enterprise</span>
-                    </div>
+                
+                <div class="bento-card bento-use-case">
+                    <h3>Developer Tools</h3>
+                    <p>Build custom debugging utilities and development tools. Access device data through clean, predictable APIs.</p>
+                    <span class="bento-tag">Development</span>
                 </div>
-            </div>
-        </section>
-
-        
-        <section id="documentation-viewer">
-            <div class="container">
-                <div class="section-header">
+                
+                <div class="bento-card bento-use-case">
+                    <h3>Enterprise Integration</h3>
+                    <p>Integrate Android device management into enterprise systems. Feed device inventory and health data to existing infrastructure.</p>
+                    <span class="bento-tag">Enterprise</span>
+                </div>
+                
+                <!-- Documentation Card -->
+                <div class="bento-card bento-docs">
                     <h2>Interactive Documentation</h2>
                     <p>Browse complete command reference with live examples and JSON output samples.</p>
-                </div>
-                <div class="docs-viewer">
-                    <div class="docs-sidebar">
-                        <h3>Available Commands</h3>
-                        <div class="file-list" id="fileList">
-                            <div class="loading">Loading documentation...</div>
+                    
+                    <div class="docs-viewer" style="margin-top: var(--space-lg);">
+                        <div class="docs-sidebar">
+                            <h3>Available Commands</h3>
+                            <div class="file-list" id="fileList">
+                                <div class="loading">Loading documentation...</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="docs-content">
-                        <div class="markdown-viewer" id="markdownViewer">
-                            <div class="welcome-message">
-                                <h3>Welcome to adbjson Documentation</h3>
-                                <p>Select a command from the sidebar to explore detailed documentation.</p>
-                                <p>Each command includes usage examples, JSON output samples, and integration tips.</p>
+                        <div class="docs-content">
+                            <div class="markdown-viewer" id="markdownViewer">
+                                <div class="welcome-message">
+                                    <h3>Welcome to adbjson Documentation</h3>
+                                    <p>Select a command from the sidebar to explore detailed documentation.</p>
+                                    <p>Each command includes usage examples, JSON output samples, and integration tips.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 
     <footer>
