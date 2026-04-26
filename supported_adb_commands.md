@@ -136,6 +136,27 @@ Get screen size.
 
 ---
 
+### wm-density ✅
+Get screen density.
+
+**Usage:**
+```bash
+./adbjson wm-density
+```
+
+**Output:**
+```json
+{
+  "physical_density": "390"
+}
+```
+
+**Flags:**
+- `--pretty` - Pretty print JSON (default: true)
+- `--compact` - Compact JSON output
+
+---
+
 ## Planned Commands
 
 The following commands are planned for future releases:

@@ -1,17 +1,17 @@
-# get-serialno Command
+# wm-density Command
 
 ## Description
-Get the serial number of the connected device.
+Get the screen density of the device.
 
 ## Command
 ```bash
-./adbjson get-serialno
+./adbjson wm-density
 ```
 
 ## Sample Output
 ```json
 {
-  "serial_no": "ZD222XW5RL"
+  "physical_density": "390"
 }
 ```
 

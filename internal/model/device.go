@@ -36,3 +36,8 @@ type DevPathResponse struct {
 type ScreenSizeResponse struct {
 	PhysicalSize string `json:"physical_size"`
 }
+
+// ScreenDensityResponse wraps the screen density
+type ScreenDensityResponse struct {
+	PhysicalDensity string `json:"physical_density"`
+}

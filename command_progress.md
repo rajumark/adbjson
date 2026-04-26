@@ -71,7 +71,7 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb shell input text <text>` - Type text
 - [ ] `adb shell input keyevent <code>` - Send key event
 - [x] `adb shell wm size` - Get screen size
-- [ ] `adb shell wm density` - Get screen density
+- [x] `adb shell wm density` - Get screen density
 - [ ] `adb shell wm density <dpi>` - Set screen density
 - [ ] `adb shell wm overscan <left,top,right,bottom>` - Set overscan
 
