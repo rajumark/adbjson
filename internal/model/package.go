@@ -43,3 +43,14 @@ type InstrumentationResponse struct {
 	Instrumentations []Instrumentation `json:"instrumentations"`
 	Count            int               `json:"count"`
 }
+
+// Permission represents an Android permission
+type Permission struct {
+	Name string `json:"name"`
+}
+
+// PermissionsResponse represents the response for permission list command
+type PermissionsResponse struct {
+	Permissions []Permission `json:"permissions"`
+	Count       int           `json:"count"`
+}

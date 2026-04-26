@@ -55,7 +55,7 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb shell pm path <package>` - Get package path
 - [ ] `adb shell pm path android` - Get android package path
 - [x] `adb shell pm list instrumentation` - List instrumentation
-- [ ] `adb shell pm list permissions` - List permissions
+- [x] `adb shell pm list permissions` - List permissions
 - [ ] `adb shell pm install <apk>` - Install package
 - [ ] `adb install <apk>` - Install APK
 - [ ] `adb install -r <apk>` - Reinstall package
@@ -80,27 +80,52 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 
 - [ ] `adb shell dumpsys package <package>` - Dump package info
 - [ ] `adb shell dumpsys activity` - Dump activity info
+- [ ] `adb shell dumpsys activity activities` - Dump activity activities
+- [ ] `adb shell dumpsys activity activities | grep mResumedActivity` - View Reception Activity
+- [ ] `adb shell dumpsys activity services [<packagename>]` - View Running Services
 - [ ] `adb shell dumpsys battery` - Dump battery info
 - [ ] `adb shell dumpsys wifi` - Dump WiFi info
 - [ ] `adb shell dumpsys connectivity` - Dump connectivity info
 - [ ] `adb shell dumpsys telephony` - Dump telephony info
 - [ ] `adb shell dumpsys window` - Dump window info
+- [ ] `adb shell dumpsys window displays` - Dump window displays
 - [ ] `adb shell dumpsys meminfo` - Dump memory info
 - [ ] `adb shell dumpsys cpuinfo` - Dump CPU info
 - [ ] `adb shell dumpsys dbinfo` - Dump database info
+- [ ] `adb shell dumpsys iphonesubinfo` - Dump IMEI (Android 4.4 and below)
 
 ## Screen & Input
 
 - [ ] `adb shell screencap <file>` - Capture screenshot
+- [ ] `adb shell screencap -p <file>` - Capture screenshot (PNG format)
+- [ ] `adb exec-out screencap -p > sc.png` - Capture screenshot to computer
 - [ ] `adb shell screenrecord <file>` - Record screen
+- [ ] `adb shell screenrecord --size WIDTHxHEIGHT <file>` - Record screen with dimensions
+- [ ] `adb shell screenrecord --bit-rate RATE <file>` - Record screen with bit-rate
+- [ ] `adb shell screenrecord --time-limit TIME <file>` - Record screen with time limit
 - [ ] `adb shell input tap <x> <y>` - Tap screen
 - [ ] `adb shell input swipe <x1> <y1> <x2> <y2>` - Swipe screen
+- [ ] `adb shell input swipe <x1> <y1> <x2> <y2> [duration]` - Swipe with duration
 - [ ] `adb shell input text <text>` - Type text
 - [ ] `adb shell input keyevent <code>` - Send key event
+- [ ] `adb shell input keyevent 3` - HOME button
+- [ ] `adb shell input keyevent 4` - Return key
+- [ ] `adb shell input keyevent 26` - Power button
+- [ ] `adb shell input keyevent 82` - Menu button
+- [ ] `adb shell input keyevent 24` - Volume up
+- [ ] `adb shell input keyevent 25` - Volume down
+- [ ] `adb shell input keyevent 164` - Mute
+- [ ] `adb shell input keyevent 85` - Play/Pause
+- [ ] `adb shell input keyevent 224` - Light up screen
+- [ ] `adb shell input keyevent 223` - Turn off screen
 - [x] `adb shell wm size` - Get screen size
+- [ ] `adb shell wm size <WxH>` - Set screen resolution
+- [ ] `adb shell wm size reset` - Reset screen resolution
 - [x] `adb shell wm density` - Get screen density
 - [ ] `adb shell wm density <dpi>` - Set screen density
+- [ ] `adb shell wm density reset` - Reset screen density
 - [ ] `adb shell wm overscan <left,top,right,bottom>` - Set overscan
+- [ ] `adb shell wm overscan reset` - Reset overscan
 
 ## Logcat
 
@@ -115,8 +140,10 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb logcat -v brief` - Brief format
 - [ ] `adb logcat -v process` - Process format
 - [ ] `adb logcat -v thread` - Thread format
+- [ ] `adb logcat -v threadtime` - Threadtime format
 - [ ] `adb logcat -v raw` - Raw format
 - [ ] `adb logcat -v tag` - Tag format
+- [ ] `adb logcat -v long` - Long format
 - [ ] `adb logcat -s <tag>` - Filter by tag
 - [ ] `adb logcat *:E` - Show only errors
 - [ ] `adb logcat *:W` - Show warnings and errors
