@@ -1,60 +1,138 @@
 # shell screencap
 
-Capture device screenshot.
+Capture device screenshot with various options.
 
 ## Command
 ```bash
-adbjson shell screencap [options]
+adbjson shell screencap [filename] [flags]
 ```
 
 ## Description
-Executes `adb shell screencap` and outputs the result as structured JSON. Captures the device screen and returns image data or file information.
+Executes `adb shell screencap` and outputs the result as structured JSON. Captures the device screen and returns image data in base64 format or file information.
 
-## Sample Output
+## Examples
+
+### Basic screenshot capture
+```bash
+./adbjson shell screencap
+```
+
+**Output:**
 ```json
 {
-  "capture_time": "2024-01-15T10:30:45Z",
-  "width": 1080,
-  "height": 2400,
-  "density": 420,
-  "format": "png",
-  "size_bytes": 245760,
-  "file_path": "/storage/emulated/0/Pictures/screenshot.png",
-  "base64_data": "iVBORw0KGgoAAAANSUhEUgAA..."
+  "data": "iVBORw0KGgoAAAANSUhEUgAA...",
+  "format": "base64",
+  "size": 10368016,
+  "filename": ""
 }
 ```
 
-## Options
-- `-p` - Output PNG data to stdout
-- `file_path` - Save to specific file path
-
-## Examples
+### Capture in PNG format
 ```bash
-# Capture screenshot and get base64 data
-adbjson shell screencap -p
-
-# Save screenshot to file
-adbjson shell screencap /storage/emulated/0/Pictures/screenshot.png
-
-# Capture with timestamp filename
-adbjson shell screencap /storage/emulated/0/Pictures/screenshot_$(date +%Y%m%d_%H%M%S).png
+./adbjson shell screencap --png
 ```
 
-## Output Formats
-- **Base64** - When using `-p` flag, returns base64 encoded image data
-- **File Info** - When saving to file, returns file information and metadata
+**Output:**
+```json
+{
+  "data": "iVBORw0KGgoAAAANSUhEUgAA...",
+  "format": "png",
+  "size": 10368016,
+  "filename": ""
+}
+```
 
-## Screen Information
-The JSON output includes:
-- `width` - Screen width in pixels
-- `height` - Screen height in pixels  
-- `density` - Screen density (DPI)
-- `format` - Image format (PNG)
-- `size_bytes` - File size in bytes
-- `capture_time` - When screenshot was taken
+### Save screenshot to file
+```bash
+./adbjson shell screencap --output /storage/emulated/0/Pictures/screenshot.png
+```
+
+**Output:**
+```json
+{
+  "data": "iVBORw0KGgoAAAANSUhEUgAA...",
+  "format": "base64",
+  "size": 10368016,
+  "filename": "/storage/emulated/0/Pictures/screenshot.png"
+}
+```
+
+### Capture all displays
+```bash
+./adbjson shell screencap --all
+```
+
+**Output:**
+```json
+{
+  "data": "iVBORw0KGgoAAAANSUhEUgAA...",
+  "format": "base64",
+  "size": 10368016,
+  "filename": ""
+}
+```
+
+### Capture specific display
+```bash
+./adbjson shell screencap --display 4630946747577212034
+```
+
+**Output:**
+```json
+{
+  "data": "iVBORw0KGgoAAAANSUhEUgAA...",
+  "format": "base64",
+  "size": 10368016,
+  "filename": ""
+}
+```
+
+## Response Fields
+
+- **data** (string): Base64 encoded image data or PNG data
+- **format** (string): Output format ("base64", "png", or "raw")
+- **size** (number): Size of captured data in bytes
+- **filename** (string): Output filename if specified (optional)
 
 ## Flags
-- `--pretty` - Pretty print JSON (default: true)
-- `--compact` - Compact JSON output
-- `--base64` - Return base64 encoded image data
-- `--metadata-only` - Return only metadata, no image data
+
+- `-a, --all`: Capture all active displays
+- `-d, --display`: Specify display ID to capture (default: 4630946747577212034)
+- `-p, --png`: Output in PNG format
+- `-o, --output`: Save screenshot to file
+- `--seamless`: Use seamless hint path
+- `--compact`: Compact JSON output
+- `--debug`: Enable debug logging
+- `--format`: Output format (json, yaml)
+- `--pretty`: Pretty print JSON output
+
+## Use Cases
+
+- **Automated Testing**: Capture screenshots for visual regression testing
+- **Documentation**: Generate screenshots for user manuals and documentation
+- **Bug Reporting**: Capture device state for bug reports
+- **Monitoring**: Periodic screen capture for monitoring applications
+- **Remote Support**: Capture current screen for remote assistance
+
+## Compatibility
+
+- **Android Versions**: All Android versions supporting screencap command
+- **Device Requirements**: Any Android device with display capability
+- **Permissions**: May require storage permissions for file output
+- **Display Support**: Supports multiple displays on compatible devices
+
+## Notes
+
+- Image data is returned as base64 encoded for JSON compatibility
+- PNG format provides better compression and compatibility
+- Large screenshots may produce substantial base64 data
+- Multiple display capture appends integer postfix to filename
+- Display IDs can be found using `dumpsys SurfaceFlinger --display-id`
+- File saving requires appropriate storage permissions
+
+## Related Commands
+
+- `adbjson shell input tap` - Simulate touch events on screen
+- `adbjson shell input keyevent` - Simulate key press events
+- `adbjson shell wm size` - Get screen resolution information
+- `adbjson shell wm density` - Get screen density information

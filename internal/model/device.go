@@ -452,6 +452,14 @@ type AcpiSection struct {
 	Content string `json:"content"`
 }
 
+// ScreencapResponse wraps the screencap operation response
+type ScreencapResponse struct {
+	Data     string `json:"data"`
+	Format   string `json:"format"`
+	Size     int    `json:"size"`
+	Filename string `json:"filename,omitempty"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
