@@ -57,3 +57,28 @@ func (e *Executor) Execute(args ...string) (string, error) {
 	
 	return string(output), nil
 }
+
+// ExecuteWithOutput runs an ADB command and returns the output even if the command fails
+// This is useful for commands like disconnect that return non-zero exit codes but provide valid output
+func (e *Executor) ExecuteWithOutput(args ...string) (string, error) {
+	// Try to use bundled ADB first
+	adbPath, err := platform.GetADBPath(e.platformToolsPath)
+	if err != nil {
+		return "", fmt.Errorf("failed to get ADB path: %w", err)
+	}
+	
+	// Check if bundled ADB exists
+	if _, err := os.Stat(adbPath); err == nil {
+		// Use bundled ADB
+		cmd := exec.Command(adbPath, args...)
+		output, _ := cmd.CombinedOutput()
+		// Return output even if command fails
+		return string(output), nil
+	}
+	
+	// Fall back to system ADB
+	cmd := exec.Command("adb", args...)
+	output, _ := cmd.CombinedOutput()
+	// Return output even if command fails
+	return string(output), nil
+}

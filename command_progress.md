@@ -6,8 +6,8 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 
 - [x] `adb devices` - List connected devices ✅
 - [x] `adb devices -l` - List devices with detailed info
-- [ ] `adb connect <host:port>` - Connect to device via TCP/IP
-- [ ] `adb disconnect <host:port>` - Disconnect from device
+- [x] `adb connect <host:port>` - Connect to device via TCP/IP ✅
+- [x] `adb disconnect <host:port>` - Disconnect from device ✅
 - [x] `adb kill-server` - Kill ADB server
 - [x] `adb start-server` - Start ADB server
 - [x] `adb version` - Show ADB version ✅
@@ -17,8 +17,8 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb reconnect` - Reconnect device
 - [ ] `adb reconnect device` - Reconnect device
 - [ ] `adb reconnect offline` - Reconnect offline device
-- [ ] `adb root` - Run adbd as root
-- [ ] `adb unroot` - Restore adbd non-root privileges
+- [x] `adb root` - Run adbd as root ✅
+- [x] `adb unroot` - Restore adbd non-root privileges ✅
 - [ ] `adb -P <port> start-server` - Designated adb server network port
 - [ ] `adb tcpip 5555` - Allow device to listen on TCP/IP port
 - [ ] `adb pair ipaddr:port` - Pair device with pairing code (Android 11+)
@@ -181,7 +181,8 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb shell reboot recovery` - Reboot to recovery
 - [ ] `adb shell reboot bootloader` - Reboot to bootloader
 - [ ] `adb shell shutdown` - Shutdown device
-- [x] `adb shell getprop` - Get all system properties
+- [x] `adb shell getprop` - Get all system properties ✅
+- [x] `adb shell getprop <property>` - Get single property ✅
 - [ ] `adb shell getprop ro.build.id` - Get build ID
 - [ ] `adb shell getprop ro.build.display.id` - Get display ID
 - [ ] `adb shell getprop ro.build.version.release` - Get Android version
@@ -233,8 +234,8 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 - [ ] `adb shell settings delete global hidden_api_policy_p_apps` - Forbid non SDK API
 - [ ] `adb shell settings put global policy_control <key-values>` - Show/hide status bar or navigation bar
 - [x] `adb shell getenforce` - SELinux status
-- [ ] `adb shell setenforce 1` - Enable SELinux (requires root)
-- [ ] `adb shell setenforce 0` - Disable SELinux (requires root)
+- [x] `adb shell setenforce 1` - Enable SELinux (requires root) ✅
+- [x] `adb shell setenforce 0` - Disable SELinux (requires root) ✅
 - [x] `adb shell id` - User ID
 - [x] `adb shell whoami` - Current user
 - [x] `adb shell uname -a` - System information

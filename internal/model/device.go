@@ -75,6 +75,45 @@ type BatteryInfoResponse struct {
 	FullDesignCapacity int `json:"full_design_capacity"`
 }
 
+// ConnectResponse wraps the connect operation response
+type ConnectResponse struct {
+	Connected bool   `json:"connected"`
+	Target    string `json:"target"`
+	Message   string `json:"message"`
+}
+
+// DisconnectResponse wraps the disconnect operation response
+type DisconnectResponse struct {
+	Disconnected bool   `json:"disconnected"`
+	Target       string `json:"target"`
+	Message      string `json:"message"`
+}
+
+// RootResponse wraps the root operation response
+type RootResponse struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+// UnrootResponse wraps the unroot operation response
+type UnrootResponse struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+// SinglePropertyResponse wraps a single property value
+type SinglePropertyResponse struct {
+	Property string `json:"property"`
+	Value    string `json:"value"`
+}
+
+// SetenforceResponse wraps the setenforce operation response
+type SetenforceResponse struct {
+	Success bool   `json:"success"`
+	Mode    string `json:"mode"`
+	Message string `json:"message"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
