@@ -95,13 +95,15 @@ jobs:
           platform-tools/
     
   release:
-    needs: build
-    if: github.event_name == 'release'
+    needs: [check-commit, build]
+    if: needs.check-commit.outputs.should-build == 'true'
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     
     - name: Download all artifacts
       uses: actions/download-artifact@v4
@@ -121,11 +123,24 @@ jobs:
           cd ..
         done
     
+    - name: Create tag and release
+      if: github.event_name != 'release'
+      run: |
+        TAG_NAME="v$(date +%Y%m%d-%H%M%S)"
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+        git push origin "$TAG_NAME"
+        echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+      id: tag
+    
     - name: Upload release assets
       uses: softprops/action-gh-release@v1
       with:
         files: |
           artifacts/*.zip
           artifacts/*.tar.gz
+        tag_name: ${{ steps.tag.outputs.tag_name || github.ref_name }}
+        generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT_GO }}

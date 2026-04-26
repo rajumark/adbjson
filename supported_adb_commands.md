@@ -52,6 +52,27 @@ Get ADB version information.
 
 ---
 
+### get-state ✅
+Get device state.
+
+**Usage:**
+```bash
+./adbjson get-state
+```
+
+**Output:**
+```json
+{
+  "state": "device"
+}
+```
+
+**Flags:**
+- `--pretty` - Pretty print JSON (default: true)
+- `--compact` - Compact JSON output
+
+---
+
 ## Planned Commands
 
 The following commands are planned for future releases:
