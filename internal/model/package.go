@@ -109,3 +109,14 @@ type EnableResult struct {
 type EnableResponse struct {
 	EnableResult EnableResult `json:"enable_result"`
 }
+
+// DisableResult represents disable result
+type DisableResult struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+// DisableResponse represents the response for pm disable command
+type DisableResponse struct {
+	DisableResult DisableResult `json:"disable_result"`
+}
