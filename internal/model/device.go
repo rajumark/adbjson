@@ -314,6 +314,12 @@ type LsProcResponse struct {
 	Count int      `json:"count"`
 }
 
+// LsRootResponse wraps the ls / operation response
+type LsRootResponse struct {
+	Items []string `json:"items"`
+	Count int      `json:"count"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`

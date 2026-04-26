@@ -2,9 +2,9 @@ name: Build and Release
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main1, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main1 ]
   release:
     types: [ created ]
 
