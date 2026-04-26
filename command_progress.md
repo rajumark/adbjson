@@ -36,7 +36,7 @@ This document tracks the implementation progress of 100 most commonly used ADB c
 
 ## Package Management
 
-- [ ] `adb shell pm list packages` - List all packages
+- [x] `adb shell pm list packages` - List all packages
 - [ ] `adb shell pm list packages -f` - List packages with APK path
 - [ ] `adb shell pm list packages -3` - List third-party packages
 - [ ] `adb shell pm list packages -s` - List system packages
