@@ -253,6 +253,56 @@ type MountResponse struct {
 	Count       int           `json:"count"`
 }
 
+// VmstatResponse wraps the vmstat operation response
+type VmstatResponse struct {
+	Processes VmstatProcesses `json:"processes"`
+	Memory    VmstatMemory    `json:"memory"`
+	Swap      VmstatSwap      `json:"swap"`
+	IO        VmstatIO        `json:"io"`
+	System    VmstatSystem    `json:"system"`
+	CPU       VmstatCPU       `json:"cpu"`
+}
+
+// VmstatProcesses represents process statistics
+type VmstatProcesses struct {
+	Running  string `json:"running"`
+	Blocked  string `json:"blocked"`
+}
+
+// VmstatMemory represents memory statistics
+type VmstatMemory struct {
+	SwapUsed string `json:"swap_used"`
+	Free     string `json:"free"`
+	Buffers  string `json:"buffers"`
+	Cache    string `json:"cache"`
+}
+
+// VmstatSwap represents swap statistics
+type VmstatSwap struct {
+	SwappedIn  string `json:"swapped_in"`
+	SwappedOut string `json:"swapped_out"`
+}
+
+// VmstatIO represents I/O statistics
+type VmstatIO struct {
+	BlocksIn  string `json:"blocks_in"`
+	BlocksOut string `json:"blocks_out"`
+}
+
+// VmstatSystem represents system statistics
+type VmstatSystem struct {
+	Interrupts string `json:"interrupts"`
+	ContextSwitches string `json:"context_switches"`
+}
+
+// VmstatCPU represents CPU statistics
+type VmstatCPU struct {
+	User   string `json:"user"`
+	System string `json:"system"`
+	Idle   string `json:"idle"`
+	Wait   string `json:"wait"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
