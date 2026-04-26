@@ -66,6 +66,15 @@ func init() {
 		RunE:  runDumpsysConnectivity,
 	}
 	dumpsysCmd.AddCommand(connectivityCmd)
+	
+	// Add telephony.registry command as subcommand of dumpsys
+	telephonyRegistryCmd := &cobra.Command{
+		Use:   "telephony.registry",
+		Short: "Show telephony registry dump in JSON format",
+		Long:  `Executes "adb shell dumpsys telephony.registry" and outputs the result as structured JSON.`,
+		RunE:  runDumpsysTelephonyRegistry,
+	}
+	dumpsysCmd.AddCommand(telephonyRegistryCmd)
 }
 
 func runDumpsysBattery(cmd *cobra.Command, args []string) error {
@@ -260,6 +269,52 @@ func runDumpsysConnectivity(cmd *cobra.Command, cmdArgs []string) error {
 	// Print to stdout
 	fmt.Println(formattedOutput)
 	log.Info("Shell dumpsys connectivity command completed successfully", nil)
+	
+	return nil
+}
+
+func runDumpsysTelephonyRegistry(cmd *cobra.Command, cmdArgs []string) error {
+	log := logger.Get()
+	log.Info("Starting shell dumpsys telephony.registry command", nil)
+
+	// Create executor
+	executor := adb.NewExecutor()
+	log.Debug("Created ADB executor", nil)
+	
+	// Run adb shell dumpsys telephony.registry
+	output, err := executor.Execute("shell", "dumpsys", "telephony.registry")
+	if err != nil {
+		log.Error("Failed to execute adb shell dumpsys telephony.registry", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewADBExecutionError("shell dumpsys telephony.registry", err)
+	}
+	log.Debug("ADB shell dumpsys telephony.registry command executed successfully", map[string]interface{}{"output_length": len(output)})
+	
+	// Parse output
+	dumpsysTelephonyRegistryParser := parser.NewDumpsysTelephonyRegistryParser()
+	response, err := dumpsysTelephonyRegistryParser.Parse(output)
+	if err != nil {
+		log.Error("Failed to parse dumpsys telephony.registry output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewParseError("dumpsys telephony.registry", err)
+	}
+	log.Info("Parsed dumpsys telephony.registry output", map[string]interface{}{"section_count": len(response.Sections)})
+	
+	// Validate result
+	if err := dumpsysTelephonyRegistryParser.Validate(response); err != nil {
+		log.Error("Failed to validate dumpsys telephony.registry output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewValidationError("dumpsys telephony.registry", err.Error())
+	}
+	
+	// Format output
+	format := formatter.ParseFormat(outputFormat)
+	formattedOutput, err := formatter.FormatOutputString(response, format, compactOutput)
+	if err != nil {
+		log.Error("Failed to format output", map[string]interface{}{"error": err.Error()})
+		return apperrors.NewMarshalError(err)
+	}
+	
+	// Print to stdout
+	fmt.Println(formattedOutput)
+	log.Info("Shell dumpsys telephony.registry command completed successfully", nil)
 	
 	return nil
 }

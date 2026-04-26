@@ -356,6 +356,18 @@ type DumpsysConnectivitySection struct {
 	Content string `json:"content"`
 }
 
+// DumpsysTelephonyRegistryResponse wraps the dumpsys telephony.registry operation response
+type DumpsysTelephonyRegistryResponse struct {
+	Sections []DumpsysTelephonyRegistrySection `json:"sections"`
+	Count    int                              `json:"count"`
+}
+
+// DumpsysTelephonyRegistrySection represents a section in dumpsys telephony.registry output
+type DumpsysTelephonyRegistrySection struct {
+	Name    string `json:"name"`
+	Content string `json:"content"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
