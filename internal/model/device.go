@@ -153,6 +153,92 @@ type SettingsListResponse struct {
 	Count     int       `json:"count"`
 }
 
+// Process represents a process from ps output
+type Process struct {
+	User     string `json:"user"`
+	PID      string `json:"pid"`
+	PPID     string `json:"ppid"`
+	Name     string `json:"name"`
+}
+
+// PsResponse wraps the ps operation response
+type PsResponse struct {
+	Processes []Process `json:"processes"`
+	Count     int       `json:"count"`
+}
+
+// TopProcess represents a process from top output
+type TopProcess struct {
+	User     string  `json:"user"`
+	PID      string  `json:"pid"`
+	PR       string  `json:"pr"`
+	NI       string  `json:"ni"`
+	VIRT     string  `json:"virt"`
+	RES      string  `json:"res"`
+	SHR      string  `json:"shr"`
+	S        string  `json:"s"`
+	CPU      string  `json:"cpu"`
+	MEM      string  `json:"mem"`
+	Time     string  `json:"time"`
+	Args     string  `json:"args"`
+}
+
+// TopResponse wraps the top operation response
+type TopResponse struct {
+	Processes []TopProcess `json:"processes"`
+	Count     int          `json:"count"`
+	Summary   TopSummary   `json:"summary"`
+}
+
+// TopSummary represents system summary from top
+type TopSummary struct {
+	Tasks  string `json:"tasks"`
+	Cpu    string `json:"cpu"`
+	Mem    string `json:"mem"`
+	Swap   string `json:"swap"`
+}
+
+// Filesystem represents a filesystem from df output
+type Filesystem struct {
+	Filesystem string `json:"filesystem"`
+	Blocks     string `json:"blocks"`
+	Used       string `json:"used"`
+	Available  string `json:"available"`
+	UsePercent string `json:"use_percent"`
+	MountedOn  string `json:"mounted_on"`
+}
+
+// DfResponse wraps the df operation response
+type DfResponse struct {
+	Filesystems []Filesystem `json:"filesystems"`
+	Count       int           `json:"count"`
+}
+
+// MemoryInfo represents memory information from free output
+type MemoryInfo struct {
+	Total    string `json:"total"`
+	Used     string `json:"used"`
+	Free     string `json:"free"`
+	Shared   string `json:"shared"`
+	Buffers  string `json:"buffers"`
+	Cached   string `json:"cached"`
+}
+
+// FreeResponse wraps the free operation response
+type FreeResponse struct {
+	Memory      MemoryInfo `json:"memory"`
+	Buffers     MemoryInfo `json:"buffers"`
+	Swap        MemoryInfo `json:"swap"`
+}
+
+// UptimeResponse wraps the uptime operation response
+type UptimeResponse struct {
+	CurrentTime string `json:"current_time"`
+	Uptime      string `json:"uptime"`
+	Users       string `json:"users"`
+	LoadAverage string `json:"load_average"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
