@@ -308,6 +308,12 @@ type DateResponse struct {
 	DateTime string `json:"datetime"`
 }
 
+// LsProcResponse wraps the ls /proc operation response
+type LsProcResponse struct {
+	Items []string `json:"items"`
+	Count int      `json:"count"`
+}
+
 // ServerResponse wraps server operation response
 type ServerResponse struct {
 	Success bool   `json:"success"`
