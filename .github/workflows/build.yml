@@ -9,7 +9,32 @@ on:
     types: [ created ]
 
 jobs:
+  check-commit:
+    runs-on: ubuntu-latest
+    outputs:
+      should-build: ${{ steps.check.outputs.should-build }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Check commit message for #go
+      id: check
+      run: |
+        if [[ "${{ github.event_name }}" == "release" ]]; then
+          echo "should-build=true" >> $GITHUB_OUTPUT
+        else
+          COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+          if [[ "$COMMIT_MSG" == *"#go"* ]]; then
+            echo "should-build=true" >> $GITHUB_OUTPUT
+          else
+            echo "should-build=false" >> $GITHUB_OUTPUT
+          fi
+        fi
+
   build:
+    needs: check-commit
+    if: needs.check-commit.outputs.should-build == 'true'
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
