@@ -32,3 +32,13 @@ type UserInfo struct {
 type UserInfoResponse struct {
 	UserInfo UserInfo `json:"user_info"`
 }
+
+// CurrentUser represents current user
+type CurrentUser struct {
+	Username string `json:"username"`
+}
+
+// CurrentUserResponse represents the response for whoami command
+type CurrentUserResponse struct {
+	CurrentUser CurrentUser `json:"current_user"`
+}
