@@ -89,6 +89,9 @@ jobs:
         # else  # TODO: Uncomment for Windows builds
           go build -ldflags="-s -w" -v -o adbjson${{ matrix.os == 'windows-latest' && '.exe' || '' }}
         # fi
+        
+        # Verify binary was created
+        ls -la adbjson${{ matrix.os == 'windows-latest' && '.exe' || '' }} || echo "Binary not found!"
       shell: bash
     
     - name: Test (if Go is available)
@@ -100,8 +103,9 @@ jobs:
       with:
         name: adbjson-${{ matrix.os }}
         path: |
-          adbjson${{ matrix.os == 'windows-latest' && '.exe' || '' }}  # TODO: Uncomment .exe for Windows builds
+          adbjson
           platform-tools/
+        if-no-files-found: error
     
   release:
     needs: [check-commit, build]
@@ -134,6 +138,12 @@ jobs:
           echo "=== Processing: $dir ==="
           ls -la "$dir" || echo "Directory listing failed"
           
+          # Verify adbjson binary exists
+          if [ ! -f "$dir/adbjson" ]; then
+            echo "ERROR: adbjson binary not found in $dir"
+            continue
+          fi
+          
           # Set executable permissions
           chmod +x "$dir/adbjson" || echo "chmod adbjson failed"
           chmod +x "$dir/platform-tools/platform-tools-linux/adb" || echo "chmod adb failed"
@@ -156,7 +166,23 @@ jobs:
           ARCHIVE_NAME="adbjson_${VERSION}_${PLATFORM}_${ARCH}.${EXT}"
           echo "Creating archive: $ARCHIVE_NAME"
           
+          # Verify both files exist before creating archive
+          if [ ! -f "$dir/adbjson" ] || [ ! -d "$dir/platform-tools" ]; then
+            echo "ERROR: Required files not found in $dir"
+            ls -la "$dir"
+            continue
+          fi
+          
           tar -czf "$ARCHIVE_NAME" -C "$dir" adbjson platform-tools/ || echo "tar creation failed"
+          
+          # Verify archive was created
+          if [ ! -f "$ARCHIVE_NAME" ]; then
+            echo "ERROR: Archive $ARCHIVE_NAME was not created"
+            continue
+          fi
+          
+          echo "Archive created successfully: $ARCHIVE_NAME"
+          tar -tzf "$ARCHIVE_NAME" | head -5
           
           # Generate checksum
           if [ -f "$ARCHIVE_NAME" ]; then
