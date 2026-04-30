@@ -1,45 +1,39 @@
 package cmd
 
 import (
-	"adbjson/internal/logger"
-	"adbjson/internal/version"
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
 )
 
 var (
-	prettyOutput   bool
-	compactOutput  bool
-	debugMode      bool
-	outputFormat   string
+	// Global flags
+	outputFormat  string
+	compactOutput bool
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "adbjson",
-	Short: "A CLI tool that wraps ADB commands and outputs structured JSON",
+	Short: "adbjson - ADB to JSON converter",
 	Long: `adbjson is a cross-platform CLI tool that wraps Android Debug Bridge (ADB) commands
 and outputs structured JSON for easy parsing and integration with other tools.`,
-	Version: version.GetVersion(),
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		if debugMode {
-			logger.Get().SetLevel(logger.DEBUG)
-		}
-	},
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately
+// Execute adds all child commands to the root command and sets flags appropriately.
+// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	err := rootCmd.Execute()
-	if err != nil {
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
 		os.Exit(1)
 	}
 }
 
 func init() {
-	rootCmd.PersistentFlags().BoolVar(&prettyOutput, "pretty", true, "Pretty print JSON output (default: true)")
-	rootCmd.PersistentFlags().BoolVar(&compactOutput, "compact", false, "Compact JSON output (overrides --pretty)")
-	rootCmd.PersistentFlags().BoolVar(&debugMode, "debug", false, "Enable debug logging")
+	// Global flags
 	rootCmd.PersistentFlags().StringVar(&outputFormat, "format", "json", "Output format: json, yaml (default: json)")
+	rootCmd.PersistentFlags().BoolVar(&compactOutput, "compact", false, "Compact JSON output (overrides --pretty)")
+	rootCmd.PersistentFlags().Bool("pretty", true, "Pretty print JSON output (default: true)")
+	rootCmd.PersistentFlags().Bool("debug", false, "Enable debug logging")
 }

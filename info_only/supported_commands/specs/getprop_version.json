@@ -1,0 +1,16 @@
+{
+  "name": "getprop_version",
+  "command": ["shell", "getprop", "ro.build.version.release"],
+  "parser": {
+    "type": "single_value",
+    "key": "version"
+  },
+  "output": {
+    "format": "json",
+    "schema": "version_response"
+  },
+  "metadata": {
+    "description": "Get Android version release",
+    "category": "system_info"
+  }
+}

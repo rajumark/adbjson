@@ -1,0 +1,16 @@
+{
+  "name": "get_serialno",
+  "command": ["get-serialno"],
+  "parser": {
+    "type": "single_value",
+    "key": "serialno"
+  },
+  "output": {
+    "format": "json",
+    "schema": "serialno_response"
+  },
+  "metadata": {
+    "description": "Get device serial number",
+    "category": "device_info"
+  }
+}

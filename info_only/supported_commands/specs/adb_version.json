@@ -1,0 +1,16 @@
+{
+  "name": "adb_version",
+  "command": ["version"],
+  "parser": {
+    "type": "single_value",
+    "key": "raw_output"
+  },
+  "output": {
+    "format": "json",
+    "schema": "version_info_response"
+  },
+  "metadata": {
+    "description": "Get ADB version information",
+    "category": "system_info"
+  }
+}

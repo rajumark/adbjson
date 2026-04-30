@@ -1,0 +1,27 @@
+{
+  "command": "shell getprop ro.build.version.release",
+  "description": "Get Android version release from system properties",
+  "usage": "adbjson shell getprop ro.build.version.release",
+  "examples": {
+    "success": {
+      "input": "shell getprop ro.build.version.release",
+      "output": {
+        "property": "ro.build.version.release",
+        "value": "16"
+      }
+    },
+    "error": {
+      "input": "shell getprop ro.build.version.release",
+      "output": {
+        "error": "device not found",
+        "code": "DEVICE_NOT_CONNECTED"
+      }
+    }
+  },
+  "notes": [
+    "Returns the Android version release number as a string",
+    "Requires a connected Android device",
+    "Common values: '11', '12', '13', '14', '15', '16', etc.",
+    "Part of the general getprop command that can query any system property"
+  ]
+}

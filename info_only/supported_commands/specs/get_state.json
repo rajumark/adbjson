@@ -1,0 +1,16 @@
+{
+  "name": "get_state",
+  "command": ["get-state"],
+  "parser": {
+    "type": "single_value",
+    "key": "state"
+  },
+  "output": {
+    "format": "json",
+    "schema": "state_response"
+  },
+  "metadata": {
+    "description": "Get device state",
+    "category": "device_info"
+  }
+}
