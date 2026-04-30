@@ -122,7 +122,9 @@ jobs:
     - name: Create release archives
       run: |
         cd artifacts
-        VERSION="v0.1.0"
+        # Get version from tag step or use default
+        VERSION="${{ env.NEW_VERSION || 'v0.1.0' }}"
+        echo "Building version: $VERSION"
         
         # Create checksums file
         echo "# adbjson $VERSION Checksums" > checksums.txt
@@ -174,13 +176,36 @@ jobs:
     - name: Create tag and release
       if: github.event_name != 'release'
       run: |
-        # Use semantic versioning
-        TAG_NAME="v0.1.0"
+        # Auto-increment version number
+        git fetch --tags
+        
+        # Get latest version tag or default to v0.1.0
+        LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+        echo "Latest tag: $LATEST_TAG"
+        
+        # Extract version numbers and increment
+        if [[ "$LATEST_TAG" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+          MAJOR=${BASH_REMATCH[1]}
+          MINOR=${BASH_REMATCH[2]}
+          PATCH=${BASH_REMATCH[3]}
+          
+          # Increment patch version
+          PATCH=$((PATCH + 1))
+          NEW_VERSION="v${MAJOR}.${MINOR}.${PATCH}"
+        else
+          # Fallback to v0.1.0 if no valid tag found
+          NEW_VERSION="v0.1.0"
+        fi
+        
+        echo "New version: $NEW_VERSION"
+        echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+        
+        # Create and push tag
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
-        git push origin "$TAG_NAME"
-        echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+        git tag -a "$NEW_VERSION" -m "Release $NEW_VERSION"
+        git push origin "$NEW_VERSION"
+        echo "tag_name=$NEW_VERSION" >> $GITHUB_OUTPUT
       id: tag
     
     - name: Upload release assets
@@ -191,14 +216,14 @@ jobs:
           artifacts/*.zip
           artifacts/checksums.txt
         tag_name: ${{ steps.tag.outputs.tag_name || github.ref_name }}
-        name: "adbjson v0.1.0"
+        name: "adbjson ${{ steps.tag.outputs.tag_name }}"
         body: |
-          adbjson v0.1.0 - Convert ADB output to clean JSON
+          adbjson ${{ steps.tag.outputs.tag_name }} - Convert ADB output to clean JSON
           
           ## Install
           ```bash
-          wget https://github.com/rajumark/adbjson/releases/download/v0.1.0/adbjson_0.1.0_linux_amd64.tar.gz
-          tar -xzf adbjson_0.1.0_linux_amd64.tar.gz
+          wget https://github.com/rajumark/adbjson/releases/download/${{ steps.tag.outputs.tag_name }}/adbjson_${{ steps.tag.outputs.tag_name }}_linux_amd64.tar.gz
+          tar -xzf adbjson_${{ steps.tag.outputs.tag_name }}_linux_amd64.tar.gz
           sudo mv adbjson /usr/local/bin/
           ```
           
