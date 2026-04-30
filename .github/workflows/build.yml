@@ -193,63 +193,21 @@ jobs:
         tag_name: ${{ steps.tag.outputs.tag_name || github.ref_name }}
         name: "adbjson v0.1.0"
         body: |
-          # 🚀 adbjson v0.1.0
+          adbjson v0.1.0 - Convert ADB output to clean JSON
           
-          Convert ADB command output into clean JSON
-          
-          ## ✨ Features
-          - **Pure JSON output** - Clean, structured data without metadata
-          - **IR-based parsing engine** - Robust and extensible command processing
-          - **devices command support** - List connected Android devices
-          - **Multiple output formats** - JSON, YAML, raw, pretty-printed
-          
-          ## 🛠 Improvements
-          - Compact vs pretty output modes
-          - Cross-platform support (Linux, macOS, Windows)
-          - Executable permissions pre-configured
-          
-          ## 📦 Install
-          
-          ### Linux / macOS
+          ## Install
           ```bash
-          # Download and extract
           wget https://github.com/rajumark/adbjson/releases/download/v0.1.0/adbjson_0.1.0_linux_amd64.tar.gz
           tar -xzf adbjson_0.1.0_linux_amd64.tar.gz
-          
-          # Move to system path (optional)
           sudo mv adbjson /usr/local/bin/
           ```
           
-          ### Windows
-          ```powershell
-          # Download and extract
-          # Add to PATH or run from current directory
-          ```
-          
-          ## 🚀 Quick Start
+          ## Usage
           ```bash
-          # List devices as JSON
           adbjson devices
-          
-          # Detailed device info
           adbjson devices --l
-          
-          # Raw ADB output
           adbjson devices --raw
           ```
-          
-          ## 🔐 Verify Download
-          ```bash
-          sha256sum -c checksums.txt
-          ```
-          
-          ## 📋 Requirements
-          - Android SDK Platform Tools (included)
-          - Linux/macOS/Windows x86_64
-          
-          ---
-          
-          **Full changelog**: [View on GitHub](https://github.com/rajumark/adbjson/commits/v0.1.0)
         generate_release_notes: false
       env:
         GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT_GO }}
