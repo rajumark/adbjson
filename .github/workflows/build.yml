@@ -79,10 +79,15 @@ jobs:
     
     - name: Build
       run: |
+        # Get version from git or use default
+        VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.1.0")
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        
+        # Build with optimization flags
         # if [ "$RUNNER_OS" == "macOS" ]; then  # TODO: Uncomment for macOS builds
-        #   GOARCH=amd64 go build -v -o adbjson
+        #   GOARCH=amd64 go build -ldflags="-s -w" -v -o adbjson
         # else  # TODO: Uncomment for Windows builds
-          go build -v -o adbjson${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+          go build -ldflags="-s -w" -v -o adbjson${{ matrix.os == 'windows-latest' && '.exe' || '' }}
         # fi
       shell: bash
     
@@ -117,24 +122,61 @@ jobs:
     - name: Create release archives
       run: |
         cd artifacts
+        # Get version from previous step
+        VERSION="v0.1.0"
+        
+        # Create checksums file
+        echo "# adbjson $VERSION Checksums" > checksums.txt
+        
         # Artifacts are downloaded into subdirectories by name
         for dir in adbjson-*; do
           echo "Processing directory: $dir"
           ls -la "$dir"
+          
           # Set executable permissions in the artifact directory
           chmod +x "$dir/adbjson"
           chmod +x "$dir/platform-tools/platform-tools-*/adb"
-          # if [ -f "adbjson.exe" ]; then  # TODO: Uncomment for Windows builds
-          #   zip -r "../${dir}.zip" adbjson.exe platform-tools/
-          # else
-            tar -czf "../${dir}.tar.gz" -C "$dir" adbjson platform-tools/
-          # fi
+          
+          # Determine platform and architecture
+          if [[ "$dir" == *"ubuntu"* ]]; then
+            PLATFORM="linux"
+            ARCH="amd64"
+            EXT="tar.gz"
+          elif [[ "$dir" == *"macos"* ]]; then
+            PLATFORM="darwin"
+            ARCH="amd64"
+            EXT="tar.gz"
+          elif [[ "$dir" == *"windows"* ]]; then
+            PLATFORM="windows"
+            ARCH="amd64"
+            EXT="zip"
+          fi
+          
+          # Create properly named archive
+          ARCHIVE_NAME="adbjson_${VERSION}_${PLATFORM}_${ARCH}.${EXT}"
+          
+          if [ "$PLATFORM" == "windows" ]; then
+            # TODO: Uncomment for Windows builds
+            # zip -r "$ARCHIVE_NAME" -C "$dir" adbjson.exe platform-tools/
+            tar -czf "$ARCHIVE_NAME" -C "$dir" adbjson platform-tools/
+          else
+            tar -czf "$ARCHIVE_NAME" -C "$dir" adbjson platform-tools/
+          fi
+          
+          # Add checksum
+          if command -v sha256sum >/dev/null; then
+            CHECKSUM=$(sha256sum "$ARCHIVE_NAME" | cut -d' ' -f1)
+          elif command -v shasum >/dev/null; then
+            CHECKSUM=$(shasum -a 256 "$ARCHIVE_NAME" | cut -d' ' -f1)
+          fi
+          echo "$CHECKSUM  $ARCHIVE_NAME" >> checksums.txt
         done
     
     - name: Create tag and release
       if: github.event_name != 'release'
       run: |
-        TAG_NAME="v$(date +%Y%m%d-%H%M%S)"
+        # Use semantic versioning
+        TAG_NAME="v0.1.0"
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
@@ -146,9 +188,69 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          artifacts/*.zip  # TODO: Uncomment for Windows builds
           artifacts/*.tar.gz
+          artifacts/*.zip
+          artifacts/checksums.txt
         tag_name: ${{ steps.tag.outputs.tag_name || github.ref_name }}
-        generate_release_notes: true
+        name: "adbjson v0.1.0"
+        body: |
+          # 🚀 adbjson v0.1.0
+          
+          Convert ADB command output into clean JSON
+          
+          ## ✨ Features
+          - **Pure JSON output** - Clean, structured data without metadata
+          - **IR-based parsing engine** - Robust and extensible command processing
+          - **devices command support** - List connected Android devices
+          - **Multiple output formats** - JSON, YAML, raw, pretty-printed
+          
+          ## 🛠 Improvements
+          - Compact vs pretty output modes
+          - Cross-platform support (Linux, macOS, Windows)
+          - Executable permissions pre-configured
+          
+          ## 📦 Install
+          
+          ### Linux / macOS
+          ```bash
+          # Download and extract
+          wget https://github.com/rajumark/adbjson/releases/download/v0.1.0/adbjson_0.1.0_linux_amd64.tar.gz
+          tar -xzf adbjson_0.1.0_linux_amd64.tar.gz
+          
+          # Move to system path (optional)
+          sudo mv adbjson /usr/local/bin/
+          ```
+          
+          ### Windows
+          ```powershell
+          # Download and extract
+          # Add to PATH or run from current directory
+          ```
+          
+          ## 🚀 Quick Start
+          ```bash
+          # List devices as JSON
+          adbjson devices
+          
+          # Detailed device info
+          adbjson devices --l
+          
+          # Raw ADB output
+          adbjson devices --raw
+          ```
+          
+          ## 🔐 Verify Download
+          ```bash
+          sha256sum -c checksums.txt
+          ```
+          
+          ## 📋 Requirements
+          - Android SDK Platform Tools (included)
+          - Linux/macOS/Windows x86_64
+          
+          ---
+          
+          **Full changelog**: [View on GitHub](https://github.com/rajumark/adbjson/commits/v0.1.0)
+        generate_release_notes: false
       env:
         GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT_GO }}
