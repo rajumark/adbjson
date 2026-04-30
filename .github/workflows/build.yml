@@ -37,7 +37,8 @@ jobs:
     if: needs.check-commit.outputs.should-build == 'true'
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        # os: [ubuntu-latest, macos-latest, windows-latest]  # TODO: Uncomment for multi-platform builds
+        os: [ubuntu-latest]  # Ubuntu-only for now
         go-version: ['1.21']
     
     runs-on: ${{ matrix.os }}
@@ -58,14 +59,14 @@ jobs:
           curl -L -o platform-tools.zip https://dl.google.com/android/repository/platform-tools-latest-linux.zip
           unzip -q platform-tools.zip -d platform-tools
           mv platform-tools/platform-tools platform-tools/platform-tools-linux
-        elif [ "$RUNNER_OS" == "macOS" ]; then
-          curl -L -o platform-tools.zip https://dl.google.com/android/repository/platform-tools-latest-darwin.zip
-          unzip -q platform-tools.zip -d platform-tools
-          mv platform-tools/platform-tools platform-tools/platform-tools-darwin
-        else
-          curl -L -o platform-tools.zip https://dl.google.com/android/repository/platform-tools-latest-windows.zip
-          unzip -q platform-tools.zip -d platform-tools
-          mv platform-tools/platform-tools platform-tools/platform-tools-windows
+        # elif [ "$RUNNER_OS" == "macOS" ]; then  # TODO: Uncomment for macOS builds
+        #   curl -L -o platform-tools.zip https://dl.google.com/android/repository/platform-tools-latest-darwin.zip
+        #   unzip -q platform-tools.zip -d platform-tools
+        #   mv platform-tools/platform-tools platform-tools/platform-tools-darwin
+        # else  # TODO: Uncomment for Windows builds
+        #   curl -L -o platform-tools.zip https://dl.google.com/android/repository/platform-tools-latest-windows.zip
+        #   unzip -q platform-tools.zip -d platform-tools
+        #   mv platform-tools/platform-tools platform-tools/platform-tools-windows
         fi
         rm platform-tools.zip
       shell: bash
@@ -78,11 +79,11 @@ jobs:
     
     - name: Build
       run: |
-        if [ "$RUNNER_OS" == "macOS" ]; then
-          GOARCH=amd64 go build -v -o adbjson
-        else
+        # if [ "$RUNNER_OS" == "macOS" ]; then  # TODO: Uncomment for macOS builds
+        #   GOARCH=amd64 go build -v -o adbjson
+        # else  # TODO: Uncomment for Windows builds
           go build -v -o adbjson${{ matrix.os == 'windows-latest' && '.exe' || '' }}
-        fi
+        # fi
       shell: bash
     
     - name: Test (if Go is available)
@@ -94,7 +95,7 @@ jobs:
       with:
         name: adbjson-${{ matrix.os }}
         path: |
-          adbjson${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+          adbjson${{ matrix.os == 'windows-latest' && '.exe' || '' }}  # TODO: Uncomment .exe for Windows builds
           platform-tools/
     
   release:
@@ -118,11 +119,14 @@ jobs:
         cd artifacts
         for dir in adbjson-*; do
           cd "$dir"
-          if [ -f "adbjson.exe" ]; then
-            zip -r "../${dir}.zip" adbjson.exe platform-tools/
-          else
+          # Set executable permissions
+          chmod +x adbjson
+          chmod +x platform-tools/platform-tools-*/adb
+          # if [ -f "adbjson.exe" ]; then  # TODO: Uncomment for Windows builds
+          #   zip -r "../${dir}.zip" adbjson.exe platform-tools/
+          # else
             tar -czf "../${dir}.tar.gz" adbjson platform-tools/
-          fi
+          # fi
           cd ..
         done
     
@@ -141,7 +145,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          artifacts/*.zip
+          artifacts/*.zip  # TODO: Uncomment for Windows builds
           artifacts/*.tar.gz
         tag_name: ${{ steps.tag.outputs.tag_name || github.ref_name }}
         generate_release_notes: true
