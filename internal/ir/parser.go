@@ -69,6 +69,11 @@ func (p *TabularParser) Parse(rawOutput string) (*Document, error) {
 func (p *TabularParser) parseRow(line string) *Node {
 	row := NewObjectNode("device")
 	
+	// Handle devices -l format specially
+	if strings.Contains(line, "product:") || strings.Contains(line, "transport_id:") {
+		return p.parseDevicesLLine(line)
+	}
+	
 	// Split by delimiter
 	parts := strings.Split(line, p.delimiter)
 	
@@ -78,7 +83,7 @@ func (p *TabularParser) parseRow(line string) *Node {
 		row.AddChild(NewStringNode("id", strings.TrimSpace(parts[0])))
 		row.AddChild(NewStringNode("status", strings.TrimSpace(parts[1])))
 		
-	case 4: // adb devices -l: ID, Status, USB, Product
+	case 4: // Simple 4-column format
 		row.AddChild(NewStringNode("id", strings.TrimSpace(parts[0])))
 		row.AddChild(NewStringNode("status", strings.TrimSpace(parts[1])))
 		row.AddChild(NewStringNode("usb", strings.TrimSpace(parts[2])))
@@ -87,6 +92,37 @@ func (p *TabularParser) parseRow(line string) *Node {
 	default:
 		// Fallback: treat as single value
 		row.AddChild(NewStringNode("value", line))
+	}
+	
+	return row
+}
+
+// parseDevicesLLine parses the complex adb devices -l format
+func (p *TabularParser) parseDevicesLLine(line string) *Node {
+	row := NewObjectNode("device")
+	
+	// Split by whitespace and parse key-value pairs
+	fields := strings.Fields(line)
+	if len(fields) < 2 {
+		row.AddChild(NewStringNode("value", line))
+		return row
+	}
+	
+	// First two fields are always ID and status
+	row.AddChild(NewStringNode("id", fields[0]))
+	row.AddChild(NewStringNode("status", fields[1]))
+	
+	// Parse remaining fields as key:value pairs
+	for i := 2; i < len(fields); i++ {
+		field := fields[i]
+		if strings.Contains(field, ":") {
+			parts := strings.SplitN(field, ":", 2)
+			if len(parts) == 2 {
+				key := strings.TrimSpace(parts[0])
+				value := strings.TrimSpace(parts[1])
+				row.AddChild(NewStringNode(key, value))
+			}
+		}
 	}
 	
 	return row

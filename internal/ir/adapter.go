@@ -3,6 +3,7 @@ package ir
 import (
 	"encoding/json"
 	"fmt"
+	"gopkg.in/yaml.v3"
 )
 
 // Adapter converts IR to specific output formats
@@ -165,18 +166,78 @@ func (a *Adapter) registerBuiltinSchemas() {
 
 // ToJSON converts IR document to JSON using the specified schema
 func (a *Adapter) ToJSON(doc *Document, schemaName string) ([]byte, error) {
+	return a.ToJSONWithOptions(doc, schemaName, false)
+}
+
+// ToJSONWithOptions converts IR document to JSON with formatting options
+func (a *Adapter) ToJSONWithOptions(doc *Document, schemaName string, compact bool) ([]byte, error) {
 	schema, exists := a.schemas[schemaName]
 	if !exists {
 		return nil, fmt.Errorf("schema not found: %s", schemaName)
 	}
 	
-	result, err := a.transform(doc.Root, schema)
+	data, err := a.transform(doc.Root, schema)
 	if err != nil {
 		return nil, err
 	}
 	
-	return json.MarshalIndent(result, "", "  ")
+	// Pure parsing - return raw data only, no wrappers
+	if compact {
+		return json.Marshal(data)
+	}
+	return json.MarshalIndent(data, "", "  ")
 }
+
+// ToYAML converts IR document to YAML using the specified schema
+func (a *Adapter) ToYAML(doc *Document, schemaName string, compact bool) ([]byte, error) {
+	schema, exists := a.schemas[schemaName]
+	if !exists {
+		return nil, fmt.Errorf("schema not found: %s", schemaName)
+	}
+	
+	data, err := a.transform(doc.Root, schema)
+	if err != nil {
+		return nil, err
+	}
+	
+	// Pure parsing - return raw data only, no wrappers
+	return yaml.Marshal(data)
+}
+
+// getCount extracts count from data based on its structure
+func (a *Adapter) getCount(data interface{}) int {
+	switch v := data.(type) {
+	case map[string]interface{}:
+		// For responses with arrays (devices, properties, etc.)
+		if devices, ok := v["devices"]; ok {
+			// Handle both []interface{} and []map[string]interface{} types
+			switch arr := devices.(type) {
+			case []interface{}:
+				return len(arr)
+			case []map[string]interface{}:
+				return len(arr)
+			}
+		}
+		if properties, ok := v["properties"]; ok {
+			// Handle both []interface{} and []map[string]interface{} types
+			switch arr := properties.(type) {
+			case []interface{}:
+				return len(arr)
+			case []map[string]interface{}:
+				return len(arr)
+			}
+		}
+		// For single object responses (version, serialno, etc.), count is 1
+		return 1
+	case []interface{}:
+		return len(v)
+	case []map[string]interface{}:
+		return len(v)
+	default:
+		return 1
+	}
+}
+
 
 // transform transforms IR node according to schema
 func (a *Adapter) transform(node *Node, schema *Schema) (interface{}, error) {
@@ -199,7 +260,7 @@ func (a *Adapter) transform(node *Node, schema *Schema) (interface{}, error) {
 }
 
 // transformDevicesResponse transforms devices array to expected format
-func (a *Adapter) transformDevicesResponse(node *Node) (map[string]interface{}, error) {
+func (a *Adapter) transformDevicesResponse(node *Node) ([]map[string]interface{}, error) {
 	if node.Type != NodeTypeArray {
 		return nil, fmt.Errorf("expected array node for devices response")
 	}
@@ -214,9 +275,7 @@ func (a *Adapter) transformDevicesResponse(node *Node) (map[string]interface{}, 
 		devices = append(devices, device)
 	}
 	
-	return map[string]interface{}{
-		"devices": devices,
-	}, nil
+	return devices, nil
 }
 
 // transformDevice transforms single device node

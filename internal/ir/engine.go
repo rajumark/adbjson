@@ -20,8 +20,8 @@ func NewEngine() (*Engine, error) {
 	specRegistry := spec.NewSpecRegistry()
 	adapter := NewAdapter()
 	
-	// Load command specs
-	err := specRegistry.LoadSpecs("info_only/supported_commands/specs")
+	// Load embedded command specs
+	err := specRegistry.LoadSpecs()
 	if err != nil {
 		return nil, fmt.Errorf("failed to load command specs: %w", err)
 	}
@@ -35,6 +35,11 @@ func NewEngine() (*Engine, error) {
 
 // ExecuteCommand executes a command using the IR-based approach
 func (e *Engine) ExecuteCommand(commandName string, args []string) ([]byte, error) {
+	return e.ExecuteCommandWithFormat(commandName, args, "json", false)
+}
+
+// ExecuteCommandWithFormat executes a command with specified output format
+func (e *Engine) ExecuteCommandWithFormat(commandName string, args []string, format string, compact bool) ([]byte, error) {
 	// Get command specification
 	spec, err := e.specRegistry.GetSpec(commandName)
 	if err != nil {
@@ -56,13 +61,21 @@ func (e *Engine) ExecuteCommand(commandName string, args []string) ([]byte, erro
 		return nil, fmt.Errorf("IR parsing failed: %w", err)
 	}
 	
-	// Convert IR to JSON
-	jsonOutput, err := e.adapter.ToJSON(irDoc, spec.Output.Schema)
-	if err != nil {
-		return nil, fmt.Errorf("JSON conversion failed: %w", err)
+	// Convert IR to specified format
+	switch format {
+	case "yaml":
+		yamlOutput, err := e.adapter.ToYAML(irDoc, spec.Output.Schema, compact)
+		if err != nil {
+			return nil, fmt.Errorf("YAML conversion failed: %w", err)
+		}
+		return yamlOutput, nil
+	default:
+		jsonOutput, err := e.adapter.ToJSONWithOptions(irDoc, spec.Output.Schema, compact)
+		if err != nil {
+			return nil, fmt.Errorf("JSON conversion failed: %w", err)
+		}
+		return jsonOutput, nil
 	}
-	
-	return jsonOutput, nil
 }
 
 // parseToIR parses raw output into IR using the specified parser strategy

@@ -1,0 +1,17 @@
+{
+  "name": "devices-l",
+  "command": ["devices", "-l"],
+  "parser": {
+    "type": "tabular",
+    "delimiter": "\\s+",
+    "skip_header": true
+  },
+  "output": {
+    "format": "json",
+    "schema": "devices_response"
+  },
+  "metadata": {
+    "description": "List connected ADB devices with details",
+    "category": "device_management"
+  }
+}

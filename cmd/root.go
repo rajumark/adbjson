@@ -33,7 +33,7 @@ func Execute() {
 func init() {
 	// Global flags
 	rootCmd.PersistentFlags().StringVar(&outputFormat, "format", "json", "Output format: json, yaml (default: json)")
-	rootCmd.PersistentFlags().BoolVar(&compactOutput, "compact", false, "Compact JSON output (overrides --pretty)")
-	rootCmd.PersistentFlags().Bool("pretty", true, "Pretty print JSON output (default: true)")
+	rootCmd.PersistentFlags().BoolVar(&compactOutput, "compact", true, "Compact JSON output (default: true)")
+	rootCmd.PersistentFlags().Bool("pretty", false, "Pretty print JSON output")
 	rootCmd.PersistentFlags().Bool("debug", false, "Enable debug logging")
 }

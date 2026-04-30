@@ -1,12 +1,16 @@
 package spec
 
 import (
+	"embed"
 	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 )
+
+//go:embed specs/*.json
+var specsFS embed.FS
 
 // ParserType represents the type of parser to use
 type ParserType string
@@ -57,8 +61,36 @@ func NewSpecRegistry() *SpecRegistry {
 	}
 }
 
-// LoadSpecs loads specifications from a directory
-func (r *SpecRegistry) LoadSpecs(specsDir string) error {
+// LoadSpecs loads specifications from embedded filesystem
+func (r *SpecRegistry) LoadSpecs() error {
+	entries, err := specsFS.ReadDir("specs")
+	if err != nil {
+		return fmt.Errorf("failed to read embedded specs: %w", err)
+	}
+	
+	for _, entry := range entries {
+		if !strings.HasSuffix(entry.Name(), ".json") {
+			continue
+		}
+		
+		data, err := specsFS.ReadFile("specs/" + entry.Name())
+		if err != nil {
+			return fmt.Errorf("failed to read spec %s: %w", entry.Name(), err)
+		}
+		
+		var spec CommandSpec
+		if err := json.Unmarshal(data, &spec); err != nil {
+			return fmt.Errorf("failed to parse spec %s: %w", entry.Name(), err)
+		}
+		
+		r.specs[spec.Name] = &spec
+	}
+	
+	return nil
+}
+
+// LoadSpecsFromDir loads additional specifications from a directory (for user extensions)
+func (r *SpecRegistry) LoadSpecsFromDir(specsDir string) error {
 	return filepath.Walk(specsDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err

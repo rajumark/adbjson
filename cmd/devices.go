@@ -1,106 +1,154 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"adbjson/internal/adb"
-	apperrors "adbjson/internal/errors"
-	"adbjson/internal/formatter"
+	"adbjson/internal/errors"
+	"adbjson/internal/ir"
 	"adbjson/internal/logger"
-	"adbjson/internal/model"
-	"adbjson/internal/parser"
 
 	"github.com/spf13/cobra"
 )
 
-// devicesCmd represents the devices command
+// devicesCmd represents the devices command using IR architecture
 var devicesCmd = &cobra.Command{
 	Use:   "devices",
 	Short: "List connected ADB devices in JSON format",
-	Long:  `Executes "adb devices" and outputs the result as structured JSON.`,
+	Long:  `Executes "adb devices" and outputs the result as structured JSON using the IR engine.`,
 	RunE:  runDevices,
 }
 
 // -l flag for detailed listing
 var devicesLFlag bool
+var devicesRawFlag bool
+var devicesEnrichFlag bool
 
 func init() {
 	rootCmd.AddCommand(devicesCmd)
 	
-	// Add -l flag for detailed listing
+	// Add flags
 	devicesCmd.Flags().BoolVarP(&devicesLFlag, "l", "l", false, "List devices in detailed format")
+	devicesCmd.Flags().Bool("raw", false, "Show raw ADB output")
+	devicesCmd.Flags().Bool("enrich", false, "Add metadata and status envelope")
 }
 
 func runDevices(cmd *cobra.Command, args []string) error {
 	log := logger.Get()
-	// Determine command and parser based on -l flag
-	var command string
-	var parserName string
 	
+	// Check for --raw flag
+	rawMode, _ := cmd.Flags().GetBool("raw")
+	if rawMode {
+		// Raw mode - execute ADB directly and show output
+		executor := adb.NewExecutor()
+		
+		var output string
+		var err error
+		
+		if devicesLFlag {
+			output, err = executor.Execute("devices", "-l")
+		} else {
+			output, err = executor.Execute("devices")
+		}
+		
+		if err != nil {
+			return fmt.Errorf("ADB execution failed: %w", err)
+		}
+		
+		fmt.Print(output)
+		return nil
+	}
+	
+	// Determine spec name based on -l flag
+	specName := "devices"
 	if devicesLFlag {
-		command = "devices -l"
-		parserName = "devices -l"
-		log.Info("Starting devices command with -l flag", nil)
-	} else {
-		command = "devices"
-		parserName = "devices"
-		log.Info("Starting devices command", nil)
+		specName = "devices-l"
 	}
 
-	// Create executor
-	executor := adb.NewExecutor()
-	log.Debug("Created ADB executor", nil)
-	
-	// Run adb devices command
-	var output string
-	var err error
-	
-	if devicesLFlag {
-		output, err = executor.Execute("devices", "-l")
-	} else {
-		output, err = executor.Execute("devices")
-	}
-	
+	// Create IR engine
+	engine, err := ir.NewEngine()
 	if err != nil {
-		log.Error("Failed to execute adb devices", map[string]interface{}{"error": err.Error(), "command": command})
-		return apperrors.NewADBExecutionError(command, err)
+		log.Error("Failed to create IR engine", map[string]interface{}{"error": err.Error()})
+		return fmt.Errorf("failed to initialize command engine: %w", err)
 	}
-	log.Debug("ADB devices command executed successfully", map[string]interface{}{"output_length": len(output), "command": command})
+	log.Debug("Created IR engine", nil)
 	
-	// Parse output
-	var response interface{}
-	var parseErr error
-	
-	if devicesLFlag {
-		devicesLParser := parser.NewDevicesLParser()
-		response, parseErr = devicesLParser.Parse(output)
-		if parseErr != nil {
-			log.Error("Failed to parse devices -l output", map[string]interface{}{"error": parseErr.Error()})
-			return apperrors.NewParseError(parserName, parseErr)
-		}
-		log.Info("Parsed devices -l output", map[string]interface{}{"device_count": len(response.(*model.DevicesResponse).Devices)})
-	} else {
-		devicesParser := parser.NewDevicesParser()
-		response, parseErr = devicesParser.Parse(output)
-		if parseErr != nil {
-			log.Error("Failed to parse devices output", map[string]interface{}{"error": parseErr.Error()})
-			return apperrors.NewParseError(parserName, parseErr)
-		}
-		log.Info("Parsed devices output", map[string]interface{}{"device_count": len(response.(*model.DevicesResponse).Devices)})
+	// Check for --pretty flag override
+	prettyOutput, _ := cmd.Flags().GetBool("pretty")
+	if prettyOutput {
+		compactOutput = false
 	}
 	
-	// Validation is handled by the parsers themselves
+	// Only log in debug mode
+	debugMode, _ := cmd.Flags().GetBool("debug")
+	enrichMode, _ := cmd.Flags().GetBool("enrich")
 	
-	// Format output
-	format := formatter.ParseFormat(outputFormat)
-	formattedOutput, err := formatter.FormatOutputString(response, format, compactOutput)
+	// Execute command using IR approach with format support
+	output, err := engine.ExecuteCommandWithFormat(specName, []string{}, outputFormat, compactOutput)
 	if err != nil {
-		log.Error("Failed to format output", map[string]interface{}{"error": err.Error()})
-		return apperrors.NewMarshalError(err)
+		if debugMode {
+			log.Error("Command execution failed", map[string]interface{}{"error": err.Error(), "spec": specName})
+		}
+		
+		// Set appropriate exit code based on error type
+		if appErr, ok := err.(*errors.AppError); ok {
+			switch appErr.GetType() {
+			case errors.ADBExecutionError:
+				os.Exit(3) // ADB execution error
+			case errors.ParseError:
+				os.Exit(2) // Parsing error
+			case errors.MarshalError:
+				os.Exit(2) // JSON marshaling error
+			default:
+				os.Exit(1) // General error
+			}
+		}
+		return fmt.Errorf("command execution failed: %w", err)
+	}
+	
+	if debugMode {
+		log.Debug("Command executed", map[string]interface{}{"spec": specName, "output_length": len(output)})
+	}
+	
+	// Add enrichment if requested
+	if enrichMode {
+		// Parse the pure output to add metadata
+		var pureData interface{}
+		if outputFormat == "yaml" {
+			// For YAML, we'd need a YAML parser, but for now just wrap
+			pureData = map[string]interface{}{"yaml": string(output)}
+		} else {
+			json.Unmarshal(output, &pureData)
+		}
+		
+		// Calculate count for enrichment
+		count := 1
+		if arr, ok := pureData.([]interface{}); ok {
+			count = len(arr)
+		} else if arr, ok := pureData.([]map[string]interface{}); ok {
+			count = len(arr)
+		}
+		
+		// Create enriched response
+		enriched := map[string]interface{}{
+			"status": "success",
+			"meta": map[string]interface{}{
+				"command": specName,
+				"count":   count,
+			},
+			"data": pureData,
+		}
+		
+		if compactOutput {
+			output, _ = json.Marshal(enriched)
+		} else {
+			output, _ = json.MarshalIndent(enriched, "", "  ")
+		}
 	}
 	
 	// Print to stdout
-	fmt.Println(formattedOutput)
-	log.Info("Devices command completed successfully", nil)
+	fmt.Println(string(output))
 	
 	return nil
 }
