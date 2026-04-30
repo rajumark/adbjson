@@ -122,55 +122,54 @@ jobs:
     - name: Create release archives
       run: |
         cd artifacts
-        # Get version from previous step
         VERSION="v0.1.0"
         
         # Create checksums file
         echo "# adbjson $VERSION Checksums" > checksums.txt
         
-        # Artifacts are downloaded into subdirectories by name
+        # Process each artifact directory
         for dir in adbjson-*; do
-          echo "Processing directory: $dir"
-          ls -la "$dir"
+          echo "=== Processing: $dir ==="
+          ls -la "$dir" || echo "Directory listing failed"
           
-          # Set executable permissions in the artifact directory
-          chmod +x "$dir/adbjson"
-          chmod +x "$dir/platform-tools/platform-tools-*/adb"
+          # Set executable permissions
+          chmod +x "$dir/adbjson" || echo "chmod adbjson failed"
+          chmod +x "$dir/platform-tools/platform-tools-linux/adb" || echo "chmod adb failed"
           
-          # Determine platform and architecture
+          # Determine platform
           if [[ "$dir" == *"ubuntu"* ]]; then
             PLATFORM="linux"
             ARCH="amd64"
             EXT="tar.gz"
           elif [[ "$dir" == *"macos"* ]]; then
-            PLATFORM="darwin"
+            PLATFORM="darwin" 
             ARCH="amd64"
             EXT="tar.gz"
-          elif [[ "$dir" == *"windows"* ]]; then
-            PLATFORM="windows"
-            ARCH="amd64"
-            EXT="zip"
-          fi
-          
-          # Create properly named archive
-          ARCHIVE_NAME="adbjson_${VERSION}_${PLATFORM}_${ARCH}.${EXT}"
-          
-          if [ "$PLATFORM" == "windows" ]; then
-            # TODO: Uncomment for Windows builds
-            # zip -r "$ARCHIVE_NAME" -C "$dir" adbjson.exe platform-tools/
-            tar -czf "$ARCHIVE_NAME" -C "$dir" adbjson platform-tools/
           else
-            tar -czf "$ARCHIVE_NAME" -C "$dir" adbjson platform-tools/
+            echo "Unknown platform in directory: $dir"
+            continue
           fi
           
-          # Add checksum
-          if command -v sha256sum >/dev/null; then
+          # Create archive with proper naming
+          ARCHIVE_NAME="adbjson_${VERSION}_${PLATFORM}_${ARCH}.${EXT}"
+          echo "Creating archive: $ARCHIVE_NAME"
+          
+          tar -czf "$ARCHIVE_NAME" -C "$dir" adbjson platform-tools/ || echo "tar creation failed"
+          
+          # Generate checksum
+          if [ -f "$ARCHIVE_NAME" ]; then
             CHECKSUM=$(sha256sum "$ARCHIVE_NAME" | cut -d' ' -f1)
-          elif command -v shasum >/dev/null; then
-            CHECKSUM=$(shasum -a 256 "$ARCHIVE_NAME" | cut -d' ' -f1)
+            echo "$CHECKSUM  $ARCHIVE_NAME" >> checksums.txt
+            echo "Added checksum for $ARCHIVE_NAME"
+          else
+            echo "Archive $ARCHIVE_NAME was not created"
           fi
-          echo "$CHECKSUM  $ARCHIVE_NAME" >> checksums.txt
         done
+        
+        echo "=== Final artifacts ==="
+        ls -la
+        echo "=== Checksums file ==="
+        cat checksums.txt
     
     - name: Create tag and release
       if: github.event_name != 'release'
