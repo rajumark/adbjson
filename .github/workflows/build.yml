@@ -117,17 +117,18 @@ jobs:
     - name: Create release archives
       run: |
         cd artifacts
+        # Artifacts are downloaded into subdirectories by name
         for dir in adbjson-*; do
-          cd "$dir"
-          # Set executable permissions
-          chmod +x adbjson
-          chmod +x platform-tools/platform-tools-*/adb
+          echo "Processing directory: $dir"
+          ls -la "$dir"
+          # Set executable permissions in the artifact directory
+          chmod +x "$dir/adbjson"
+          chmod +x "$dir/platform-tools/platform-tools-*/adb"
           # if [ -f "adbjson.exe" ]; then  # TODO: Uncomment for Windows builds
           #   zip -r "../${dir}.zip" adbjson.exe platform-tools/
           # else
-            tar -czf "../${dir}.tar.gz" adbjson platform-tools/
+            tar -czf "../${dir}.tar.gz" -C "$dir" adbjson platform-tools/
           # fi
-          cd ..
         done
     
     - name: Create tag and release
